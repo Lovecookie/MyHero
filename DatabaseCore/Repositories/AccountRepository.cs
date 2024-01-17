@@ -1,9 +1,9 @@
 ﻿
-using shipcret_server_dotnet.DatabaseCore.DbContexts;
-using shipcret_server_dotnet.DatabaseCore.Entities;
+using myhero_dotnet.DatabaseCore.DbContexts;
+using myhero_dotnet.DatabaseCore.Entities;
 
 
-namespace shipcret_server_dotnet.DatabaseCore.Repositories;
+namespace myhero_dotnet.DatabaseCore.Repositories;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 {

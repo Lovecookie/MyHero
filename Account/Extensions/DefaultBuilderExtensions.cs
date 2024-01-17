@@ -3,14 +3,14 @@
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using shipcret_server_dotnet.Account.DependencyInjection;
+using myhero_dotnet.Account.DependencyInjection;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 
-namespace shipcret_server_dotnet.Extenstions;
+namespace myhero_dotnet.Extenstions;
 
 public static class DefaultBuilderExtensions
 {

@@ -1,9 +1,9 @@
 ﻿
 
 using AutoMapper;
-using shipcret_server_dotnet.DatabaseCore.Entities;
-using shipcret_server_dotnet.DatabaseCore.Repositories;
-using shipcret_server_dotnet.Infrastructure.Commands;
+using myhero_dotnet.DatabaseCore.Entities;
+using myhero_dotnet.DatabaseCore.Repositories;
+using myhero_dotnet.Infrastructure.Commands;
 
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserBasic>
 {	

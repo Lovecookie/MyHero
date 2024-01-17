@@ -1,4 +1,4 @@
-﻿namespace shipcret_server_dotnet.Commands;
+﻿namespace myhero_dotnet.Commands;
 
 public class IdentifiedCommand<T, R> : IRequest<R>
 	where T : IRequest<R>

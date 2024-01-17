@@ -1,9 +1,9 @@
 ﻿
 
-using shipcret_server_dotnet.DatabaseCore.Entities;
-using shipcret_server_dotnet.Infrastructure.Constants;
+using myhero_dotnet.DatabaseCore.Entities;
+using myhero_dotnet.Infrastructure.Constants;
 
-namespace shipcret_server_dotnet.Infrastructure.Commands;
+namespace myhero_dotnet.Infrastructure.Commands;
 
 
 public class CreateUserCommand : IRequest<UserBasic>

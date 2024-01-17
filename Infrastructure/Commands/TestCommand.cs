@@ -1,6 +1,6 @@
 ﻿
 
-namespace shipcret_server_dotnet.Commands;
+namespace myhero_dotnet.Commands;
 
 [DataContract]
 public class TestCommand : IRequest<bool>

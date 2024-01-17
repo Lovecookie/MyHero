@@ -1,7 +1,7 @@
-﻿using shipcret_server_dotnet.DatabaseCore.Repositories;
+﻿using myhero_dotnet.DatabaseCore.Repositories;
 
 
-namespace shipcret_server_dotnet.DatabaseCore.Entities;
+namespace myhero_dotnet.DatabaseCore.Entities;
 
 
 

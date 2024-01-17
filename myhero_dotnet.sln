@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shipcret_server_dotnet", "shipcret_server_dotnet.csproj", "{B4D54076-A157-46F0-A8C7-C549D682E231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "myhero_dotnet", "myhero_dotnet.csproj", "{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B4D54076-A157-46F0-A8C7-C549D682E231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4D54076-A157-46F0-A8C7-C549D682E231}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4D54076-A157-46F0-A8C7-C549D682E231}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4D54076-A157-46F0-A8C7-C549D682E231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

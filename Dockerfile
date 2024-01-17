@@ -9,17 +9,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["shipcret_server_dotnet.csproj", "."]
-RUN dotnet restore "./././shipcret_server_dotnet.csproj"
+COPY ["myhero_dotnet.csproj", "."]
+RUN dotnet restore "./././myhero_dotnet.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./shipcret_server_dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./myhero_dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./shipcret_server_dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./myhero_dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "shipcret_server_dotnet.dll"]
+ENTRYPOINT ["dotnet", "myhero_dotnet.dll"]

@@ -1,6 +1,6 @@
 ﻿
 
-namespace shipcret_server_dotnet.Infrastructure.Commands;
+namespace myhero_dotnet.Infrastructure.Commands;
 
 public class HeartbeatCommand : IRequest<string>
 {

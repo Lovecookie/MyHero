@@ -1,6 +1,6 @@
 ﻿
 
-namespace shipcret_server_dotnet.Infrastructure.Features;
+namespace myhero_dotnet.Infrastructure.Features;
 
 
 public static class ShipcretVersion

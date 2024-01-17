@@ -1,4 +1,4 @@
-﻿namespace shipcret_server_dotnet.Account.Requests;
+﻿namespace myhero_dotnet.Account.Requests;
 
 public record LoginUserRequest
 {

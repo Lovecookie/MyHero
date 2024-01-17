@@ -1,8 +1,8 @@
-﻿using shipcret_server_dotnet.Account.Services;
-using shipcret_server_dotnet.DatabaseCore.DbContexts;
-using shipcret_server_dotnet.DatabaseCore.Repositories;
+﻿using myhero_dotnet.Account.Services;
+using myhero_dotnet.DatabaseCore.DbContexts;
+using myhero_dotnet.DatabaseCore.Repositories;
 
-namespace shipcret_server_dotnet.Account.Extensions;
+namespace myhero_dotnet.Account.Extensions;
 
 public static class AccountExtensions
 {

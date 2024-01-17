@@ -1,7 +1,7 @@
 
-using shipcret_server_dotnet.Account.Extensions;
-using shipcret_server_dotnet.Account.Extenstions;
-using shipcret_server_dotnet.Extenstions;
+using myhero_dotnet.Account.Extensions;
+using myhero_dotnet.Account.Extenstions;
+using myhero_dotnet.Extenstions;
 
 var builder = WebApplication.CreateBuilder(args)
 	.AddConfigureApplicationBuilder()

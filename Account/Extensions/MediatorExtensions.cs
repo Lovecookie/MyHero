@@ -1,7 +1,7 @@
-﻿using shipcret_server_dotnet.DatabaseCore.DbContexts;
+﻿using myhero_dotnet.DatabaseCore.DbContexts;
 using System.Runtime.CompilerServices;
 
-namespace shipcret_server_dotnet.Account.Extensions;
+namespace myhero_dotnet.Account.Extensions;
 
 public static class MediatorExtensions
 {

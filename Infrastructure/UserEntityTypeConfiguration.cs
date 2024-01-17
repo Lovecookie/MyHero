@@ -1,5 +1,5 @@
 ﻿
-namespace shipcret_server_dotnet.Infrastructure;
+namespace myhero_dotnet.Infrastructure;
 
 //public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 //{

@@ -1,11 +1,11 @@
 ﻿
 using Serilog.Core;
-using shipcret_server_dotnet.Account.Extensions;
-using shipcret_server_dotnet.DatabaseCore.Entities;
-using shipcret_server_dotnet.DatabaseCore.Repositories;
-using shipcret_server_dotnet.Infrastructure.Constants;
+using myhero_dotnet.Account.Extensions;
+using myhero_dotnet.DatabaseCore.Entities;
+using myhero_dotnet.DatabaseCore.Repositories;
+using myhero_dotnet.Infrastructure.Constants;
 
-namespace shipcret_server_dotnet.DatabaseCore.DbContexts;
+namespace myhero_dotnet.DatabaseCore.DbContexts;
 
 public class AccountDbContext : DbContextAbstract
 {

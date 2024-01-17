@@ -1,7 +1,7 @@
-﻿using shipcret_server_dotnet.DatabaseCore.Repositories;
+﻿using myhero_dotnet.DatabaseCore.Repositories;
 
 
-namespace shipcret_server_dotnet.DatabaseCore.DbContexts;
+namespace myhero_dotnet.DatabaseCore.DbContexts;
 
 public abstract class DbContextAbstract : DbContext, IUnitOfWork
 {

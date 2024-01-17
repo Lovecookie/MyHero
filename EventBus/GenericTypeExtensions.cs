@@ -1,4 +1,4 @@
-﻿namespace shipcret_server_dotnet.EventBus.Extensions;
+﻿namespace myhero_dotnet.EventBus.Extensions;
 
 
 

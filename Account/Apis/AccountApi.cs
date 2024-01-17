@@ -1,10 +1,10 @@
-﻿using shipcret_server_dotnet.Account.Requests;
-using shipcret_server_dotnet.Account.Services;
-using shipcret_server_dotnet.Infrastructure.Commands;
-using shipcret_server_dotnet.Infrastructure.Features;
+﻿using myhero_dotnet.Account.Requests;
+using myhero_dotnet.Account.Services;
+using myhero_dotnet.Infrastructure.Commands;
+using myhero_dotnet.Infrastructure.Features;
 
 
-namespace shipcret_server_dotnet.Account.Apis;
+namespace myhero_dotnet.Account.Apis;
 
 
 public static class AccountApis

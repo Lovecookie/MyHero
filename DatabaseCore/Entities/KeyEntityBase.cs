@@ -1,4 +1,4 @@
-﻿namespace shipcret_server_dotnet.DatabaseCore.Entities;
+﻿namespace myhero_dotnet.DatabaseCore.Entities;
 
 internal abstract record KeyEntityBase
 {

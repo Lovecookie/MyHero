@@ -15,6 +15,6 @@ global using System.Text.Json.Serialization;
 global using MediatR;
 global using Npgsql;
 
-global using shipcret_server_dotnet.EventBus.Extensions;
-global using shipcret_server_dotnet.Infrastructure;
-global using shipcret_server_dotnet.Commands;
+global using myhero_dotnet.EventBus.Extensions;
+global using myhero_dotnet.Infrastructure;
+global using myhero_dotnet.Commands;

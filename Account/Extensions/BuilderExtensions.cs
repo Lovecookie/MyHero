@@ -2,10 +2,10 @@
 
 
 using Serilog;
-using shipcret_server_dotnet.Account.Apis;
+using myhero_dotnet.Account.Apis;
 using System.Globalization;
 
-namespace shipcret_server_dotnet.Account.Extenstions;
+namespace myhero_dotnet.Account.Extenstions;
 
 public static class DefaultExtentions
 {

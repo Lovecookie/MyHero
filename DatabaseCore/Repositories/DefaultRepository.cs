@@ -1,6 +1,6 @@
 ﻿
 
-namespace shipcret_server_dotnet.DatabaseCore.Repositories;
+namespace myhero_dotnet.DatabaseCore.Repositories;
 
 
 

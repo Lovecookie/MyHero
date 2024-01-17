@@ -1,6 +1,6 @@
 ﻿
 
-namespace shipcret_server_dotnet.Infrastructure.Constants;
+namespace myhero_dotnet.Infrastructure.Constants;
 
 
 public class ConstantLength

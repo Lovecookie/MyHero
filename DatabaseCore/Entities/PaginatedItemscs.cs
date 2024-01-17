@@ -1,4 +1,4 @@
-﻿namespace shipcret_server_dotnet.DatabaseCore.Entities;
+﻿namespace myhero_dotnet.DatabaseCore.Entities;
 
 
 public class PaginatedItems<TEntity>(int pageIndex, int pageSize, long count, IEnumerable<TEntity> data)

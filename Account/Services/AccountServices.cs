@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 
-namespace shipcret_server_dotnet.Account.Services;
+namespace myhero_dotnet.Account.Services;
 
 public class AccountServices(
 	IMediator mediator,
