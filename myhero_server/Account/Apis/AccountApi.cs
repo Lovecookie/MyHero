@@ -8,14 +8,14 @@ using myhero_dotnet.Infrastructure.Features;
 namespace myhero_dotnet.Account.Apis;
 
 
-public static class AccountApis
+public static class AccountApi
 {
     public static WebApplication MapAccountApis(this WebApplication app)
     {
         var apiName = "account";
         var apiUri = ConstantVersion.URL(apiName);
 
-        var root = app.MapGroup($"{apiUri}")
+        var root = app.MapGroup(apiUri)
             .WithGroupName(ConstantVersion.GlobalVersionByLower)
             .WithTags(apiName)
             .WithOpenApi(); 

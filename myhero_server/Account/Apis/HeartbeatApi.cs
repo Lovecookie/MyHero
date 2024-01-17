@@ -8,7 +8,7 @@ using myhero_dotnet.Infrastructure.Features;
 namespace myhero_dotnet.Account.Apis;
 
 
-public static class HeartbeatApis
+public static class HeartbeatApi
 {
 	public static WebApplication MapHeartbeatApis(this WebApplication app)
 	{

@@ -7,8 +7,10 @@ namespace myhero_dotnet.DatabaseCore.Repositories;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 {
-	Task<UserBasic> CreateAsync(UserBasic entity, CancellationToken cancellationToken);
+	Task<UserBasic> FindAsync(Int64 UserUid);
 
+	Task<UserBasic> CreateAsync(UserBasic entity, CancellationToken cancellationToken);
+	
 }
 
 internal class UserBasicRepository : IUserBasicRepository
@@ -25,6 +27,17 @@ internal class UserBasicRepository : IUserBasicRepository
 		_timeProvider = timeProvider;
 		_context = context;
 		_logger = logger;
+	}
+
+	public async Task<UserBasic> FindAsync(Int64 UserUid)
+	{
+		var findedEntity = _context.Find<UserBasic>( UserUid );
+		if ( findedEntity == null )
+		{
+			
+		}
+
+
 	}
 
 	public async Task<UserBasic> CreateAsync(UserBasic entity, CancellationToken cancellationToken)
