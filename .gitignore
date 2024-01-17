@@ -1,6 +1,6 @@
 /obj
 /bin
 /.vs
-/shipcret_server_dotnet.csproj.user
+*.csproj.user
 /appsettings.Development.json
 /appsettings.json
