@@ -2,7 +2,7 @@
 using AutoMapper;
 using myhero_dotnet.Account.Requests;
 using myhero_dotnet.DatabaseCore.Entities;
-using myhero_dotnet.Infrastructure.Commands;
+using myhero_dotnet.Infrastructure.Commands.User;
 
 public class CreateUserMappingProfile : Profile
 {

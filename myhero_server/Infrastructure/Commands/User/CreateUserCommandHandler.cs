@@ -3,7 +3,7 @@
 using AutoMapper;
 using myhero_dotnet.DatabaseCore.Entities;
 using myhero_dotnet.DatabaseCore.Repositories;
-using myhero_dotnet.Infrastructure.Commands;
+using myhero_dotnet.Infrastructure.Commands.User;
 
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserBasic>
 {	

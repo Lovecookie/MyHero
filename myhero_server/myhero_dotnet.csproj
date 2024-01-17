@@ -12,13 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Infrastructure\DbContexts\**" />
-    <Content Remove="Infrastructure\DbContexts\**" />
-    <EmbeddedResource Remove="Infrastructure\DbContexts\**" />
-    <None Remove="Infrastructure\DbContexts\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.1.23557.2" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Collection" Version="9.0.0" />
@@ -52,10 +45,6 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="6.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructure\Responses\" />
   </ItemGroup>
 
 </Project>

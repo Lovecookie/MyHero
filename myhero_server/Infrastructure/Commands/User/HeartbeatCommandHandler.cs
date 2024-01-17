@@ -1,6 +1,6 @@
 ﻿using myhero_dotnet.DatabaseCore.Entities;
 using myhero_dotnet.DatabaseCore.Repositories;
-using myhero_dotnet.Infrastructure.Commands;
+using myhero_dotnet.Infrastructure.Commands.User;
 
 public class HeartbeatCommandHandler : IRequestHandler<HeartbeatCommand, string>
 {

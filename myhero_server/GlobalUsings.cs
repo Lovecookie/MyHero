@@ -14,7 +14,3 @@ global using System.Text.Json.Serialization;
 
 global using MediatR;
 global using Npgsql;
-
-global using myhero_dotnet.EventBus.Extensions;
-global using myhero_dotnet.Infrastructure;
-global using myhero_dotnet.Commands;
