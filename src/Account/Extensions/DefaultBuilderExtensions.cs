@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using myhero_dotnet.Infrastructure.Features;
 
 
 namespace myhero_dotnet.Extenstions;
@@ -46,20 +47,20 @@ public static class DefaultBuilderExtensions
 			options.SwaggerDoc("v1", new OpenApiInfo
 			{
 				Version = "v1",
-				Title = $"Shipcret API - {textInfo.ToTitleCase(builder.Environment.EnvironmentName)}",
-				Description = "Shipcret API .NET 8",
+				Title = $"{ConstantVersion.ProjectName} API - {textInfo.ToTitleCase(builder.Environment.EnvironmentName)}",
+				Description = $"{ConstantVersion.ProjectName} API .NET 8",
 				Contact = new OpenApiContact
 				{
-					Name = "Shipcret API",
-					Email = "silver2000cs@gmail.com",
-					Url = new Uri("https://github.com/Lovecookie/mystyler"),
+					Name = $"{ConstantVersion.ProjectName} API",
+					Email = "block9002@gmail.com, silver2000cs@gmail.com",
+					Url = new Uri("https://github.com/Lovecookie/myhero"),
 				},
 				License = new OpenApiLicense
 				{
-					Name = "Shipcret API - License - MIT",
+					Name = $"{ConstantVersion.ProjectName} API - Unlicense",
 					Url = new Uri("https://opensource.org/licenses/MIT")
 				},
-				TermsOfService = new Uri("https://github.com/Lovecookie/mystyler")
+				TermsOfService = new Uri("https://github.com/Lovecookie/myhero")
 			});
 
 			var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
