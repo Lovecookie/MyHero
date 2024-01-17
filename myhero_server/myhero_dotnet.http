@@ -4,3 +4,6 @@ GET {{myhero_dotnet_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+
+GET {{myhero_dotnet_HostAddress}}/api/v1/

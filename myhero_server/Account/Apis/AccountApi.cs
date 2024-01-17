@@ -13,7 +13,7 @@ public static class AccountApis
     public static WebApplication MapAccountApis(this WebApplication app)
     {
         var apiName = "account";
-        var apiUri = $"/api/{ConstantVersion.GlobalVersionByLower}/{apiName}";
+        var apiUri = ConstantVersion.URL(apiName);
 
         var root = app.MapGroup($"{apiUri}")
             .WithGroupName(ConstantVersion.GlobalVersionByLower)

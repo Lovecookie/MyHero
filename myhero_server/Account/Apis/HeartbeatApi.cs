@@ -13,7 +13,7 @@ public static class HeartbeatApis
 	public static WebApplication MapHeartbeatApis(this WebApplication app)
 	{
 		var apiName = "heartbeat";
-		var apiUri = $"/api/{ConstantVersion.GlobalVersionByLower}/{apiName}";
+		var apiUri = ConstantVersion.URL(apiName);
 
 		var root = app.MapGroup($"{apiUri}")
 			.WithGroupName(ConstantVersion.GlobalVersionByLower)
