@@ -21,6 +21,8 @@ public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, Searc
 	{
 		var userEntity = _mapper.Map<UserBasic>(request);
 
+		_userBasicRepository.CreateAsync
+
 		// return await _userBasicRepository.CreateAsync(userEntity, cancellationToken);
 	}
 }
