@@ -15,7 +15,7 @@ public static class AccountExtensions
             configuration.RegisterServicesFromAssemblyContaining(typeof(Program));
 		});
 
-        builder.AddNpgsqlDbContext<AccountDbContext>("accountdb",
+        builder.AddNpgsqlDbContext<AccountDbContext>(AccountDbContext.SchemaName(),
             settings => settings.DbContextPooling = false,
             configureDbContextOptions: builder =>
             {

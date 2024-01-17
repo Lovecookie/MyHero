@@ -3,7 +3,9 @@
 
 namespace myhero_dotnet.DatabaseCore.DbContexts;
 
-public abstract class DbContextAbstract : DbContext, IUnitOfWork
+public abstract class DbContextAbstract<TDbContext>
+	: DbContext, IUnitOfWork
+	where TDbContext : class
 {
 	protected readonly IMediator? _mediator;
 	protected IDbContextTransaction? _transaction;
@@ -14,6 +16,27 @@ public abstract class DbContextAbstract : DbContext, IUnitOfWork
 
 	public DbContextAbstract(DbContextOptions options, IMediator? mediator) : base(options)
 	{
+	}
+	public static string DbName()
+	{	
+		var attribute = Attribute.GetCustomAttribute(typeof(TDbContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
+		if (attribute != null)
+		{
+			return attribute.DbName;
+		}
+
+		throw new Exception("Is not supported db name!");
+	}
+
+	public static string SchemaName()
+	{	
+		var attribute = Attribute.GetCustomAttribute(typeof(TDbContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
+		if (attribute != null)
+		{
+			return attribute.Schema;
+		}
+
+		throw new Exception("Is not supported schema name!");
 	}
 
 	public bool HasTransaction => _transaction != null;

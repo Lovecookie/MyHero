@@ -1,4 +1,5 @@
-﻿using myhero_dotnet.DatabaseCore.Repositories;
+﻿using myhero_dotnet.DatabaseCore.DbContexts;
+using myhero_dotnet.DatabaseCore.Repositories;
 
 
 namespace myhero_dotnet.DatabaseCore.Entities;
@@ -8,7 +9,8 @@ namespace myhero_dotnet.DatabaseCore.Entities;
 /// <summary>
 ///  UserBasic
 /// </summary>
-public class UserBasic : UserEntityBase, IAggregateRoot
+[DbTableAttribute("user_basic")]
+public class UserBasic : UserEntityBase<UserBasic>, IAggregateRoot
 { 
     public string UserId { get; set; } = ""; 
     
@@ -23,7 +25,8 @@ public class UserBasic : UserEntityBase, IAggregateRoot
 /// <summary>
 /// UserPatronage
 /// </summary>
-public class UserPatronage : UserEntityBase, IAggregateRoot
+[DbTableAttribute("user_patronage")]
+public class UserPatronage : UserEntityBase<UserPatronage>, IAggregateRoot
 {   
     public Int64 FollowerCount { get; set; }
     
@@ -38,7 +41,8 @@ public class UserPatronage : UserEntityBase, IAggregateRoot
 /// <summary>
 /// UserRecognition
 /// </summary>
-public class UserRecognition : UserEntityBase, IAggregateRoot
+[DbTableAttribute("user_recognition")]
+public class UserRecognition : UserEntityBase<UserRecognition>, IAggregateRoot
 {
     [Required]
     public Int64 FamousValue { get; set; }
