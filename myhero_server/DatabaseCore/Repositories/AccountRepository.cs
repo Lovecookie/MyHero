@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 using myhero_dotnet.CommonFeatures.GenericObjects;
 using myhero_dotnet.DatabaseCore.DbContexts;
 using myhero_dotnet.DatabaseCore.Entities;
+using System.Threading;
 
 
 namespace myhero_dotnet.DatabaseCore.Repositories;
@@ -50,12 +51,17 @@ internal class UserBasicRepository : IUserBasicRepository
 	{
 		try
 		{
-			var findedEntity = _context.Find<UserBasic>(new { UserId = id });
+			var findedEntity = await _context.FindAsync<UserBasic>(new { UserId = id });
+			if (findedEntity == null)
+			{
+				return TOptional.Empty<UserBasic>();
+			}
 
+			return TOptional.To(findedEntity);
 		}
 		catch (Exception ex)
 		{
-
+			return TOptional.Error<UserBasic>(ex.Message);
 		}
 	}
 
@@ -66,11 +72,15 @@ internal class UserBasicRepository : IUserBasicRepository
 
 		try
 		{
-			var newEntity = _context.Add(entity).Entity;
+			var newEntry = await _context.AddAsync(entity);
+			if( newEntry == null)
+			{
+				return TOptional.Unknown<UserBasic>();
+			}
 
 			var result = await _context.SaveChangesAsync(cancellationToken);
 
-			return TOptional.To(newEntity);
+			return TOptional.To(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{

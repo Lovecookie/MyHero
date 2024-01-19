@@ -8,6 +8,20 @@ public class TOptional
 	{
 		return new TOptional<TValue>(val);
 	}
+	public static TOptional<TValue> Unknown<TValue>()
+	{
+		return new TOptional<TValue>("Unknown failed.");
+	}
+
+	public static TOptional<TValue> DbFailed<TValue>()
+	{
+		return new TOptional<TValue>("DB failed.");
+	}
+
+	public static TOptional<TValue> Empty<TValue>()
+	{
+		return new TOptional<TValue>("Not found entities.");
+	}
 
 	public static TOptional<TValue> Error<TValue>(string msg)
 	{
@@ -70,9 +84,5 @@ public class TOptional<TValue>
 	/// <summary>
 	/// static
 	/// </summary>
-	public static TOptional<TValue> Unknown => new TOptional<TValue>();
-
-	//public static TOptional<TValue> Error(string err) => new TOptional<TValue>(err);
-
-	//public static TOptional<TValue> Get(TValue val) => new TOptional<TValue>(val);
+	public static TOptional<TValue> Unknown => new TOptional<TValue>();	
 }
