@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.SignalR;
+using myhero_dotnet.CommonFeatures.GenericObjects;
 using myhero_dotnet.DatabaseCore.DbContexts;
 using myhero_dotnet.DatabaseCore.Entities;
 
@@ -7,9 +9,9 @@ namespace myhero_dotnet.DatabaseCore.Repositories;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 {
-	Task<UserBasic> FindAsync(Int64 UserUid);
-	Task<UserBasic> CreateAsync(UserBasic entity, CancellationToken cancellationToken);
-	
+	Task<TOptional<UserBasic>> FindAsync(Int64 userUid);
+	Task<TOptional<UserBasic>> FindByIdAsync(string id);
+	Task<TOptional<UserBasic>> CreateAsync(UserBasic entity, CancellationToken cancellationToken);	
 }
 
 internal class UserBasicRepository : IUserBasicRepository
@@ -28,11 +30,11 @@ internal class UserBasicRepository : IUserBasicRepository
 		_logger = logger;
 	}
 
-	public async Task<UserBasic> FindAsync(Int64 UserUid)
+	public async Task<TOptional<UserBasic>> FindAsync(Int64 userUid)
 	{
 		try
 		{
-			var findedEntity = _context.Find<UserBasic>(UserUid);
+			var findedEntity = _context.Find<UserBasic>(new { UserUid = userUid });
 			if (findedEntity == null)
 			{
 
@@ -44,7 +46,20 @@ internal class UserBasicRepository : IUserBasicRepository
 		}
 	}
 
-	public async Task<UserBasic> CreateAsync(UserBasic entity, CancellationToken cancellationToken)
+	public async Task<TOptional<UserBasic>> FindByIdAsync(string id)
+	{
+		try
+		{
+			var findedEntity = _context.Find<UserBasic>(new { UserId = id });
+
+		}
+		catch (Exception ex)
+		{
+
+		}
+	}
+
+	public async Task<TOptional<UserBasic>> CreateAsync(UserBasic entity, CancellationToken cancellationToken)
 	{
 		entity.DateCreated = _timeProvider.GetUtcNow().UtcDateTime;
 		entity.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
@@ -55,13 +70,13 @@ internal class UserBasicRepository : IUserBasicRepository
 
 			var result = await _context.SaveChangesAsync(cancellationToken);
 
-			return newEntity;
+			return TOptional.To(newEntity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return new();
+			return TOptional.Error<UserBasic>(ex.Message);
 		}
 	}
 }
