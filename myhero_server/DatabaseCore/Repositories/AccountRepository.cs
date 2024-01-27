@@ -35,15 +35,20 @@ internal class UserBasicRepository : IUserBasicRepository
 	{
 		try
 		{
-			var findedEntity = _context.Find<UserBasic>(new { UserUid = userUid });
-			if (findedEntity == null)
+			var entity = await _context.FindAsync<UserBasic>(new { UserUid = userUid });
+			if(entity == null)
 			{
-
+				return TOptional.Empty<UserBasic>();
 			}
+
+			return TOptional.To(entity);
 		}
+
 		catch (Exception ex)
 		{
+			_logger.LogError(ex.Message);
 
+			return TOptional.Error<UserBasic>();
 		}
 	}
 
@@ -51,16 +56,18 @@ internal class UserBasicRepository : IUserBasicRepository
 	{
 		try
 		{
-			var findedEntity = await _context.FindAsync<UserBasic>(new { UserId = id });
-			if (findedEntity == null)
+			var entity = await _context.FindAsync<UserBasic>(new { UserId = id });
+			if (entity == null)
 			{
 				return TOptional.Empty<UserBasic>();
 			}
 
-			return TOptional.To(findedEntity);
+			return TOptional.To(entity);
 		}
 		catch (Exception ex)
 		{
+			_logger.LogError(ex.Message);
+
 			return TOptional.Error<UserBasic>(ex.Message);
 		}
 	}
