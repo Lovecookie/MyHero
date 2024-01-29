@@ -3,6 +3,7 @@ using myhero_dotnet.Account.Services;
 using myhero_dotnet.Infrastructure.Commands;
 using myhero_dotnet.Infrastructure.Commands.User;
 using myhero_dotnet.Infrastructure.Features;
+using myhero_dotnet.Infrastructure.StatusResult;
 
 
 namespace myhero_dotnet.Account.Apis;
@@ -35,19 +36,6 @@ public static class AccountApi
         return app;
     }
 
-    public static async Task<IResult> Heartbeat(
-        [AsParameters] AccountServices services )
-    {
-        var heartbeatCommand = new HeartbeatCommand
-        {
-            HeartBeat = "1"
-        };
-
-        var heatbeat = await services.Mediator.Send(heartbeatCommand);
-
-        return Results.Ok(heatbeat!);
-    }
-
     public static async Task<IResult> CreateUser(
         [FromBody] CreateUserRequest createUserRequest,
         [AsParameters] AccountServices services
@@ -55,15 +43,17 @@ public static class AccountApi
     {
         var createUserCommand = services.Mapper.Map<CreateUserCommand>(createUserRequest);
 
-        await services.Mediator.Send(createUserCommand);        
+        await services.Mediator.Send(createUserCommand);
 
-        return Results.Ok();
+        return ToClientResults.Ok();
     }
 
     public static async Task<IResult> LoginUser(
         [FromBody] LoginUserRequest loginUserRequest,
         [AsParameters] AccountServices services)
     {
+        var loginUserCommand = services.Mapper.Map<LoginUserCommand>(loginUserRequest);
+
 		//var result = await services.LoginUser(user);
 
 		return await Task.FromResult(Results.Ok());

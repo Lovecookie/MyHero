@@ -20,7 +20,7 @@ public record CommonResponse
 
 public static class ToClientResults
 {	
-	public static IResult Ok(object? data)
+	public static IResult Ok(object? data = null)
 	{
 		return Results.Ok(
 			new CommonResponse

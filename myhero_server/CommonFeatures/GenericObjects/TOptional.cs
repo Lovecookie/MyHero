@@ -1,4 +1,6 @@
 ﻿
+using Google.Protobuf.WellKnownTypes;
+
 namespace myhero_dotnet.CommonFeatures.GenericObjects;
 
 

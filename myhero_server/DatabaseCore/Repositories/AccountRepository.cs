@@ -12,6 +12,7 @@ public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 {
 	Task<TOptional<UserBasic>> FindAsync(Int64 userUid);
 	Task<TOptional<UserBasic>> FindByIdAsync(string id);
+	Task<TOptional<UserBasic>> FindByEmailAsync(string email);
 	Task<TOptional<UserBasic>> CreateAsync(UserBasic entity, CancellationToken cancellationToken);	
 }
 
@@ -58,6 +59,28 @@ internal class UserBasicRepository : IUserBasicRepository
 		{
 			var entity = await _context.UserBasics
 				.Where( e => e.UserId == id)
+				.FirstOrDefaultAsync();
+			if (entity == null)
+			{
+				return TOptional.Empty<UserBasic>();
+			}
+
+			return TOptional.To(entity);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex.Message);
+
+			return TOptional.Error<UserBasic>(ex.Message);
+		}
+	}
+
+	public async Task<TOptional<UserBasic>> FindByEmailAsync(string email)
+	{
+		try
+		{
+			var entity = await _context.UserBasics
+				.Where(e => e.Email == email)
 				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
