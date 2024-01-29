@@ -28,6 +28,7 @@ public static class DefaultExtentions
 
         app.MapAccountApis();
         app.MapHeartbeatApis();
+        app.MapSearchApis();
 
         return app;
     }

@@ -48,7 +48,7 @@ internal class UserBasicRepository : IUserBasicRepository
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>();
+			return TOptional.Error<UserBasic>("Not found");
 		}
 	}
 
@@ -56,7 +56,9 @@ internal class UserBasicRepository : IUserBasicRepository
 	{
 		try
 		{
-			var entity = await _context.FindAsync<UserBasic>(new { UserId = id });
+			var entity = await _context.UserBasics
+				.Where( e => e.UserId == id)
+				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
 				return TOptional.Empty<UserBasic>();

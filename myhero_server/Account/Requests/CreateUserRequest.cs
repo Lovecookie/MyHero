@@ -18,5 +18,4 @@ public record CreateUserRequest
 
 	[Required]
 	public string? PicUrl { get; init; }
-
 }

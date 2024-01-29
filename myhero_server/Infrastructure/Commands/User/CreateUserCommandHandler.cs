@@ -1,11 +1,12 @@
 ﻿
 
 using AutoMapper;
+using myhero_dotnet.CommonFeatures.GenericObjects;
 using myhero_dotnet.DatabaseCore.Entities;
 using myhero_dotnet.DatabaseCore.Repositories;
 using myhero_dotnet.Infrastructure.Commands.User;
 
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserBasic>
+public class CreateUserHandler : IRequestHandler<CreateUserCommand, TOptional<UserBasic>>
 {	
 	private readonly IUserBasicRepository _userBasicRepository;
 	private readonly IMapper _mapper;
@@ -16,7 +17,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserBasic>
 		_mapper = mapper;
 	}
 
-	public async Task<UserBasic> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+	public async Task<TOptional<UserBasic>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
 	{
 		var userEntity = _mapper.Map<UserBasic>(request);
 

@@ -1,16 +1,18 @@
-﻿using myhero_dotnet.Account.Requests;
+﻿using Microsoft.AspNetCore.Http.Metadata;
+using myhero_dotnet.Account.Requests;
 using myhero_dotnet.Account.Services;
 using myhero_dotnet.Infrastructure.Commands;
 using myhero_dotnet.Infrastructure.Commands.User;
 using myhero_dotnet.Infrastructure.Features;
+using myhero_dotnet.Infrastructure.StatusResult;
 
 
-namespace myhero_dotnet.Search;
+namespace myhero_dotnet.Account.Apis;
 
 
 public static class SearchApi
 {
-    public static WebApplication MapInfluencerApis(this WebApplication app)
+    public static WebApplication MapSearchApis(this WebApplication app)
     {
         var apiName = "search";
         var apiUri = ConstantVersion.URL(apiName);
@@ -20,7 +22,7 @@ public static class SearchApi
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapGet("/user", SearchUser)
+        root.MapPost("/user", SearchUser)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithSummary("Search User")
             .WithDescription("\n GET /user");
@@ -37,8 +39,12 @@ public static class SearchApi
     {
         var createUserCommand = services.Mapper.Map<SearchUserCommand>(searchUserRequest);
 
-        await services.Mediator.Send(createUserCommand);
+        var opt = await services.Mediator.Send(createUserCommand);
+        if (!opt.HasValue)
+        {
+            return ToClientResults.Error("Not found.");
+        }
 
-        return Results.Ok();
+        return ToClientResults.Ok(opt.Value!);
     }
 }

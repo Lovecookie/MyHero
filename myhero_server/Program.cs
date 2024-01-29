@@ -1,14 +1,16 @@
 
 using myhero_dotnet.Account.Extensions;
+using myhero_dotnet.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args)
 	.AddConfigureApplicationBuilder()
-	.AddAccountApplicationServices();
+	.AddAccountApplicationServices();	
 
 builder.Services.AddAuthorization();
 
 var app = builder
 	.Build()
-	.AccountConfigureApplication();
+	.AccountConfigureApplication()
+	.UseInfrastructureMiddlware();
 
 app.Run();

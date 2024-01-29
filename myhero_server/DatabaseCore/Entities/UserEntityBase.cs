@@ -6,7 +6,7 @@ namespace myhero_dotnet.DatabaseCore.Entities;
 public abstract class UserEntityBase<TEntity> where TEntity : class
 {
     [Key]
-    public long UserUid { get; set; }
+    public Int64 UserUid { get; set; }
 
     public DateTime DateCreated { get; set; }
 
