@@ -1,6 +1,10 @@
 /obj
 /bin
 /.vs
+/Logs
+/Migrations
+
+
 /shipcret_server_dotnet.csproj.user
 /appsettings.Development.json
 /appsettings.json
