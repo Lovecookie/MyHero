@@ -4,13 +4,15 @@ using myhero_dotnet.DatabaseCore.Repositories;
 
 namespace myhero_dotnet.Account.Extensions;
 
-public static class AccountExtensions
+public static class DependencyInjectionExtensions
 {
-    public static WebApplicationBuilder AddAccountApplicationServices(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddAccountDependencyInjection(this WebApplicationBuilder builder)
     {
         var services = builder.Services;
 
-        services.AddMediatR(configuration =>
+		services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+		services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssemblyContaining(typeof(Program));
 		});

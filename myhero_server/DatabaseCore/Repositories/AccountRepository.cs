@@ -1,9 +1,7 @@
 ﻿
-using Microsoft.AspNetCore.SignalR;
 using myhero_dotnet.CommonFeatures.GenericObjects;
 using myhero_dotnet.DatabaseCore.DbContexts;
 using myhero_dotnet.DatabaseCore.Entities;
-using System.Threading;
 
 
 namespace myhero_dotnet.DatabaseCore.Repositories;

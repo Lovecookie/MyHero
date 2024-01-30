@@ -1,15 +1,9 @@
 ﻿
 
-using FluentValidation;
-using Microsoft.OpenApi.Models;
-using Serilog;
-using myhero_dotnet.Account.DependencyInjection;
-using System.Globalization;
-using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using myhero_dotnet.Infrastructure.Features;
 
+using Serilog;
+
+using myhero_dotnet.Infrastructure.Features;
 
 namespace myhero_dotnet.Account.Extensions;
 
@@ -70,10 +64,6 @@ public static class DefaultBuilderExtensions
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         });
-
-
-        services.AddAccountInfrastructure();
-        services.AddApplication();
 
         return builder;
     }

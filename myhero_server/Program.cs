@@ -4,7 +4,7 @@ using myhero_dotnet.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args)
 	.AddConfigureApplicationBuilder()
-	.AddAccountApplicationServices();	
+	.AddAccountDependencyInjection();	
 
 builder.Services.AddAuthorization();
 
