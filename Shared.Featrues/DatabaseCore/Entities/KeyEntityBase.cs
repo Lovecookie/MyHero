@@ -1,5 +1,4 @@
-﻿namespace myhero_dotnet.DatabaseCore.Entities;
-
+﻿namespace Shared.Features.DatabaseCore;
 internal abstract record KeyEntityBase
 {
     public long UniqueKey { get; set; }

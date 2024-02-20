@@ -15,6 +15,9 @@ global using Microsoft.EntityFrameworkCore.Storage;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.OpenApi.Models;
 
+
+global using Util.Infrastructure;
+
 global using FluentValidation;
 global using MediatR;
 global using Npgsql;

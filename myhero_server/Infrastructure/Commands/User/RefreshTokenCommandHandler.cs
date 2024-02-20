@@ -5,21 +5,19 @@ using myhero_dotnet.DatabaseCore.Entities;
 using myhero_dotnet.DatabaseCore.Repositories;
 using myhero_dotnet.Infrastructure.Commands.User;
 
-public class LoginUserHandler : IRequestHandler<LoginUserCommand, TOptional<UserBasic>>
+public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TOptional<UserBasic>>
 {
 	private readonly IUserBasicRepository _userBasicRepository;
 	private readonly IMapper _mapper;
 
-	public LoginUserHandler(IUserBasicRepository userBasicRepository, IMapper mapper)
+	public RefreshTokenCommandHandler(IUserBasicRepository userBasicRepository, IMapper mapper)
 	{
 		_userBasicRepository = userBasicRepository;
 		_mapper = mapper;
 	}
 
-	public async Task<TOptional<UserBasic>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
-	{
-		// request.Email
-		// request.Password
+	public async Task<TOptional<UserBasic>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+	{	
 		var opt = await _userBasicRepository.FindByEmailAsync(request.Email);
 		if(!opt.HasValue)
 		{

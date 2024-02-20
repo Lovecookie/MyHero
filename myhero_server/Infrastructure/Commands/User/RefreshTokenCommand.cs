@@ -4,7 +4,7 @@ using myhero_dotnet.Infrastructure.Constants;
 namespace myhero_dotnet.Infrastructure.Commands.User;
 
 
-public class LoginUserCommand : IRequest<TOptional<UserBasic>>
+public class RefreshTokenCommand : IRequest<TOptional<UserBasic>>
 {
 	public string Email { get; set; } = "";
 

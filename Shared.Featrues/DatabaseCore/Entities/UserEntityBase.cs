@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using myhero_dotnet.DatabaseCore.DbContexts;
-
-namespace myhero_dotnet.DatabaseCore.Entities;
+﻿namespace Shared.Features.DatabaseCore;
 
 public abstract class UserEntityBase<TEntity> where TEntity : class
 {

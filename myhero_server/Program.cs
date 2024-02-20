@@ -1,16 +1,21 @@
 
 using myhero_dotnet.Account.Extensions;
 using myhero_dotnet.Infrastructure.Extensions;
+using Util.Infrastructure.DependencyInjection;
+using Util.Infrastructure.Extensions;
 
-var builder = WebApplication.CreateBuilder(args)
-	.AddConfigureApplicationBuilder()
-	.AddAccountDependencyInjection();	
+var builder = WebApplication.CreateBuilder(args);
+builder.AddConfigureApplicationBuilder();
+builder.AddAccountDependencyInjection();
+builder.AddUtilInfrastructure();
 
-builder.Services.AddAuthorization();
-
-var app = builder
-	.Build()
+var app = builder.Build()
 	.AccountConfigureApplication()
-	.UseInfrastructureMiddlware();
+	.UseInfrastructureMiddlware()
+	.UseUtilInfrastructure();
+
+//app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

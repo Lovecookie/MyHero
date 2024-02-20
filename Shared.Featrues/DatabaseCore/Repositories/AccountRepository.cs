@@ -1,10 +1,6 @@
 ﻿
-using myhero_dotnet.CommonFeatures.GenericObjects;
-using myhero_dotnet.DatabaseCore.DbContexts;
-using myhero_dotnet.DatabaseCore.Entities;
 
-
-namespace myhero_dotnet.DatabaseCore.Repositories;
+namespace Shared.Features.DatabaseCore;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 {

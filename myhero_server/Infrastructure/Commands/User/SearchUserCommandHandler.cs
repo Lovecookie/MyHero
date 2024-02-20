@@ -3,12 +3,11 @@
 using AutoMapper;
 
 using myhero_dotnet.Account.Responses;
-using myhero_dotnet.CommonFeatures.GenericObjects;
 using myhero_dotnet.DatabaseCore.Entities;
 using myhero_dotnet.DatabaseCore.Repositories;
 using myhero_dotnet.Infrastructure.Commands.User;
 
-public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOptional<SearchUserResponse>>
+public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOptional<Responses>>
 {	
 	private readonly IUserBasicRepository _userBasicRepository;
 	private readonly IMapper _mapper;
@@ -19,15 +18,15 @@ public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOpti
 		_mapper = mapper;
 	}
 
-	public async Task<TOptional<SearchUserResponse>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
+	public async Task<TOptional<Responses>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
 	{
 		var opt = await _userBasicRepository.FindByIdAsync(request.SearchWord);
 		if(!opt.HasValue)
 		{
-			return TOptional.Error<SearchUserResponse>("Not found user.");
+			return TOptional.Error<Responses>("Not found user.");
 		}
 
-		var response = new SearchUserResponse
+		var response = new Responses
 		{
 			UserId = opt.Value!.UserId,
 			PicUrl = opt.Value!.PictureUrl

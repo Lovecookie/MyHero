@@ -5,6 +5,9 @@ using myhero_dotnet.Infrastructure.Constants;
 namespace myhero_dotnet.Account.Responses;
 
 
+/// <summary>
+/// Response for creating a user
+/// </summary>
 public record SearchUserResponse
 {
     [Required]
@@ -13,3 +16,13 @@ public record SearchUserResponse
     [Required]
     public string? PicUrl { get; init; }
 }
+
+
+/// <summary>
+/// created token 
+/// </summary>
+public record AuthenticatedResponse
+{
+    public string Token { get; set; } = "";
+}
+

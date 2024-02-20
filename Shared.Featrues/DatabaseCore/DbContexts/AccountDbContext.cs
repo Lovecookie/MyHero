@@ -1,11 +1,7 @@
 ﻿
-using Serilog.Core;
-using myhero_dotnet.Account.Extensions;
-using myhero_dotnet.DatabaseCore.Entities;
-using myhero_dotnet.DatabaseCore.Repositories;
-using myhero_dotnet.Infrastructure.Constants;
+using Shared.Features.Extensions;
 
-namespace myhero_dotnet.DatabaseCore.DbContexts;
+namespace Shared.Features.DatabaseCore;
 
 [DbSchemaAttribute("account", "accountdb")]
 public class AccountDbContext : DbContextAbstract<AccountDbContext>
@@ -29,7 +25,7 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 	{
 		if (HasMediator)
 		{
-			await Mediator!.DispatchDomainEventAsync(this);
+			await Mediator!.DispatchDomainEventAsync(this);			
 		}
 
 		_ = base.SaveChangesAsync(cancellationToken);

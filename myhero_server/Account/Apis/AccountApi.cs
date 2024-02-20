@@ -19,7 +19,7 @@ public static class AccountApi
         var root = app.MapGroup(apiUri)
             .WithGroupName(ConstantVersion.GlobalVersionByLower)
             .WithTags(apiName)
-            .WithOpenApi(); 
+            .WithOpenApi();
 
 		root.MapPost("/create", CreateUser)
             .ProducesProblem(StatusCodes.Status500InternalServerError)

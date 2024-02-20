@@ -6,7 +6,7 @@ namespace myhero_dotnet.Account.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static WebApplicationBuilder AddAccountDependencyInjection(this WebApplicationBuilder builder)
+    public static IHostApplicationBuilder AddAccountDependencyInjection(this IHostApplicationBuilder builder)
     {
         var services = builder.Services;
 

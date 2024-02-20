@@ -1,11 +1,4 @@
-﻿
-
-namespace myhero_dotnet.DatabaseCore.Repositories;
-
-
-
-
-
+﻿namespace Shared.Features.DatabaseCore;
 public interface IAggregateRoot { }
 
 public interface IUnitOfWork : IDisposable

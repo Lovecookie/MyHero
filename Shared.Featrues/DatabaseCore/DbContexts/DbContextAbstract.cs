@@ -1,7 +1,9 @@
-﻿using myhero_dotnet.DatabaseCore.Repositories;
+﻿
 
 
-namespace myhero_dotnet.DatabaseCore.DbContexts;
+
+
+namespace Shared.Features.DatabaseCore;
 
 public abstract class DbContextAbstract<TDbContext>
 	: DbContext, IUnitOfWork
@@ -46,7 +48,7 @@ public abstract class DbContextAbstract<TDbContext>
 	public bool HasMediator => _mediator != null;
 	public IMediator? Mediator => _mediator;
 
-	public async Task<IDbContextTransaction> BeginTransactionAsync()
+	public async Task<IDbContextTransaction?> BeginTransactionAsync()
 	{
 		if(HasTransaction)
 		{

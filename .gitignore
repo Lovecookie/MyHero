@@ -1,6 +1,15 @@
 /obj
 /bin
 /.vs
+/nextjs
+/flutter
 *.csproj.user
 /appsettings.Development.json
 /appsettings.json
+/myhero_server/Migrations
+/myhero_server/Logs
+
+/Util.Infrastructure
+/DemoCustomJwtDotNet8BlazorWasmAuthAndAuthWithIdentityManagerSolution-master
+/Shared.Featrues/bin
+/Shared.Featrues/obj

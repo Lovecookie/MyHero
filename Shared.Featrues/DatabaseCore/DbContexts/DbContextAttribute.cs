@@ -1,6 +1,5 @@
 ﻿
-
-namespace myhero_dotnet.DatabaseCore.DbContexts;
+namespace Shared.Features.DatabaseCore;
 
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]

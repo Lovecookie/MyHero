@@ -9,7 +9,7 @@ namespace myhero_dotnet.Account.Extensions;
 
 public static class DefaultBuilderExtensions
 {
-    public static WebApplicationBuilder AddConfigureApplicationBuilder(this WebApplicationBuilder builder)
+    public static IHostApplicationBuilder AddConfigureApplicationBuilder(this WebApplicationBuilder builder)
     {
         var services = builder.Services;
 

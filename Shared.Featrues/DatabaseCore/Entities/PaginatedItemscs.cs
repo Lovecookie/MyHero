@@ -1,5 +1,4 @@
-﻿namespace myhero_dotnet.DatabaseCore.Entities;
-
+﻿namespace Shared.Features.DatabaseCore;
 
 public class PaginatedItems<TEntity>(int pageIndex, int pageSize, long count, IEnumerable<TEntity> data)
 {

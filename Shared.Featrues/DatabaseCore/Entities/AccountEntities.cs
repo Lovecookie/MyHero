@@ -1,9 +1,6 @@
-﻿using myhero_dotnet.DatabaseCore.DbContexts;
-using myhero_dotnet.DatabaseCore.Repositories;
+﻿
 
-
-namespace myhero_dotnet.DatabaseCore.Entities;
-
+namespace Shared.Features.DatabaseCore;
 
 
 /// <summary>
