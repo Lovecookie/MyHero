@@ -10,7 +10,7 @@ public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 	Task<TOptional<UserBasic>> CreateAsync(UserBasic entity, CancellationToken cancellationToken);	
 }
 
-internal class UserBasicRepository : IUserBasicRepository
+public class UserBasicRepository : IUserBasicRepository
 {
 	private readonly AccountDbContext _context;
 	private readonly ILogger _logger;

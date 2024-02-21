@@ -1,6 +1,6 @@
 ﻿
 
-namespace myhero_dotnet.Infrastructure.Constants;
+namespace Shared.Features.Constants;
 
 
 public class ConstantLength

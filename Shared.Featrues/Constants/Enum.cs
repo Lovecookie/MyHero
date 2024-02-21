@@ -1,6 +1,6 @@
 ﻿
 
-namespace myhero_dotnet.Infrastructure.Enum;
+namespace Shared.Features.Constants;
 
 
 [Flags]
