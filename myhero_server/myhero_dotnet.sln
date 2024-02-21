@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "myhero_dotnet", "myhero_dotnet.csproj", "{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01D4EB6D-3105-407E-97E2-C07185C70CFF} = {01D4EB6D-3105-407E-97E2-C07185C70CFF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Infrastructure", "..\Util.Infrastructure\Util.Infrastructure.csproj", "{8B3E32CA-4BAC-4575-9518-BA8679B73459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Featrues", "..\Shared.Featrues\Shared.Featrues.csproj", "{01D4EB6D-3105-407E-97E2-C07185C70CFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Featrues", "..\Shared.Featrues\Shared.Featrues.csproj", "{01D4EB6D-3105-407E-97E2-C07185C70CFF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8B3E32CA-4BAC-4575-9518-BA8679B73459} = {8B3E32CA-4BAC-4575-9518-BA8679B73459}
 	EndProjectSection

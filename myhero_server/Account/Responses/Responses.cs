@@ -1,8 +1,6 @@
 ﻿
 
-using myhero_dotnet.Infrastructure.Constants;
-
-namespace myhero_dotnet.Account.Responses;
+namespace myhero_dotnet.Account;
 
 
 /// <summary>

@@ -1,11 +1,7 @@
 ﻿
+using myhero_dotnet.Infrastructure;
 
-
-using Serilog;
-
-using myhero_dotnet.Infrastructure.Features;
-
-namespace myhero_dotnet.Account.Extensions;
+namespace myhero_dotnet.Account;
 
 public static class DefaultBuilderExtensions
 {

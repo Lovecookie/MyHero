@@ -1,10 +1,4 @@
-﻿
-
-using AutoMapper;
-using myhero_dotnet.DatabaseCore.Entities;
-using myhero_dotnet.DatabaseCore.Repositories;
-using myhero_dotnet.Infrastructure.Commands.User;
-
+﻿namespace myhero_dotnet.Infrastructure;
 public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TOptional<UserBasic>>
 {
 	private readonly IUserBasicRepository _userBasicRepository;

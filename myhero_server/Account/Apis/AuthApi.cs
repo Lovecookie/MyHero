@@ -1,13 +1,6 @@
-﻿using myhero_dotnet.Account.Requests;
-using myhero_dotnet.Account.Services;
-using myhero_dotnet.Infrastructure.Commands;
-using myhero_dotnet.Infrastructure.Commands.User;
-using myhero_dotnet.Infrastructure.Features;
-using myhero_dotnet.Infrastructure.StatusResult;
+﻿using myhero_dotnet.Infrastructure;
 
-
-namespace myhero_dotnet.Account.Apis;
-
+namespace myhero_dotnet.Account;
 
 public static class AuthApi
 {
@@ -22,14 +15,22 @@ public static class AuthApi
 			.WithOpenApi();
 
 		root.MapPost("/login", Login)
-			.ProducesProblem(StatusCodes.Status500InternalServerError)
 			.WithSummary("Login User")
-			.WithDescription("\n POST /login");
+			.WithDescription("\n POST /login");		
 
 		root.MapPost("/refresh", Refresh)
-			.ProducesProblem(StatusCodes.Status500InternalServerError)
 			.WithSummary("Refresh Token")
 			.WithDescription("\n POST /refresh");
+
+		root.MapPost("/logout", Logout )
+			.WithSummary("Logout User")
+			.WithDescription("\n POST /logout")
+			.RequireAuthorization();
+
+		root.MapGet("/user", GetUser)
+			.WithSummary("Get User")
+			.WithDescription("\n GET /user")
+			.RequireAuthorization();
 
 		Serilog.Log.Information("[Success] AuthApis mapped");
 
@@ -41,19 +42,47 @@ public static class AuthApi
 		[FromBody] LoginUserRequest loginUserRequest,
 		[AsParameters] AccountServices services)
 	{
-		var loginUserCommand = services.Mapper.Map<LoginUserCommand>(loginUserRequest);
+		var jwtCommand = new JwtHmacSha256Command()
+		{
+			Request = new SharedLoginRequest()
+			{
+				Email = loginUserRequest.Email!,
+				Password = loginUserRequest.Pw!
+			}
+		};
 
-		//var result = await services.LoginUser(user);
+		var opt = await services.Mediator.Send(jwtCommand);
+        if (!opt.HasValue)
+		{
+			return ToClientResults.Error("authencation jwt invalid.");
+		}        
 
-		return await Task.FromResult(Results.Ok());
+        return Results.Ok($"token:{opt.Value}");
 	}
 
 	public static async Task<IResult> Refresh(
-				[FromBody] RefreshTokenRequest refreshTokenRequest,
-						[AsParameters] AccountServices services)
+		[FromBody] RefreshTokenRequest refreshTokenRequest,
+		[AsParameters] AccountServices services)
 	{
-		var refreshTokenCommand = services.Mapper.Map<RefreshTokenCommand>(refreshTokenRequest);		
-
 		return await Task.FromResult(Results.Ok());
+	}
+
+	public static async Task<IResult> Logout(ClaimsPrincipal user)
+	{
+		return await Task.FromResult(Results.Ok());
+	}
+
+
+	public static async Task<IResult> GetUser(ClaimsPrincipal user)
+	{
+		await Task.CompletedTask.WaitAsync(TimeSpan.Zero);
+
+		var emailClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+        if (emailClaim == null)
+		{	
+			return Results.NotFound("Unauthorized.");
+		}
+
+		return Results.Ok($"email:{emailClaim.Value}");
 	}
 }

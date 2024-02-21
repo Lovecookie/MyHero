@@ -1,13 +1,9 @@
 ﻿
+using myhero_dotnet.Account;
 
-using AutoMapper;
+namespace myhero_dotnet.Infrastructure;
 
-using myhero_dotnet.Account.Responses;
-using myhero_dotnet.DatabaseCore.Entities;
-using myhero_dotnet.DatabaseCore.Repositories;
-using myhero_dotnet.Infrastructure.Commands.User;
-
-public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOptional<Responses>>
+public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOptional<SearchUserResponse>>
 {	
 	private readonly IUserBasicRepository _userBasicRepository;
 	private readonly IMapper _mapper;
@@ -18,15 +14,15 @@ public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOpti
 		_mapper = mapper;
 	}
 
-	public async Task<TOptional<Responses>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
+	public async Task<TOptional<SearchUserResponse>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
 	{
 		var opt = await _userBasicRepository.FindByIdAsync(request.SearchWord);
 		if(!opt.HasValue)
 		{
-			return TOptional.Error<Responses>("Not found user.");
+			return TOptional.Error<SearchUserResponse>("Not found user.");
 		}
 
-		var response = new Responses
+		var response = new SearchUserResponse
 		{
 			UserId = opt.Value!.UserId,
 			PicUrl = opt.Value!.PictureUrl

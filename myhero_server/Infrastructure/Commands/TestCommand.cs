@@ -1,5 +1,4 @@
-﻿namespace myhero_dotnet.Infrastructure.Commands;
-
+﻿namespace myhero_dotnet.Infrastructure;
 [DataContract]
 public class TestCommand : IRequest<bool>
 {

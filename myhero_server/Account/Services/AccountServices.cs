@@ -1,7 +1,5 @@
 ﻿
-using AutoMapper;
-
-namespace myhero_dotnet.Account.Services;
+namespace myhero_dotnet.Account;
 
 public class AccountServices(
 	IMediator mediator,

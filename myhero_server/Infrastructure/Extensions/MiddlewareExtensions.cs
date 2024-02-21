@@ -1,6 +1,6 @@
 ﻿using myhero_dotnet.Infrastructure.Middleware;
 
-namespace myhero_dotnet.Infrastructure.Extensions;
+namespace myhero_dotnet.Infrastructure;
 
 public static class InfrastructureMiddlewareExtensions
 {

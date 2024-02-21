@@ -1,8 +1,7 @@
 
-using myhero_dotnet.Account.Extensions;
-using myhero_dotnet.Infrastructure.Extensions;
-using Util.Infrastructure.DependencyInjection;
-using Util.Infrastructure.Extensions;
+using myhero_dotnet.Account;
+using myhero_dotnet.Infrastructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfigureApplicationBuilder();

@@ -1,10 +1,6 @@
 ﻿
-using myhero_dotnet.Account.Apis;
 
-using Serilog;
-
-
-namespace myhero_dotnet.Account.Extensions;
+namespace myhero_dotnet.Account;
 
 public static class DefaultExtentions
 {
@@ -25,9 +21,10 @@ public static class DefaultExtentions
             options.SwaggerEndpoint("v1/swagger.json", $"Shipcret API - {textInfo.ToTitleCase(app.Environment.EnvironmentName)} - V1");
         });
 
-        app.MapAccountApis();
+		app.MapAuthApis();
+		app.MapAccountApis();
         app.MapHeartbeatApis();
-        app.MapSearchApis();
+        app.MapSearchApis();        
 
         return app;
     }

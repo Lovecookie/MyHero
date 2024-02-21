@@ -1,8 +1,5 @@
-﻿using myhero_dotnet.Account.Services;
-using myhero_dotnet.DatabaseCore.DbContexts;
-using myhero_dotnet.DatabaseCore.Repositories;
-
-namespace myhero_dotnet.Account.Extensions;
+﻿
+namespace myhero_dotnet.Account;
 
 public static class DependencyInjectionExtensions
 {

@@ -1,12 +1,9 @@
-﻿using myhero_dotnet.Account.Responses;
-using myhero_dotnet.DatabaseCore.Entities;
-using myhero_dotnet.Infrastructure.Constants;
-using myhero_dotnet.Infrastructure.Enum;
+﻿using myhero_dotnet.Account;
 
-namespace myhero_dotnet.Infrastructure.Commands.User;
+namespace myhero_dotnet.Infrastructure;
 
 
-public class SearchUserCommand : IRequest<TOptional<Responses>>
+public class SearchUserCommand : IRequest<TOptional<SearchUserResponse>>
 {
 	[Required]
 	public string SearchWord { get; init; } = "";

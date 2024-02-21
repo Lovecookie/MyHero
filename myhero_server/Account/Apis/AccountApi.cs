@@ -1,12 +1,6 @@
-﻿using myhero_dotnet.Account.Requests;
-using myhero_dotnet.Account.Services;
-using myhero_dotnet.Infrastructure.Commands;
-using myhero_dotnet.Infrastructure.Commands.User;
-using myhero_dotnet.Infrastructure.Features;
-using myhero_dotnet.Infrastructure.StatusResult;
+﻿using myhero_dotnet.Infrastructure;
 
-
-namespace myhero_dotnet.Account.Apis;
+namespace myhero_dotnet.Account;
 
 
 public static class AccountApi

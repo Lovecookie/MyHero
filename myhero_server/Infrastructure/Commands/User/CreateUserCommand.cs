@@ -1,7 +1,5 @@
-﻿using myhero_dotnet.DatabaseCore.Entities;
-
-namespace myhero_dotnet.Infrastructure.Commands.User;
-
+﻿
+namespace myhero_dotnet.Infrastructure;
 
 public class CreateUserCommand : IRequest<TOptional<UserBasic>>
 {

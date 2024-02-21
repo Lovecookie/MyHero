@@ -1,4 +1,4 @@
-﻿namespace myhero_dotnet.Infrastructure.Commands;
+﻿namespace myhero_dotnet.Infrastructure;
 
 public class IdentifiedCommand<T, R> : IRequest<R>
     where T : IRequest<R>

@@ -1,8 +1,6 @@
 ﻿
 
-using Microsoft.EntityFrameworkCore.Query;
-
-namespace myhero_dotnet.Infrastructure.Features;
+namespace myhero_dotnet.Infrastructure;
 
 
 public static class ConstantVersion

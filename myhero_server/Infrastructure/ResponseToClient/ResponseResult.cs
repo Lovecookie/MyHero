@@ -1,9 +1,6 @@
 ﻿
 
-using Microsoft.AspNetCore.Http.Metadata;
-using System.Security.Cryptography.X509Certificates;
-
-namespace myhero_dotnet.Infrastructure.StatusResult;
+namespace myhero_dotnet.Infrastructure;
 
 
 public record CommonResponse

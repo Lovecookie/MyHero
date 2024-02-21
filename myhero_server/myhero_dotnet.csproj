@@ -52,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shared.Featrues\Shared.Featrues.csproj" />
     <ProjectReference Include="..\Util.Infrastructure\Util.Infrastructure.csproj" />
   </ItemGroup>
 
