@@ -6,7 +6,6 @@ namespace Shared.Features.DatabaseCore;
 /// <summary>
 ///  UserBasic
 /// </summary>
-[DbTableAttribute("user_basic")]
 public class UserBasic : UserEntityBase<UserBasic>, IAggregateRoot
 { 
     public string UserId { get; set; } = ""; 
@@ -22,7 +21,6 @@ public class UserBasic : UserEntityBase<UserBasic>, IAggregateRoot
 /// <summary>
 /// UserPatronage
 /// </summary>
-[DbTableAttribute("user_patronage")]
 public class UserPatronage : UserEntityBase<UserPatronage>, IAggregateRoot
 {   
     public Int64 FollowerCount { get; set; }
@@ -38,7 +36,7 @@ public class UserPatronage : UserEntityBase<UserPatronage>, IAggregateRoot
 /// <summary>
 /// UserRecognition
 /// </summary>
-[DbTableAttribute("user_recognition")]
+
 public class UserRecognition : UserEntityBase<UserRecognition>, IAggregateRoot
 {
     [Required]

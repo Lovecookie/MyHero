@@ -8,6 +8,7 @@ global using System.Threading.Tasks;
 global using System.ComponentModel.DataAnnotations;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
+global using System.Security.Cryptography;
 
 global using Microsoft.Extensions.Logging;
 global using Microsoft.EntityFrameworkCore;

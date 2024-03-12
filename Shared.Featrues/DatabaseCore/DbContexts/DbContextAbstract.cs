@@ -19,12 +19,12 @@ public abstract class DbContextAbstract<TDbContext>
 	public DbContextAbstract(DbContextOptions options, IMediator? mediator) : base(options)
 	{
 	}
-	public static string DbName()
+	public static string ConnectionName()
 	{	
 		var attribute = Attribute.GetCustomAttribute(typeof(TDbContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
 		if (attribute != null)
 		{
-			return attribute.DbName;
+			return attribute.ConnectionName;
 		}
 
 		throw new Exception("Is not supported db name!");

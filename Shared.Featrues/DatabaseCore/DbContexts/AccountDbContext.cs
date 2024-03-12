@@ -4,18 +4,12 @@ using Shared.Features.Extensions;
 
 namespace Shared.Features.DatabaseCore;
 
-[DbSchemaAttribute("account", "accountdb")]
+[DbSchemaAttribute("accountdb", "account")]
 public class AccountDbContext : DbContextAbstract<AccountDbContext>
 {
 	public DbSet<UserBasic> UserBasics { get; set; }
 	public DbSet<UserPatronage> UserPatronages { get; set; }
 	public DbSet<UserRecognition> UserRecognitions { get; set; }
-
-
-	public AccountDbContext(DbContextOptions<AccountDbContext> options)
-		: base(options)
-	{
-	}
 
 	public AccountDbContext(DbContextOptions<AccountDbContext> options, IMediator mediator)
 		: base(options, mediator)
@@ -51,8 +45,6 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 	{
 		modelBuilder.Entity<UserBasic>(entity =>
 		{
-			// entity.ToTable(UserBasic.TableName());
-
 			entity.HasKey(e => e.UserUid);
 
 			entity.Property(e => e.UserUid)

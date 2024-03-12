@@ -9,4 +9,6 @@ public class ConstantLength
 	public const int EMail = 40;
 	public const int Password = 30;
 	public const int PictureUrl = 200;
+
+	public const int JwtToken = 256;
 }
