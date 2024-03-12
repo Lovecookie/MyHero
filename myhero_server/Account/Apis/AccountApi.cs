@@ -15,11 +15,6 @@ public static class AccountApi
             .WithTags(apiName)
             .WithOpenApi();
 
-		root.MapPost("/create", CreateUser)
-            .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithSummary("Create User")
-            .WithDescription("\n POST /create");
-
         root.MapPost("/login", LoginUser)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithSummary("Login User")
@@ -30,17 +25,6 @@ public static class AccountApi
         return app;
     }
 
-    public static async Task<IResult> CreateUser(
-        [FromBody] CreateUserRequest createUserRequest,
-        [AsParameters] AccountServices services
-        )
-    {
-        var createUserCommand = services.Mapper.Map<CreateUserCommand>(createUserRequest);
-
-        await services.Mediator.Send(createUserCommand);
-
-        return ToClientResults.Ok();
-    }
 
     public static async Task<IResult> LoginUser(
         [FromBody] LoginUserRequest loginUserRequest,

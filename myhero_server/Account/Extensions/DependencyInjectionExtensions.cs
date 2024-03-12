@@ -14,12 +14,18 @@ public static class DependencyInjectionExtensions
             configuration.RegisterServicesFromAssemblyContaining(typeof(Program));
 		});
 
-        builder.AddNpgsqlDbContext<AccountDbContext>(AccountDbContext.SchemaName(),
+        builder.AddNpgsqlDbContext<AccountDbContext>(AccountDbContext.ConnectionName(),
             settings => settings.DbContextPooling = false,
             configureDbContextOptions: builder =>
             {
                 builder.UseSnakeCaseNamingConvention();
             });
+        builder.AddNpgsqlDbContext<AuthDbContext>(AuthDbContext.ConnectionName(),
+            			settings => settings.DbContextPooling = false,
+                        			configureDbContextOptions: builder =>
+                                    {
+				builder.UseSnakeCaseNamingConvention();
+			});
 
 		services.AddHttpContextAccessor();
 

@@ -1,4 +1,6 @@
-﻿using myhero_dotnet.Infrastructure;
+﻿using MediatR;
+using Microsoft.Extensions.ServiceDiscovery.Abstractions;
+using myhero_dotnet.Infrastructure;
 
 namespace myhero_dotnet.Account;
 
@@ -13,6 +15,10 @@ public static class AuthApi
 			.WithGroupName(ConstantVersion.GlobalVersionByLower)
 			.WithTags(apiName)
 			.WithOpenApi();
+
+		root.MapPost("/signup", SignUp)
+			.WithSummary("SignUp")
+			.WithDescription("\n POST /signup");
 
 		root.MapPost("/login", Login)
 			.WithSummary("Login User")
@@ -37,19 +43,36 @@ public static class AuthApi
 		return app;
 	}
 
+	public static async Task<IResult> SignUp(
+		[FromBody] CreateUserRequest createUserRequest,
+		[AsParameters] AccountServices services
+		)
+	{
+		var createUserCommand = services.Mapper.Map<CreateUserCommand>(createUserRequest);
+
+		var createUserOpt = await services.Mediator.Send(createUserCommand);
+		if(!createUserOpt.HasValue)
+		{ 
+			return ToClientResults.Error("create user failed.");
+		}
+
+		var jwtCommand = new JwtHmacSha256Command(new SharedLoginRequest { Email = createUserRequest.Email!, Password = createUserRequest.Pw! });
+
+		var token = await services.Mediator.Send(jwtCommand);
+
+		return ToClientResults.Ok();
+	}
+
 
 	public static async Task<IResult> Login(
 		[FromBody] LoginUserRequest loginUserRequest,
 		[AsParameters] AccountServices services)
 	{
-		var jwtCommand = new JwtHmacSha256Command()
+		var jwtCommand = new JwtHmacSha256Command(new SharedLoginRequest()
 		{
-			Request = new SharedLoginRequest()
-			{
-				Email = loginUserRequest.Email!,
-				Password = loginUserRequest.Pw!
-			}
-		};
+			Email = loginUserRequest.Email!,
+			Password = loginUserRequest.Pw!
+		});	
 
 		var opt = await services.Mediator.Send(jwtCommand);
         if (!opt.HasValue)

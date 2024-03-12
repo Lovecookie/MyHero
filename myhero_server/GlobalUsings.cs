@@ -8,6 +8,7 @@ global using System.ComponentModel.DataAnnotations;
 global using System.Text.Json.Serialization;
 global using System.Globalization;
 global using System.Security.Claims;
+global using System.Security.Cryptography;
 global using System.IdentityModel.Tokens.Jwt;
 
 global using Microsoft.AspNetCore.Mvc;
@@ -28,8 +29,10 @@ global using Npgsql;
 global using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 global using Util.Infrastructure;
+global using Util.Infrastructure.Auth;
 global using Util.Infrastructure.DependencyInjection;
 global using Util.Infrastructure.Extensions;
 global using Shared.Features;
+global using Shared.Featrues.Crypt;
 global using Shared.Features.Constants;
 global using Shared.Features.DatabaseCore;
