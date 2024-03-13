@@ -16,17 +16,13 @@ public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOpti
 
 	public async Task<TOptional<SearchUserResponse>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
 	{
-		var opt = await _userBasicRepository.FindByIdAsync(request.SearchWord);
+		var opt = await _userBasicRepository.FindById(request.SearchWord);
 		if(!opt.HasValue)
 		{
 			return TOptional.Error<SearchUserResponse>("Not found user.");
 		}
 
-		var response = new SearchUserResponse
-		{
-			UserId = opt.Value!.UserId,
-			PicUrl = opt.Value!.PictureUrl
-		};
+		var response = new SearchUserResponse(opt.Value!.UserId, opt.Value!.PictureUrl);
 
 		return TOptional.To(response);
 	}

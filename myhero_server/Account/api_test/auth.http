@@ -1,8 +1,18 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 
-### POST http://localhost:5000/api/v1/auth/login
-POST http://localhost:5000/api/v1/auth/login
+### SignUp POST http://localhost:5000/api/v1/auth/signup
+POST http://localhost:5000/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "userId": "smbaek",
+  "email": "silver@kakao.com",
+  "pw":"1234"
+}
+
+### SignIn POST http://localhost:5000/api/v1/auth/signin
+POST http://localhost:5000/api/v1/auth/signin
 Content-Type: application/json
 
 {

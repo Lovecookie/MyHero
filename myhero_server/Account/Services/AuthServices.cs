@@ -1,14 +1,14 @@
 ﻿
 namespace myhero_dotnet.Account;
 
-public class AuthServices(
+public class AccountServices(
 	IMediator mediator,
-	ILogger<AuthServices> logger,
+	ILogger<AccountServices> logger,
 	IMapper mapper
 	)
 {
 	public IMediator Mediator { get; set; } = mediator;
-	public ILogger<AuthServices> Logger { get; init; } = logger;
+	public ILogger<AccountServices> Logger { get; init; } = logger;
 	public IMapper Mapper { get; init; } = mapper;
 }
 

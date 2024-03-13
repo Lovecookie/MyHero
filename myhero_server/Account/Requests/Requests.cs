@@ -1,5 +1,6 @@
 ﻿namespace myhero_dotnet.Account;
 
+
 public record CreateUserRequest
 {
 	[Required]
@@ -9,10 +10,7 @@ public record CreateUserRequest
 	public string? Email { get; init; }
 
 	[Required]
-	public string? Pw { get; init; }
-
-	[Required]
-	public string? PicUrl { get; init; }
+	public string? Pw { get; init; }	
 }
 
 public record LoginUserRequest
@@ -24,7 +22,11 @@ public record LoginUserRequest
 	public string? Pw { get; init; }
 }
 
-
+public record AccessTokenRequest()
+{
+	[Required]
+	public Int64 UserUID { get; init; }
+}
 
 public record HeartbeatRequest
 {

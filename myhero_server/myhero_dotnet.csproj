@@ -47,13 +47,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Account\DependencyInjection\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Shared.Featrues\Shared.Featrues.csproj" />
     <ProjectReference Include="..\Util.Infrastructure\Util.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\MyHero\myhero_server\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\MyHero\myhero_server\.editorconfig" />
   </ItemGroup>
 
 </Project>

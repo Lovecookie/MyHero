@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.ServiceDiscovery.Abstractions;
+﻿
 using myhero_dotnet.Infrastructure;
 
 namespace myhero_dotnet.Account;
@@ -17,24 +16,24 @@ public static class AuthApi
 			.WithOpenApi();
 
 		root.MapPost("/signup", SignUp)
-			.WithSummary("SignUp")
+			.WithSummary("Sign up")
 			.WithDescription("\n POST /signup");
 
-		root.MapPost("/login", Login)
-			.WithSummary("Login User")
-			.WithDescription("\n POST /login");		
+		root.MapPost("/signin", SignIn)
+			.WithSummary("Sign in user")
+			.WithDescription("\n POST /login");
 
 		root.MapPost("/refresh", Refresh)
-			.WithSummary("Refresh Token")
+			.WithSummary("Refresh token")
 			.WithDescription("\n POST /refresh");
 
-		root.MapPost("/logout", Logout )
-			.WithSummary("Logout User")
+		root.MapPost("/logout", Logout)
+			.WithSummary("Logout user")
 			.WithDescription("\n POST /logout")
 			.RequireAuthorization();
 
 		root.MapGet("/user", GetUser)
-			.WithSummary("Get User")
+			.WithSummary("Get user")
 			.WithDescription("\n GET /user")
 			.RequireAuthorization();
 
@@ -45,49 +44,57 @@ public static class AuthApi
 
 	public static async Task<IResult> SignUp(
 		[FromBody] CreateUserRequest createUserRequest,
-		[AsParameters] AccountServices services
+		[AsParameters] AuthServices services
 		)
 	{
 		var createUserCommand = services.Mapper.Map<CreateUserCommand>(createUserRequest);
 
 		var createUserOpt = await services.Mediator.Send(createUserCommand);
-		if(!createUserOpt.HasValue)
-		{ 
-			return ToClientResults.Error("create user failed.");
+		if (!createUserOpt.HasValue)
+		{
+			return ToClientResults.Error(createUserOpt.Message);
 		}
 
-		var jwtCommand = new JwtHmacSha256Command(new SharedLoginRequest { Email = createUserRequest.Email!, Password = createUserRequest.Pw! });
-
-		var token = await services.Mediator.Send(jwtCommand);
-
-		return ToClientResults.Ok();
+		return ToClientResults.Ok(new CreateUserResponse(createUserOpt.Value!.Item2));
 	}
 
-
-	public static async Task<IResult> Login(
+	public static async Task<IResult> SignIn(
 		[FromBody] LoginUserRequest loginUserRequest,
-		[AsParameters] AccountServices services)
+		[AsParameters] AuthServices services)
 	{
-		var jwtCommand = new JwtHmacSha256Command(new SharedLoginRequest()
+		var tupleOpt = await services.Mediator.Send(new SignInCommand(loginUserRequest.Email!, loginUserRequest.Pw!));
+		if(!tupleOpt.HasValue)
 		{
-			Email = loginUserRequest.Email!,
-			Password = loginUserRequest.Pw!
-		});	
+			return ToClientResults.Error(tupleOpt.Message);
+		}
 
-		var opt = await services.Mediator.Send(jwtCommand);
-        if (!opt.HasValue)
-		{
-			return ToClientResults.Error("authencation jwt invalid.");
-		}        
-
-        return Results.Ok($"token:{opt.Value}");
+		return ToClientResults.Ok(new SignInResponse(tupleOpt.Value!.Item2));
 	}
 
 	public static async Task<IResult> Refresh(
-		[FromBody] RefreshTokenRequest refreshTokenRequest,
-		[AsParameters] AccountServices services)
+		//[FromBody] RefreshTokenRequest refreshTokenRequest,
+		ClaimsPrincipal principal,
+		[AsParameters] AuthServices services)
 	{
-		return await Task.FromResult(Results.Ok());
+		var tokenType = principal.FindFirstValue(CustomClaimType.TokenType);
+		if(tokenType == null || tokenType != "refresh")
+		{
+			return ToClientResults.Error("Unauthorized");
+		}
+
+		var userUIDClaim = principal.FindFirstValue(CustomClaimType.UserUID);
+		if(userUIDClaim == null)
+		{
+			return ToClientResults.Error("Unauthorized");
+		}
+
+		var refreshJwtOpt = await services.Mediator.Send(new RefreshJwtCommand(Convert.ToInt64(userUIDClaim)));
+		if(!refreshJwtOpt.HasValue)
+		{
+			return ToClientResults.Error(refreshJwtOpt.Message);
+		}
+
+		return ToClientResults.Ok(new RefreshTokenResposne(refreshJwtOpt.Value!));
 	}
 
 	public static async Task<IResult> Logout(ClaimsPrincipal user)
@@ -96,16 +103,16 @@ public static class AuthApi
 	}
 
 
-	public static async Task<IResult> GetUser(ClaimsPrincipal user)
+	public static async Task<IResult> GetUser(ClaimsPrincipal principal)
 	{
 		await Task.CompletedTask.WaitAsync(TimeSpan.Zero);
 
-		var emailClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-        if (emailClaim == null)
-		{	
-			return Results.NotFound("Unauthorized.");
+		var userUIDClaim = principal.FindFirstValue(CustomClaimType.UserUID);
+		if(userUIDClaim == null)
+		{
+			return ToClientResults.Error("Unauthorized");
 		}
 
-		return Results.Ok($"email:{emailClaim.Value}");
+		return Results.Ok();
 	}
 }

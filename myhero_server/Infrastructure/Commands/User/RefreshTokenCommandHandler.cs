@@ -12,7 +12,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, T
 
 	public async Task<TOptional<UserBasic>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
 	{	
-		var opt = await _userBasicRepository.FindByEmailAsync(request.Email);
+		var opt = await _userBasicRepository.FindByEmail(request.Email);
 		if(!opt.HasValue)
 		{
 			return TOptional.Error<UserBasic>("User not found");
