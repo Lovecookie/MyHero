@@ -14,17 +14,6 @@ public class AuthDbContext : DbContextAbstract<AuthDbContext>
 	{
 	}
 
-	public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-	{
-		if (HasMediator)
-		{
-			await Mediator!.DispatchDomainEventAsync(this);			
-		}
-
-		_ = base.SaveChangesAsync(cancellationToken);
-
-		return true;
-	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -39,9 +28,9 @@ public class AuthDbContext : DbContextAbstract<AuthDbContext>
 	{
 		modelBuilder.Entity<UserAuthJwt>(entity =>
 		{
-			entity.HasKey(e => e.UserUid);
+			entity.HasKey(e => e.UserUID);
 
-			entity.Property(e => e.UserUid)
+			entity.Property(e => e.UserUID)
 				.IsRequired();
 
 			entity.Property(e => e.AccessToken)

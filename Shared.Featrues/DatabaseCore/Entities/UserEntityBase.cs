@@ -3,7 +3,7 @@
 public abstract class UserEntityBase<TEntity> where TEntity : class
 {
     [Key]
-    public Int64 UserUid { get; set; }
+    public Int64 UserUID { get; set; }
 
     public DateTime DateCreated { get; set; }
 

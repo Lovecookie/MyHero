@@ -6,8 +6,8 @@ public interface IUserAuthJwtRepository : IDefaultRepository<UserAuthJwt>
 {
 	Task<TOptional<UserBasic>> FindAsync(Int64 userUid);
 	Task<bool> Add(UserAuthJwt userAuthJwt);
-	Task<bool> UpdateAccessToken(Int64 userUid, string accessToken, string refreshToken);
-	Task<bool> UpdateRefreshToken(Int64 userUid, string refreshToken);
+	Task<bool> UpdateAccessToken(Int64 userUid, byte[] accessToken);
+	Task<bool> UpdateRefreshToken(Int64 userUid, byte[] accessToken, byte[] refreshToken);
 }
 
 public class UserAuthJwtRepository : IUserAuthJwtRepository
@@ -51,7 +51,7 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 	{
 		try
 		{
-			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUid == userAuthJwt.UserUid);
+			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUID == userAuthJwt.UserUID);
 			if(existing != null)
 			{
 				_context.UserAuthJwts.Entry(existing).CurrentValues.SetValues(userAuthJwt);
@@ -74,15 +74,14 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 		return true;
 	}
 
-	public async Task<bool> UpdateAccessToken(Int64 userUid, string accessToken, string refreshToken)
+	public async Task<bool> UpdateAccessToken(Int64 userUid, byte[] accessToken)
 	{
 		try
 		{
-			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUid == userUid);
+			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUID == userUid);
 			if(existing != null)
 			{
-				_context.UserAuthJwts.Entry(existing).Entity.AccessToken = accessToken;
-				_context.UserAuthJwts.Entry(existing).Entity.RefreshToken = refreshToken;
+				_context.UserAuthJwts.Entry(existing).Entity.AccessToken = accessToken;				
 			}
 			else
 			{
@@ -99,14 +98,15 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 		return true;
 	}
 
-	public async Task<bool> UpdateRefreshToken(Int64 userUid, string refreshToken)
+	public async Task<bool> UpdateRefreshToken(Int64 userUid, byte[] accessToken, byte[] refreshToken)
 	{
 		try
 		{
-			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUid == userUid);
+			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUID == userUid);
 			if (existing != null)
-			{	
-				_context.UserAuthJwts.Entry(existing).Entity.RefreshToken = refreshToken;				
+			{
+				_context.UserAuthJwts.Entry(existing).Entity.AccessToken = accessToken;
+				_context.UserAuthJwts.Entry(existing).Entity.RefreshToken = refreshToken;
 			}
 			else
 			{
@@ -114,6 +114,11 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 			}
 		}
 		catch (DbUpdateException ex)
+		{
+			_logger.LogError(ex.Message);
+			return false;
+		}
+		catch(Exception ex)
 		{
 			_logger.LogError(ex.Message);
 			return false;

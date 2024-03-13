@@ -3,6 +3,8 @@
 
 
 
+using Shared.Features.Extensions;
+
 namespace Shared.Features.DatabaseCore;
 
 public abstract class DbContextAbstract<TDbContext>
@@ -19,6 +21,19 @@ public abstract class DbContextAbstract<TDbContext>
 	public DbContextAbstract(DbContextOptions options, IMediator? mediator) : base(options)
 	{
 	}
+
+	public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+	{
+		if (_mediator != null)
+		{
+			await _mediator.DispatchDomainEventAsync(this);
+		}
+
+		_ = await base.SaveChangesAsync(cancellationToken);
+
+		return true;
+	}
+
 	public static string ConnectionName()
 	{	
 		var attribute = Attribute.GetCustomAttribute(typeof(TDbContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;

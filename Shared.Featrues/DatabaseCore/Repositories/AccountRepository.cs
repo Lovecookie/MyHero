@@ -4,10 +4,10 @@ namespace Shared.Features.DatabaseCore;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 {
-	Task<TOptional<UserBasic>> FindAsync(Int64 userUid);
-	Task<TOptional<UserBasic>> FindByIdAsync(string id);
-	Task<TOptional<UserBasic>> FindByEmailAsync(string email);
-	Task<TOptional<UserBasic>> CreateAsync(UserBasic entity, CancellationToken cancellationToken);	
+	Task<TOptional<UserBasic>> Find(Int64 userUid);
+	Task<TOptional<UserBasic>> FindById(string id);
+	Task<TOptional<UserBasic>> FindByEmail(string email);
+	Task<TOptional<UserBasic>> Create(UserBasic entity, CancellationToken cancellationToken);	
 }
 
 public class UserBasicRepository : IUserBasicRepository
@@ -26,7 +26,7 @@ public class UserBasicRepository : IUserBasicRepository
 		_logger = logger;
 	}
 
-	public async Task<TOptional<UserBasic>> FindAsync(Int64 userUid)
+	public async Task<TOptional<UserBasic>> Find(Int64 userUid)
 	{
 		try
 		{
@@ -47,7 +47,7 @@ public class UserBasicRepository : IUserBasicRepository
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> FindByIdAsync(string id)
+	public async Task<TOptional<UserBasic>> FindById(string id)
 	{
 		try
 		{
@@ -69,7 +69,7 @@ public class UserBasicRepository : IUserBasicRepository
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> FindByEmailAsync(string email)
+	public async Task<TOptional<UserBasic>> FindByEmail(string email)
 	{
 		try
 		{
@@ -91,7 +91,7 @@ public class UserBasicRepository : IUserBasicRepository
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> CreateAsync(UserBasic entity, CancellationToken cancellationToken)
+	public async Task<TOptional<UserBasic>> Create(UserBasic entity, CancellationToken cancellationToken)
 	{
 		entity.DateCreated = _timeProvider.GetUtcNow().UtcDateTime;
 		entity.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
@@ -104,7 +104,7 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOptional.Unknown<UserBasic>();
 			}
 
-			var result = await _context.SaveChangesAsync(cancellationToken);
+			// var result = await _context.SaveChangesAsync(cancellationToken);
 
 			return TOptional.To(newEntry.Entity);
 		}

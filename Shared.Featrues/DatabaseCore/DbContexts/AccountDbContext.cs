@@ -16,17 +16,17 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 	{
 	}
 
-	public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-	{
-		if (HasMediator)
-		{
-			await Mediator!.DispatchDomainEventAsync(this);			
-		}
+	//public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+	//{
+	//	if (HasMediator)
+	//	{
+	//		await Mediator!.DispatchDomainEventAsync(this);			
+	//	}
 
-		_ = base.SaveChangesAsync(cancellationToken);
+	//	_ = base.SaveChangesAsync(cancellationToken);
 
-		return true;
-	}
+	//	return true;
+	//}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -45,9 +45,9 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 	{
 		modelBuilder.Entity<UserBasic>(entity =>
 		{
-			entity.HasKey(e => e.UserUid);
+			entity.HasKey(e => e.UserUID);
 
-			entity.Property(e => e.UserUid)
+			entity.Property(e => e.UserUID)
 				.ValueGeneratedOnAdd();
 
 			entity.Property(e => e.UserId)
@@ -78,9 +78,9 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 	{
 		modelBuilder.Entity<UserPatronage>(entity =>
 		{
-			entity.HasKey(e => e.UserUid);
+			entity.HasKey(e => e.UserUID);
 
-			entity.Property(e => e.UserUid)
+			entity.Property(e => e.UserUID)
 				.ValueGeneratedOnAdd();
 
 			entity.Property(e => e.FollowerCount)
@@ -101,7 +101,7 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 	{
 		modelBuilder.Entity<UserRecognition>(entity =>
 		{
-			entity.HasKey(e => e.UserUid);
+			entity.HasKey(e => e.UserUID);
 
 			entity.Property(e => e.FamousValue)
 				.IsRequired();
