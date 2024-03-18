@@ -6,9 +6,11 @@ namespace Shared.Features.DatabaseCore;
 /// <summary>
 ///  UserBasic
 /// </summary>
+[Index(nameof(UserID), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
 public class UserBasic : UserEntityBase<UserBasic>, IAggregateRoot
-{ 
-    public string UserId { get; set; } = ""; 
+{	
+	public string UserID { get; set; } = ""; 
     
     public string Email { get; set; } = "";
     

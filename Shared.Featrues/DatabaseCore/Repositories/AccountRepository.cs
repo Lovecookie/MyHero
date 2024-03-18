@@ -7,19 +7,19 @@ public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 	Task<TOptional<UserBasic>> Find(Int64 userUid);
 	Task<TOptional<UserBasic>> FindById(string id);
 	Task<TOptional<UserBasic>> FindByEmail(string email);
-	Task<TOptional<UserBasic>> Create(UserBasic entity, CancellationToken cancellationToken);	
+	Task<TOptional<UserBasic>> Create(UserBasic entity, CancellationToken cancellationToken);
 }
 
 public class UserBasicRepository : IUserBasicRepository
 {
-	private readonly AccountDbContext _context;
+	private readonly AccountDBContext _context;
 	private readonly ILogger _logger;
 	private readonly TimeProvider _timeProvider;
 
 	public IUnitOfWork UnitOfWork => _context;
 	
 
-	public UserBasicRepository(AccountDbContext context, ILogger<UserBasicRepository> logger, TimeProvider timeProvider)
+	public UserBasicRepository(AccountDBContext context, ILogger<UserBasicRepository> logger, TimeProvider timeProvider)
 	{ 
 		_timeProvider = timeProvider;
 		_context = context;
@@ -30,13 +30,13 @@ public class UserBasicRepository : IUserBasicRepository
 	{
 		try
 		{
-			var entity = await _context.FindAsync<UserBasic>(new { UserUid = userUid });
+			var entity = await _context.FindAsync<UserBasic>(userUid);
 			if(entity == null)
 			{
 				return TOptional.Empty<UserBasic>();
 			}
 
-			return TOptional.To(entity);
+			return TOptional.Success(entity);
 		}
 
 		catch (Exception ex)
@@ -52,14 +52,14 @@ public class UserBasicRepository : IUserBasicRepository
 		try
 		{
 			var entity = await _context.UserBasics
-				.Where( e => e.UserId == id)
+				.Where( e => e.UserID == id)
 				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
 				return TOptional.Empty<UserBasic>();
 			}
 
-			return TOptional.To(entity);
+			return TOptional.Success(entity);
 		}
 		catch (Exception ex)
 		{
@@ -81,7 +81,7 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOptional.Empty<UserBasic>();
 			}
 
-			return TOptional.To(entity);
+			return TOptional.Success(entity);
 		}
 		catch (Exception ex)
 		{
@@ -106,7 +106,7 @@ public class UserBasicRepository : IUserBasicRepository
 
 			// var result = await _context.SaveChangesAsync(cancellationToken);
 
-			return TOptional.To(newEntry.Entity);
+			return TOptional.Success(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{

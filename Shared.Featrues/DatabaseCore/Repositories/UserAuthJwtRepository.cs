@@ -6,20 +6,20 @@ public interface IUserAuthJwtRepository : IDefaultRepository<UserAuthJwt>
 {
 	Task<TOptional<UserBasic>> FindAsync(Int64 userUid);
 	Task<bool> Add(UserAuthJwt userAuthJwt);
-	Task<bool> UpdateAccessToken(Int64 userUid, byte[] accessToken);
-	Task<bool> UpdateRefreshToken(Int64 userUid, byte[] accessToken, byte[] refreshToken);
+	Task<bool> UpdateAccessToken(Int64 userUid, string accessToken);
+	Task<bool> UpdateRefreshToken(Int64 userUid, string accessToken, string refreshToken);
 }
 
 public class UserAuthJwtRepository : IUserAuthJwtRepository
 {
-	private readonly AuthDbContext _context;
+	private readonly AuthDBContext _context;
 	private readonly ILogger _logger;
 	private readonly TimeProvider _timeProvider;
 
 	public IUnitOfWork UnitOfWork => _context;
 	
 
-	public UserAuthJwtRepository(AuthDbContext context, ILogger<UserAuthJwtRepository> logger, TimeProvider timeProvider)
+	public UserAuthJwtRepository(AuthDBContext context, ILogger<UserAuthJwtRepository> logger, TimeProvider timeProvider)
 	{ 
 		_timeProvider = timeProvider;
 		_context = context;
@@ -36,7 +36,7 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 				return TOptional.Empty<UserBasic>();
 			}
 
-			return TOptional.To(entity);
+			return TOptional.Success(entity);
 		}
 
 		catch (Exception ex)
@@ -74,14 +74,14 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 		return true;
 	}
 
-	public async Task<bool> UpdateAccessToken(Int64 userUid, byte[] accessToken)
+	public async Task<bool> UpdateAccessToken(Int64 userUid, string accessToken)
 	{
 		try
 		{
 			var existing = await _context.UserAuthJwts.FirstOrDefaultAsync(e => e.UserUID == userUid);
 			if(existing != null)
 			{
-				_context.UserAuthJwts.Entry(existing).Entity.AccessToken = accessToken;				
+				_context.UserAuthJwts.Entry(existing).Entity.AccessToken = accessToken;
 			}
 			else
 			{
@@ -98,7 +98,7 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 		return true;
 	}
 
-	public async Task<bool> UpdateRefreshToken(Int64 userUid, byte[] accessToken, byte[] refreshToken)
+	public async Task<bool> UpdateRefreshToken(Int64 userUid, string accessToken, string refreshToken)
 	{
 		try
 		{

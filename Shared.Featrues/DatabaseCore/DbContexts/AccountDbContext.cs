@@ -5,28 +5,16 @@ using Shared.Features.Extensions;
 namespace Shared.Features.DatabaseCore;
 
 [DbSchemaAttribute("accountdb", "account")]
-public class AccountDbContext : DbContextAbstract<AccountDbContext>
+public class AccountDBContext : DBContextAbstract<AccountDBContext>
 {
 	public DbSet<UserBasic> UserBasics { get; set; }
 	public DbSet<UserPatronage> UserPatronages { get; set; }
 	public DbSet<UserRecognition> UserRecognitions { get; set; }
 
-	public AccountDbContext(DbContextOptions<AccountDbContext> options, IMediator mediator)
-		: base(options, mediator)
+	public AccountDBContext(DbContextOptions<AccountDBContext> options, ILogger<DBContextAbstract<AccountDBContext>> logger, IMediator mediator)
+		: base(options, logger, mediator)
 	{
 	}
-
-	//public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-	//{
-	//	if (HasMediator)
-	//	{
-	//		await Mediator!.DispatchDomainEventAsync(this);			
-	//	}
-
-	//	_ = base.SaveChangesAsync(cancellationToken);
-
-	//	return true;
-	//}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -47,30 +35,40 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 		{
 			entity.HasKey(e => e.UserUID);
 
-			entity.Property(e => e.UserUID)
-				.ValueGeneratedOnAdd();
+			entity.HasIndex(e => e.Email)
+			.HasDatabaseName("UIX_UserBasic_Email")
+			.IsUnique();
 
-			entity.Property(e => e.UserId)
-				.IsRequired()
-				.HasMaxLength(ConstantLength.UserId);
+			entity.HasIndex(e => e.UserID)
+			.HasDatabaseName("UIX_UserBasic_UserId")
+			.IsUnique();			
+
+			entity.Property(e => e.UserUID)
+			.ValueGeneratedOnAdd();
+
+			entity.Property(e => e.UserID)
+			.IsRequired()
+			.HasMaxLength(ConstantLength.UserId);
 
 			entity.Property(e => e.Email)
-				.IsRequired()
-				.HasMaxLength(ConstantLength.EMail);
+			.IsRequired()
+			.HasMaxLength(ConstantLength.EMail);
 
 			entity.Property(e => e.Password)
-				.IsRequired()
-				.HasMaxLength(ConstantLength.Password);
+			.IsRequired()
+			.HasMaxLength(ConstantLength.Password);
 
 			entity.Property(e => e.PictureUrl)
-				.IsRequired()
-				.HasMaxLength(ConstantLength.PictureUrl);
+			.IsRequired()
+			.HasMaxLength(ConstantLength.PictureUrl);
 
 			entity.Property(e => e.DateCreated)
-				.IsRequired();
+			.HasDefaultValueSql("NOW()")
+			.IsRequired();
 
 			entity.Property(e => e.DateModified)
-				.IsRequired();
+			.HasDefaultValueSql("NOW()")
+			.IsRequired();
 		});
 	}
 
@@ -94,6 +92,14 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 
 			entity.Property(e => e.FavoriteCount)
 				.IsRequired();
+
+			entity.Property(e => e.DateCreated)
+			.HasDefaultValueSql("NOW()")
+			.IsRequired();
+
+			entity.Property(e => e.DateModified)
+			.HasDefaultValueSql("NOW()")
+			.IsRequired();
 		});
 	}
 
@@ -105,6 +111,14 @@ public class AccountDbContext : DbContextAbstract<AccountDbContext>
 
 			entity.Property(e => e.FamousValue)
 				.IsRequired();
+
+			entity.Property(e => e.DateCreated)
+			.HasDefaultValueSql("NOW()")
+			.IsRequired();
+
+			entity.Property(e => e.DateModified)
+			.HasDefaultValueSql("NOW()")
+			.IsRequired();
 		});
 	}
 }

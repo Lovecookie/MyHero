@@ -11,9 +11,9 @@ namespace Shared.Features.DatabaseCore;
 public class UserAuthJwt : UserEntityBase<UserAuthJwt>, IAggregateRoot
 {
     [MaxLength(512)]
-    public byte[] AccessToken { get; set; } = new byte[512];
+    public string AccessToken { get; set; } = default!;
 
     [MaxLength(512)]
-    public byte[] RefreshToken { get; set; } = new byte[512];
+    public string RefreshToken { get; set; } = default!;
 }
 

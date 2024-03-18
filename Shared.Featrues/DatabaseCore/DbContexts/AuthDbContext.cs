@@ -5,12 +5,12 @@ using Shared.Features.Extensions;
 namespace Shared.Features.DatabaseCore;
 
 [DbSchemaAttribute("accountdb", "auth")]
-public class AuthDbContext : DbContextAbstract<AuthDbContext>
+public class AuthDBContext : DBContextAbstract<AuthDBContext>
 {
 	public DbSet<UserAuthJwt> UserAuthJwts { get; set; }
 
-	public AuthDbContext(DbContextOptions<AuthDbContext> options, IMediator mediator)
-		: base(options, mediator)
+	public AuthDBContext(DbContextOptions<AuthDBContext> options, ILogger<DBContextAbstract<AuthDBContext>> logger, IMediator mediator)
+		: base(options, logger, mediator)
 	{
 	}
 

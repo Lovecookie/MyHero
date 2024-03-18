@@ -7,19 +7,23 @@ using Shared.Features.Extensions;
 
 namespace Shared.Features.DatabaseCore;
 
-public abstract class DbContextAbstract<TDbContext>
+public abstract class DBContextAbstract<TDBContext>
 	: DbContext, IUnitOfWork
-	where TDbContext : class
+	where TDBContext : class
 {
 	protected readonly IMediator? _mediator;
+	protected readonly ILogger _logger;
 	protected IDbContextTransaction? _transaction;
 
-	public DbContextAbstract(DbContextOptions options) : base(options)
+	public DBContextAbstract(DbContextOptions options, ILogger<DBContextAbstract<TDBContext>> logger ) : base(options)
 	{
+		_logger = logger;
 	}
 
-	public DbContextAbstract(DbContextOptions options, IMediator? mediator) : base(options)
+	public DBContextAbstract(DbContextOptions options, ILogger<DBContextAbstract<TDBContext>> logger, IMediator? mediator) : base(options)
 	{
+		_logger = logger;
+		_mediator = mediator;
 	}
 
 	public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
@@ -29,14 +33,21 @@ public abstract class DbContextAbstract<TDbContext>
 			await _mediator.DispatchDomainEventAsync(this);
 		}
 
-		_ = await base.SaveChangesAsync(cancellationToken);
+		try
+		{ 	
+			await base.SaveChangesAsync(cancellationToken);
+		}
+		catch (DbUpdateException ex)
+		{
+			_logger.LogError(ex, ex.Message);
+		}		
 
 		return true;
 	}
 
 	public static string ConnectionName()
 	{	
-		var attribute = Attribute.GetCustomAttribute(typeof(TDbContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
+		var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
 		if (attribute != null)
 		{
 			return attribute.ConnectionName;
@@ -47,7 +58,7 @@ public abstract class DbContextAbstract<TDbContext>
 
 	public static string SchemaName()
 	{	
-		var attribute = Attribute.GetCustomAttribute(typeof(TDbContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
+		var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
 		if (attribute != null)
 		{
 			return attribute.Schema;
@@ -55,6 +66,8 @@ public abstract class DbContextAbstract<TDbContext>
 
 		throw new Exception("Is not supported schema name!");
 	}
+
+	public ILogger Logger => _logger;
 
 	public bool HasTransaction => _transaction != null;
 	public IDbContextTransaction? Transaction => _transaction;

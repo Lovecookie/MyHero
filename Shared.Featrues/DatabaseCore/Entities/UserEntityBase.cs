@@ -1,10 +1,11 @@
 ﻿namespace Shared.Features.DatabaseCore;
 
-public abstract class UserEntityBase<TEntity> where TEntity : class
-{
-    [Key]
-    public Int64 UserUID { get; set; }
 
+[PrimaryKey(nameof(UserUID))]
+public abstract class UserEntityBase<TEntity> where TEntity : class
+{   
+    public Int64 UserUID { get; set; }
+	
     public DateTime DateCreated { get; set; }
 
     public DateTime DateModified { get; set; }
