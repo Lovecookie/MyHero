@@ -28,13 +28,8 @@ public static class AuthApi
 			.WithDescription("\n POST /refresh");
 
 		root.MapPost("/logout", Logout)
-			.WithSummary("Logout user")
+			.WithSummary("Logout")
 			.WithDescription("\n POST /logout")
-			.RequireAuthorization();
-
-		root.MapGet("/user", GetUser)
-			.WithSummary("Get user")
-			.WithDescription("\n GET /user")
 			.RequireAuthorization();
 
 		Serilog.Log.Information("[Success] AuthApis mapped");
@@ -55,40 +50,27 @@ public static class AuthApi
 			return ToClientResults.Error(createUserOpt.Message);
 		}
 
-		return ToClientResults.Ok(new CreateUserResponse(createUserOpt.Value!.Item2));
+		return ToClientResults.Ok(new CreateUserResponse(createUserOpt.Value!));
 	}
 
 	public static async Task<IResult> SignIn(
 		[FromBody] LoginUserRequest loginUserRequest,
 		[AsParameters] AuthServices services)
 	{
-		var tupleOpt = await services.Mediator.Send(new SignInCommand(loginUserRequest.Email!, loginUserRequest.Pw!));
-		if(!tupleOpt.HasValue)
+		var commandOpt = await services.Mediator.Send(new SignInCommand(loginUserRequest.Email!, loginUserRequest.Pw!));
+		if(!commandOpt.HasValue)
 		{
-			return ToClientResults.Error(tupleOpt.Message);
+			return ToClientResults.Error(commandOpt.Message);
 		}
 
-		return ToClientResults.Ok(new SignInResponse(tupleOpt.Value!.Item2));
+		return ToClientResults.Ok(commandOpt.Value!);
 	}
 
-	public static async Task<IResult> Refresh(
-		//[FromBody] RefreshTokenRequest refreshTokenRequest,
+	public static async Task<IResult> Refresh(		
 		ClaimsPrincipal principal,
 		[AsParameters] AuthServices services)
 	{
-		var tokenType = principal.FindFirstValue(CustomClaimType.TokenType);
-		if(tokenType == null || tokenType != "refresh")
-		{
-			return ToClientResults.Error("Unauthorized");
-		}
-
-		var userUIDClaim = principal.FindFirstValue(CustomClaimType.UserUID);
-		if(userUIDClaim == null)
-		{
-			return ToClientResults.Error("Unauthorized");
-		}
-
-		var refreshJwtOpt = await services.Mediator.Send(new RefreshJwtCommand(Convert.ToInt64(userUIDClaim)));
+		var refreshJwtOpt = await services.Mediator.Send(new RefreshJwtCommand(principal));
 		if(!refreshJwtOpt.HasValue)
 		{
 			return ToClientResults.Error(refreshJwtOpt.Message);
@@ -97,22 +79,16 @@ public static class AuthApi
 		return ToClientResults.Ok(new RefreshTokenResposne(refreshJwtOpt.Value!));
 	}
 
-	public static async Task<IResult> Logout(ClaimsPrincipal user)
+	public static async Task<IResult> Logout(ClaimsPrincipal user,
+		[AsParameters] AuthServices services)
 	{
-		return await Task.FromResult(Results.Ok());
-	}
-
-
-	public static async Task<IResult> GetUser(ClaimsPrincipal principal)
-	{
-		await Task.CompletedTask.WaitAsync(TimeSpan.Zero);
-
-		var userUIDClaim = principal.FindFirstValue(CustomClaimType.UserUID);
-		if(userUIDClaim == null)
+		var logoutOpt = await services.Mediator.Send(new LogoutUserCommand(user));
+		if(!logoutOpt.HasValue)
 		{
-			return ToClientResults.Error("Unauthorized");
+			return ToClientResults.Error(logoutOpt.Message);
 		}
 
-		return Results.Ok();
+		return ToClientResults.Ok();
 	}
+
 }

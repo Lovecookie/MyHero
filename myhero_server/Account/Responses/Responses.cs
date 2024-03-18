@@ -18,7 +18,7 @@ public record SearchUserResponse(string UserID, string PicUrl)
 /// 
 /// </summary>
 /// <param name="Token"></param>
-public record SignInResponse(TokenInfo Token)
+public record SignInResponse(string Name, string Email, TokenInfo Token)
 {
 }
 
@@ -30,13 +30,13 @@ public record RefreshTokenResposne(string AccessToken)
 {
 }
 
+public record LogoutResponse
+{
+}
+
 /// <summary>
 /// created token 
 /// </summary>
 public record AccessTokenResponse(TokenInfo Token)
-{
-}
-
-public record RefreshTokenResponse(string RefreshToken)
 {
 }

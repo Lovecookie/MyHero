@@ -1,5 +1,6 @@
 ﻿using myhero_dotnet.Account;
 
+
 namespace myhero_dotnet.Infrastructure;
 
 /// <summary>
@@ -29,17 +30,14 @@ public class AccessJwtCommandHandler : IRequestHandler<AccessJwtCommand, TOption
 
 	public async Task<TOptional<TokenInfo>> Handle(AccessJwtCommand request, CancellationToken cancellationToken)
 	{
-		var accessToken = TokenHelper.GenerateAccessJwt(request.UserUID, request.Email, _jwtFields);
-		var refreshToken = TokenHelper.GenerateRefreshJwt(request.UserUID, request.Email, _jwtFields);
-
-		var encryptAccess = await AesEncryption.EncryptAsync(accessToken);
-		var encryptRefresh = await AesEncryption.EncryptAsync(refreshToken);
+		var accessToken = await TokenHelper.GenerateAccessJwt(request.UserUID, _jwtFields);
+		var refreshToken = await TokenHelper.GenerateRefreshJwt(request.UserUID, _jwtFields);
 
 		UserAuthJwt userAuthJwt = new UserAuthJwt
 		{
 			UserUID = request.UserUID,
-			AccessToken = encryptAccess,
-			RefreshToken = encryptRefresh,
+			AccessToken = accessToken,
+			RefreshToken = refreshToken,
 		};
 
 		var bResult = await _userAuthJwtRepository.Add(userAuthJwt);
@@ -54,6 +52,6 @@ public class AccessJwtCommandHandler : IRequestHandler<AccessJwtCommand, TOption
 			return TOptional.Error<TokenInfo>("Error updating refresh token");
 		}
 
-		return TOptional.To(new TokenInfo(accessToken, refreshToken));
+		return TOptional.Success(new TokenInfo(accessToken, refreshToken));
 	}
 }

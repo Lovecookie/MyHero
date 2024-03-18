@@ -4,7 +4,7 @@ namespace myhero_dotnet.Infrastructure;
 /// <summary>
 /// 
 /// </summary>
-public class CreateUserCommand : IRequest<TOptional<(UserBasic, TokenInfo)>>
+public class CreateUserCommand : IRequest<TOptional<TokenInfo>>
 {
     public string UserId { get; set; } = "";
 
@@ -18,7 +18,7 @@ public class CreateUserCommand : IRequest<TOptional<(UserBasic, TokenInfo)>>
 /// <summary>
 /// 
 /// </summary>
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, TOptional<(UserBasic, TokenInfo)>>
+public class CreateUserHandler : IRequestHandler<CreateUserCommand, TOptional<TokenInfo>>
 {
 	private readonly IUserBasicRepository _userBasicRepository;
 	private readonly IMediator _mediator;
@@ -31,28 +31,28 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, TOptional<(U
 		_mapper = mapper;
 	}
 
-	public async Task<TOptional<(UserBasic, TokenInfo)>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+	public async Task<TOptional<TokenInfo>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
 	{
 		var userEntity = _mapper.Map<UserBasic>(request);
 
 		var createOpt = await _userBasicRepository.Create(userEntity, cancellationToken);
 		if( !createOpt.HasValue)
 		{
-			return TOptional.Error<(UserBasic, TokenInfo)>(createOpt.Message);
+			return TOptional.Error<TokenInfo>(createOpt.Message);
 		}
 
 		var bResult = await _userBasicRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 		if (!bResult)
 		{
-			return TOptional.Error<(UserBasic, TokenInfo)>("Failed to save user.");
+			return TOptional.Error<TokenInfo>("Failed to save user.");
 		}
 
 		var accessJwtOpt = await _mediator.Send(new AccessJwtCommand(createOpt.Value!.UserUID, createOpt.Value!.Email));
 		if (!accessJwtOpt.HasValue)
 		{
-			return TOptional.Error<(UserBasic, TokenInfo)>(accessJwtOpt.Message);
+			return TOptional.Error<TokenInfo>(accessJwtOpt.Message);
 		}
 
-		return TOptional.To((createOpt.Value!, accessJwtOpt.Value!));
+		return TOptional.Success(accessJwtOpt.Value!);
 	}
 }

@@ -33,14 +33,14 @@ public static class DependencyInjectionExtensions
 
     private static void AddNpgSqlDbContext(this IHostApplicationBuilder builder)
     {
-		builder.AddNpgsqlDbContext<AccountDbContext>(AccountDbContext.ConnectionName(),
+		builder.AddNpgsqlDbContext<AccountDBContext>(AccountDBContext.ConnectionName(),
 			settings => settings.DbContextPooling = false,
 			configureDbContextOptions: builder =>
 			{
 				builder.UseSnakeCaseNamingConvention();
 			});
 
-		builder.AddNpgsqlDbContext<AuthDbContext>(AuthDbContext.ConnectionName(),
+		builder.AddNpgsqlDbContext<AuthDBContext>(AuthDBContext.ConnectionName(),
 			settings => settings.DbContextPooling = false,
 			configureDbContextOptions: builder =>
 			{

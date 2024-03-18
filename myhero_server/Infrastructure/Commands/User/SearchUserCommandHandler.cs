@@ -22,8 +22,8 @@ public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOpti
 			return TOptional.Error<SearchUserResponse>("Not found user.");
 		}
 
-		var response = new SearchUserResponse(opt.Value!.UserId, opt.Value!.PictureUrl);
+		var response = new SearchUserResponse(opt.Value!.UserID, opt.Value!.PictureUrl);
 
-		return TOptional.To(response);
+		return TOptional.Success(response);
 	}
 }

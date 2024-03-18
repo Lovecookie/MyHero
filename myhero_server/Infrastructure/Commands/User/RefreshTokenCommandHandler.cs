@@ -23,6 +23,6 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, T
 			return TOptional.Error<UserBasic>("Invalid password");
 		}
 
-		return TOptional.To(opt.Value!);
+		return TOptional.Success(opt.Value!);
 	}
 }

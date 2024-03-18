@@ -7,9 +7,10 @@ Content-Type: application/json
 
 {
   "userId": "smbaek",
-  "email": "silver@kakao.com",
+  "email": "smbaek@kakao.com",
   "pw":"1234"
 }
+
 
 ### SignIn POST http://localhost:5000/api/v1/auth/signin
 POST http://localhost:5000/api/v1/auth/signin
@@ -17,14 +18,17 @@ Content-Type: application/json
 
 {
   "email": "smbaek@kakao.com",
-  "password":"1234"
+  "pw":"1234"
 }
+
 
 ### POST http://localhost:5000/api/v1/auth/refresh
 POST http://localhost:5000/api/v1/auth/refresh
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblR5cGUiOiJyZWZyZXNoIiwidXh0IjoibnFSTWZHTDdFaWhLU0RkblY4R1ZXUT09IiwiZXhwIjoxNzExMDg2Mzk3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAifQ.IuVfaC3cD1SYh9gqifq0cTSW6OZspsJB7PzIObCgzKA
 
-
+{
+}
 
 ### POST http://localhost:5000/api/v1/auth/logout
 POST http://localhost:5000/api/v1/auth/logout
@@ -34,5 +38,5 @@ Content-Type: application/json
 
 ### POST http://localhost:5000/api/v1/auth/user
 GET http://localhost:5000/api/v1/auth/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzaWx2ZXIyMDAwY3NAZ21haWwuY29tIiwiZXhwIjoxNzA4NTM0ODI3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAifQ.cD2OGhk_aPd-_hka9pj0xObMz_n-mP2Seofzq2xsDyU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ1eHQiOiJucVJNZkdMN0VpaEtTRGRuVjhHVldRPT0iLCJleHAiOjE3MTA0ODUxOTcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.IofndT0h-kxCrpyeb7pe0f3z3E8Y8BjXzLuTyVfF0pg
 
