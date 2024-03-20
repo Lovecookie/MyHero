@@ -40,3 +40,15 @@ public record LogoutResponse
 public record AccessTokenResponse(TokenInfo Token)
 {
 }
+
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="FollowersCount"></param>
+/// <param name="FollowingCount"></param>
+/// <param name="Posts"></param>
+/// <param name="FamousValue"></param>
+public record MyProfileResponse(string PicURL, Int64 FollowersCount, Int64 FollowingCount, Int64 Posts, Int64 FamousValue )
+{
+}

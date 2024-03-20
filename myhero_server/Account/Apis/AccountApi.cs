@@ -14,14 +14,10 @@ public static class AccountApi
             .WithGroupName(ConstantVersion.GlobalVersionByLower)
             .WithTags(apiName)
             .WithOpenApi();
-
-        //root.MapPost("/login", LoginUser)
-        //    .ProducesProblem(StatusCodes.Status500InternalServerError)
-        //    .WithSummary("Login User")
-        //    .WithDescription("\n POST /login");
-        root.MapPost("/my-profile", MyProfile)
+        
+        root.MapGet("/profile", Profile)
 			.WithSummary("My Profile")
-			.WithDescription("\n POST /my-profile")
+			.WithDescription("\n GET /profile")
 			.RequireAuthorization();
 
         Serilog.Log.Information("[Success] AccountApis mapped");        
@@ -29,17 +25,18 @@ public static class AccountApi
         return app;
     }
 
-	public static async Task<IResult> MyProfile(ClaimsPrincipal principal)
+	public static async Task<IResult> Profile(
+		ClaimsPrincipal principal,
+		[AsParameters] AccountServices services
+		)
 	{
-		await Task.CompletedTask.WaitAsync(TimeSpan.Zero);
-
-		var userUIDClaim = principal.FindFirstValue(CustomClaimType.Uxt);
-		if (userUIDClaim == null)
+		var responseOpt = await services.Mediator.Send(new MyProfileCommand(principal));
+		if (!responseOpt.HasValue)
 		{
-			return ToClientResults.Error("Unauthorized");
+			return ToClientResults.Error(responseOpt.Message);
 		}
 
-		return Results.Ok();
+		return ToClientResults.Ok(responseOpt.Value!);
 	}
 
 }

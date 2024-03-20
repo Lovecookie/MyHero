@@ -4,27 +4,20 @@ namespace myhero_dotnet.Infrastructure;
 /// <summary>
 /// 
 /// </summary>
-public class CreateUserCommand : IRequest<TOptional<TokenInfo>>
-{
-    public string UserId { get; set; } = "";
-
-    public string Email { get; set; } = "";
-
-    public string Password { get; set; } = "";
-
-    public string PictureUrl { get; set; } = "";
+public record CreateUserCommand(string UserID, string Email, string Password, string PictureURL) : IRequest<TOptional<TokenInfo>>
+{   
 }
 
 /// <summary>
 /// 
 /// </summary>
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, TOptional<TokenInfo>>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, TOptional<TokenInfo>>
 {
 	private readonly IUserBasicRepository _userBasicRepository;
 	private readonly IMediator _mediator;
 	private readonly IMapper _mapper;
 
-	public CreateUserHandler(IUserBasicRepository userBasicRepository, IMediator mediator, IMapper mapper )
+	public CreateUserCommandHandler(IUserBasicRepository userBasicRepository, IMediator mediator, IMapper mapper )
 	{
 		_userBasicRepository = userBasicRepository;
 		_mediator = mediator;

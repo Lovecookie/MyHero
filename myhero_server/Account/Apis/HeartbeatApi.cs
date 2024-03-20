@@ -28,12 +28,7 @@ public static class HeartbeatApi
 	public static async Task<IResult> Heartbeat(
 		[AsParameters] AccountServices services)
 	{
-		var heartbeatCommand = new HeartbeatCommand
-		{
-			HeartBeat = "1"
-		};
-
-		var heatbeat = await services.Mediator.Send(heartbeatCommand);
+		var heatbeat = await services.Mediator.Send(new HeartbeatCommand(Heartbeat: "1"));
 
 		return Results.Ok(heatbeat!);
 	}

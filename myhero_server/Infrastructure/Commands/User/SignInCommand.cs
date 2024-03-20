@@ -7,11 +7,8 @@ namespace myhero_dotnet.Infrastructure;
 /// <summary>
 /// 
 /// </summary>
-public class SignInCommand(string email, string password) : IRequest<TOptional<SignInResponse>>
-{
-	public string Email { get; init; } = email;
-
-	public string Password { get; init; } = password;
+public record SignInCommand(string Email, string Password) : IRequest<TOptional<SignInResponse>>
+{	
 }
 
 /// <summary>

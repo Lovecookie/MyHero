@@ -1,5 +1,16 @@
 ﻿namespace myhero_dotnet.Infrastructure;
-public class HeartbeatCommand : IRequest<string>
+public record HeartbeatCommand(string Heartbeat) : IRequest<string>
 {
-    public string HeartBeat { get; set; } = "";
+}
+
+public class HeartbeatCommandHandler : IRequestHandler<HeartbeatCommand, string>
+{
+	public HeartbeatCommandHandler()
+	{
+	}
+
+	public async Task<string> Handle(HeartbeatCommand request, CancellationToken cancellationToken)
+	{
+		return await Task<string>.FromResult(request.Heartbeat!);
+	}
 }

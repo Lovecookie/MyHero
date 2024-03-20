@@ -32,19 +32,19 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOpti
 
 	public async Task<TOptional<string>> Handle(RefreshJwtCommand request, CancellationToken cancellationToken)
 	{
-		var tokenType = request.Principal.FindFirstValue(CustomClaimType.TokenType);
-		if (tokenType == null || tokenType != "refresh")
+		var principal = request.Principal;
+		if( principal.IsRefreshType() )
 		{
 			return TOptional.Error<string>("Unauthorized");
 		}
 
-		var userUIDClaim = request.Principal.FindFirstValue(CustomClaimType.Uxt);
-		if (userUIDClaim == null)
+		var uidOpt = await principal.DecryptUID();
+		if (!uidOpt.HasValue)
 		{
 			return TOptional.Error<string>("Unauthorized");
 		}
 
-		var userUID = await AesEncryption.DecryptAsInt64(userUIDClaim);
+		var userUID = uidOpt.Value;
 		if( userUID == 0)
 		{
 			return TOptional.Error<string>("Unauthorized");

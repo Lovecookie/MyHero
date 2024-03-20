@@ -42,9 +42,10 @@ public static class AuthApi
 		[AsParameters] AuthServices services
 		)
 	{
-		var createUserCommand = services.Mapper.Map<CreateUserCommand>(createUserRequest);
-
-		var createUserOpt = await services.Mediator.Send(createUserCommand);
+		var createUserOpt = await services.Mediator.Send(new CreateUserCommand(createUserRequest.UserId!,
+			createUserRequest.Email!,
+			createUserRequest.Pw!,
+			""));
 		if (!createUserOpt.HasValue)
 		{
 			return ToClientResults.Error(createUserOpt.Message);
