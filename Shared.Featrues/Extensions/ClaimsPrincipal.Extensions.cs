@@ -1,23 +1,64 @@
 ﻿
 
 using Shared.Featrues.Auth;
+using Shared.Featrues.Crypt;
 
 namespace Shared.Featrues.Extensions;
 public static class ClaimsPrincipalExtensions
 {
-	public static Int64 GetUxt(this ClaimsPrincipal principal)
+	public static bool IsAuthenticated(this ClaimsPrincipal principal)
+	{
+		return principal.Identity?.IsAuthenticated == true;
+	}
+
+	public static string? GetEncryptedUID(this ClaimsPrincipal principal)
 	{
 		var claimUxt = principal.FindFirstValue(CustomClaimType.Uxt);
 		if(claimUxt == null)
 		{
-			return 0;
+			return null;
 		}
 
-		return Convert.ToInt64(claimUxt);
+		return claimUxt;
 	}
 
-	public static bool IsAuthenticated(this ClaimsPrincipal principal)
+	public static async Task<Int64?> DecryptUID(this ClaimsPrincipal principal)
 	{
-		return principal.Identity?.IsAuthenticated == true;
+		var claimUxt = principal.FindFirstValue(CustomClaimType.Uxt);
+		if(claimUxt == null)
+		{
+			return null;
+		}
+
+		var decryptedUID = await AesEncryption.DecryptAsInt64(claimUxt);
+		if(decryptedUID == 0)
+		{
+			return null;
+		}
+
+		return decryptedUID;
+	}
+
+
+	public static bool IsAccessType(this ClaimsPrincipal principal)
+	{
+		var claimAccessType = principal.FindFirstValue(CustomClaimType.TokenType);
+		if(claimAccessType == null)
+		{
+			return false;
+		}
+
+		return claimAccessType == CustomTokenType.Access;
+	}
+
+	public static bool IsRefreshType(this ClaimsPrincipal principal)
+	{
+		var claimAccessType = principal.FindFirstValue(CustomClaimType.TokenType);
+		if(claimAccessType == null)
+		{
+			return false;
+		}
+
+		return claimAccessType == CustomTokenType.Refresh;
 	}
 }

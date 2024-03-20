@@ -4,7 +4,7 @@
 [PrimaryKey(nameof(UserUID))]
 public abstract class UserEntityBase<TEntity> where TEntity : class
 {   
-    public Int64 UserUID { get; set; }
+    public Int64 UserUID { get; set; } = 0;
 	
     public DateTime DateCreated { get; set; }
 

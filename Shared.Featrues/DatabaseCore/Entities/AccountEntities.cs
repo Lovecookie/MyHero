@@ -23,15 +23,15 @@ public class UserBasic : UserEntityBase<UserBasic>, IAggregateRoot
 /// <summary>
 /// UserPatronage
 /// </summary>
-public class UserPatronage : UserEntityBase<UserPatronage>, IAggregateRoot
-{   
-    public Int64 FollowerCount { get; set; }
+public class UserPatronage : UserEntityBase<UserPatronage>
+{
+    public Int64 FollowerCount { get; set; } = 0;
+
+    public Int64 FollowingCount { get; set; } = 0;
     
-    public Int64 FollowingCount { get; set; }
+    public Int64 StyleCount { get; set; } = 0;
     
-    public Int64 StyleCount { get; set; }
-    
-    public Int64 FavoriteCount { get; set; }
+    public Int64 FavoriteCount { get; set; } = 0;
 }
 
 
@@ -39,8 +39,7 @@ public class UserPatronage : UserEntityBase<UserPatronage>, IAggregateRoot
 /// UserRecognition
 /// </summary>
 
-public class UserRecognition : UserEntityBase<UserRecognition>, IAggregateRoot
-{
-    [Required]
-    public Int64 FamousValue { get; set; }
+public class UserRecognition : UserEntityBase<UserRecognition>
+{   
+    public Int64 FamousValue { get; set; } = 0;
 }

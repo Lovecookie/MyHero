@@ -1,0 +1,7 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+
+### POST http://localhost:5000/api/v1/account/user
+GET http://localhost:5000/api/v1/account/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ1eHQiOiJ2UEhsVWI5VHVVSW5HS2srdy9odVBRPT0iLCJleHAiOjE3MTA5Mjg0ODMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.PTqMLVAXigJrt_H5cLdGFAb13SPXN-JHtr5pOqp_DRQ
+

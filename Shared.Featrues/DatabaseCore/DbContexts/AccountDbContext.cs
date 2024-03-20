@@ -1,10 +1,9 @@
 ﻿
 using Shared.Features.Constants;
-using Shared.Features.Extensions;
 
 namespace Shared.Features.DatabaseCore;
 
-[DbSchemaAttribute("accountdb", "account")]
+[DbSchema("accountdb", "account")]
 public class AccountDBContext : DBContextAbstract<AccountDBContext>
 {
 	public DbSet<UserBasic> UserBasics { get; set; }

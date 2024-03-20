@@ -1,10 +1,4 @@
 ﻿
-
-
-
-
-using Shared.Features.Extensions;
-
 namespace Shared.Features.DatabaseCore;
 
 public abstract class DBContextAbstract<TDBContext>
@@ -28,10 +22,10 @@ public abstract class DBContextAbstract<TDBContext>
 
 	public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
 	{
-		if (_mediator != null)
-		{
-			await _mediator.DispatchDomainEventAsync(this);
-		}
+		//if (_mediator != null)
+		//{
+		//	await _mediator.DispatchDomainEventAsync(this);
+		//}
 
 		try
 		{ 	
