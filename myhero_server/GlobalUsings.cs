@@ -33,8 +33,8 @@ global using Util.Infrastructure;
 global using Util.Infrastructure.DependencyInjection;
 
 global using Shared.Features;
-global using Shared.Featrues.Auth;
-global using Shared.Featrues.Crypt;
-global using Shared.Featrues.Extensions;
+global using Shared.Features.Auth;
+global using Shared.Features.Crypt;
+global using Shared.Features.Extensions;
 global using Shared.Features.Constants;
 global using Shared.Features.DatabaseCore;

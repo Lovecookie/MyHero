@@ -1,4 +1,5 @@
-using myhero_dotnet.Account;
+using myhero_dotnet.AccountAPI;
+using myhero_dotnet.ContentsAPI;
 using myhero_dotnet.Infrastructure;
 
 

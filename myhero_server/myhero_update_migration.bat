@@ -1,7 +1,5 @@
 @echo off 
 
-rem SET MIGRATION_NAME=AddUserBasicIndex
-
 echo dotnet ef database update --context AccountDbContext
 dotnet ef database update --context AccountDbContext
 
