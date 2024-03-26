@@ -1,4 +1,4 @@
-﻿namespace Shared.Featrues.Auth;
+﻿namespace Shared.Features.Auth;
 
 public class JwtFields
 {

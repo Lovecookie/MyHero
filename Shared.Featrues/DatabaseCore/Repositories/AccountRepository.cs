@@ -1,5 +1,7 @@
 ﻿
 
+using Shared.Features.Crypt;
+
 namespace Shared.Features.DatabaseCore;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
@@ -107,7 +109,7 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOptional.Unknown<UserBasic>();
 			}
 
-			// var result = await _context.SaveChangesAsync(cancellationToken);
+			newEntry.Entity.EncryptedUID = await AesEncryption.EncryptAsString(newEntry.Entity.UserUID.ToString());			
 
 			return TOptional.Success(newEntry.Entity);
 		}

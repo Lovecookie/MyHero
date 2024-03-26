@@ -2,6 +2,7 @@
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Text;
+global using System.Text.Json.Serialization;
 global using System.Data;
 global using System.Threading;
 global using System.Threading.Tasks;
@@ -18,6 +19,7 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Http;
 
 global using Util.Infrastructure;
 

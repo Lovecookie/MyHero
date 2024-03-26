@@ -1,7 +1,7 @@
 ﻿
-using Shared.Featrues.Auth;
+using Shared.Features.Auth;
 
-namespace Shared.Featrues.Extensions;
+namespace Shared.Features.Extensions;
 
 public static class SharedFeaturesExtensions
 {

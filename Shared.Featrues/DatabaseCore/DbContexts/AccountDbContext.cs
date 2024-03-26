@@ -40,7 +40,11 @@ public class AccountDBContext : DBContextAbstract<AccountDBContext>
 
 			entity.HasIndex(e => e.UserID)
 			.HasDatabaseName("UIX_UserBasic_UserId")
-			.IsUnique();			
+			.IsUnique();
+
+			entity.Property(e => e.EncryptedUID)
+			.IsRequired()
+			.HasMaxLength(ConstantLength.EncryptedUID);
 
 			entity.Property(e => e.UserUID)
 			.ValueGeneratedOnAdd();

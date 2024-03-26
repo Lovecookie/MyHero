@@ -1,8 +1,8 @@
 ﻿
-using MediatR;
-using Shared.Featrues.Crypt;
 
-namespace Shared.Featrues.Auth;
+using Shared.Features.Crypt;
+
+namespace Shared.Features.Auth;
 
 public static class TokenHelper
 {

@@ -1,5 +1,5 @@
 ﻿
-namespace Shared.Featrues.DatabaseCore.Queries;
+namespace Shared.Features.DatabaseCore.Queries;
 public class QueryResult
 {
 }

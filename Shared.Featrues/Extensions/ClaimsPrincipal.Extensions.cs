@@ -1,9 +1,9 @@
 ﻿
 
-using Shared.Featrues.Auth;
-using Shared.Featrues.Crypt;
+using Shared.Features.Auth;
+using Shared.Features.Crypt;
 
-namespace Shared.Featrues.Extensions;
+namespace Shared.Features.Extensions;
 public static class ClaimsPrincipalExtensions
 {
 	public static bool IsAuthenticated(this ClaimsPrincipal principal)

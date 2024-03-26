@@ -1,6 +1,6 @@
 ﻿
 
-namespace Shared.Featrues.Crypt;
+namespace Shared.Features.Crypt;
 
 
 public class AesEncryption
