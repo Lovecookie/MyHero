@@ -4,7 +4,7 @@
 /// <summary>
 /// 
 /// </summary>
-public record SearchUserCommand(string SearchWord, EUserSearchType SearchType) : IRequest<TOptional<SearchUserResponse>>
+public record SearchUserCommand(Int64 UserUID) : IRequest<TOptional<SearchUserResponse>>
 {
 }
 
@@ -14,18 +14,16 @@ public record SearchUserCommand(string SearchWord, EUserSearchType SearchType) :
 /// </summary>
 public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOptional<SearchUserResponse>>
 {
-    private readonly IUserBasicRepository _userBasicRepository;
-    private readonly IMapper _mapper;
+    private readonly IUserBasicRepository _userBasicRepository;    
 
-    public SearchUserCommandHandler(IUserBasicRepository userBasicRepository, IMapper mapper)
+    public SearchUserCommandHandler(IUserBasicRepository userBasicRepository)
     {
-        _userBasicRepository = userBasicRepository;
-        _mapper = mapper;
+        _userBasicRepository = userBasicRepository;        
     }
 
     public async Task<TOptional<SearchUserResponse>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
     {
-        var opt = await _userBasicRepository.FindById(request.SearchWord);
+        var opt = await _userBasicRepository.Find(request.UserUID);
         if (!opt.HasValue)
         {
             return TOptional.Error<SearchUserResponse>("Not found user.");

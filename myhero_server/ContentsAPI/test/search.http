@@ -1,0 +1,9 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@myhero_dotnet_address = http://localhost:5000
+@version = api/v1
+@url = {{myhero_dotnet_address}}/{{version}}/search
+
+### Search GET {{url}}/user
+GET {{url}}/user/1
+Content-Type: application/json
+

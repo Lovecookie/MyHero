@@ -6,7 +6,7 @@ public class SearchUserMappingProfile : Profile
 {
     public SearchUserMappingProfile()
     {
-        CreateMap<SearchUserRequest, SearchUserCommand>();
+        CreateMap<SearchUserRequest, SearchUserByStringCommand>();
         //.ForMember(dest => dest.SearchWord, opt => opt.MapFrom(src => src.SearchWord))
     }
 }

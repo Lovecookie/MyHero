@@ -1,5 +1,6 @@
 ﻿using myhero_dotnet.Infrastructure;
 
+
 namespace myhero_dotnet.ContentsAPI;
 
 
@@ -15,24 +16,44 @@ public static class SearchApi
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapPost("/user", SearchUser)
-            .ProducesProblem(StatusCodes.Status500InternalServerError)
+        root.MapGet("/user/{id:minlength(2)}", GetUser)
+            .WithSummary("Get User")
+            .WithDescription("\n GET /user/{id:minlength(2)}");
+
+        root.MapGet("/user/by/{name:minlength(2)}", SearchUser)            
             .WithSummary("Search User")
-            .WithDescription("\n GET /user");
+            .WithDescription("\n GET /user/by{name:minlength(2)}");
 
         Log.Information("[Success] SearchApi mapped");
 
         return app;
     }
 
+    public static async Task<IResult> GetUser(
+        [AsParameters] ContentsServices services,
+        string id)
+    {
+        var uid = await AesEncryption.DecryptAsInt64(id);
+        if(!uid.HasValue)
+        {
+			return ToClientResults.Error("Invalid ID.");
+		}
+
+        var opt = await services.Mediator.Send(new SearchUserCommand(uid.Value));
+		if (!opt.HasValue)
+        {
+			return ToClientResults.Error("Not found.");
+		}
+
+		return ToClientResults.Ok(opt.Value!);
+    }
+
     public static async Task<IResult> SearchUser(
-        [FromBody] SearchUserRequest searchUserRequest,
-        [AsParameters] ContentsServices services
+        [AsParameters] ContentsServices services,
+        string name
         )
     {
-        var createUserCommand = services.Mapper.Map<SearchUserCommand>(searchUserRequest);
-
-        var opt = await services.Mediator.Send(createUserCommand);
+        var opt = await services.Mediator.Send(new SearchUserByStringCommand(name, EUserSearchType.Name));
         if (!opt.HasValue)
         {
             return ToClientResults.Error("Not found.");

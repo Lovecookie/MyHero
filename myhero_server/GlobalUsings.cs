@@ -31,10 +31,10 @@ global using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 global using Util.Infrastructure;
 global using Util.Infrastructure.DependencyInjection;
+global using Util.Infrastructure.Crypt;
 
 global using Shared.Features;
 global using Shared.Features.Auth;
-global using Shared.Features.Crypt;
 global using Shared.Features.Extensions;
 global using Shared.Features.Constants;
 global using Shared.Features.DatabaseCore;
