@@ -29,7 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, TOpti
     {
         var userEntity = _mapper.Map<UserBasic>(request);
 
-        var createOpt = await _userBasicRepository.Create(userEntity, cancellationToken);
+        var createOpt = await _userBasicRepository.Create(userEntity);
         if (!createOpt.HasValue)
         {
             return TOptional.Error<TokenInfo>(createOpt.Message);
@@ -40,6 +40,24 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, TOpti
         {
             return TOptional.Error<TokenInfo>("Failed to save user.");
         }
+
+        var encryptUID = await AesEncryption.EncryptAsString(createOpt.Value!.UserUID.ToString());
+        if (encryptUID == null)
+        {
+            return TOptional.Error<TokenInfo>("Failed to encrypt UID.");
+		}
+
+        var updateOpt = await _userBasicRepository.UpdateEncryptedUID(createOpt.Value!.UserUID, encryptUID);
+        if (!updateOpt.HasValue)
+        {
+			return TOptional.Error<TokenInfo>(updateOpt.Message);
+		}
+
+        bResult = await _userBasicRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+        if (!bResult)
+        {
+			return TOptional.Error<TokenInfo>("Failed to save user.");
+		}
 
         var accessJwtOpt = await _mediator.Send(new AccessJwtCommand(createOpt.Value!.UserUID, createOpt.Value!.Email));
         if (!accessJwtOpt.HasValue)

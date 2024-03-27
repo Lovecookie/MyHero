@@ -3,7 +3,13 @@
 @version = api/v1
 @url = {{myhero_dotnet_address}}/{{version}}/search
 
-### Search GET {{url}}/user
-GET {{url}}/user/1
-Content-Type: application/json
+# /user/by/
+
+### Search GET {{url}}/user/id
+GET {{url}}/user/1MIq9KET4EWG21A+qrTxLg==
+
+
+### Search GET {{url}}/user/by/name
+GET {{url}}/user/by/smbaek
+#Content-Type: application/json
 

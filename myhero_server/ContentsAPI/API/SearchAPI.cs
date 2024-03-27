@@ -16,30 +16,30 @@ public static class SearchApi
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapGet("/user/{id:minlength(2)}", GetUser)
+        root.MapGet("/user/{uid:minlength(2)}", GetUser)
             .WithSummary("Get User")
-            .WithDescription("\n GET /user/{id:minlength(2)}");
+            .WithDescription("\n GET /user/{uid:minlength(2)}");
 
         root.MapGet("/user/by/{name:minlength(2)}", SearchUser)            
             .WithSummary("Search User")
-            .WithDescription("\n GET /user/by{name:minlength(2)}");
+            .WithDescription("\n GET /user/by/{name:minlength(2)}");
 
-        Log.Information("[Success] SearchApi mapped");
+        Log.Information("[Success] SearchAPI mapped");
 
         return app;
     }
 
     public static async Task<IResult> GetUser(
         [AsParameters] ContentsServices services,
-        string id)
+        string uid)
     {
-        var uid = await AesEncryption.DecryptAsInt64(id);
-        if(!uid.HasValue)
+        var decryptedUID = await AesEncryption.DecryptAsInt64(uid);
+        if(!decryptedUID.HasValue)
         {
 			return ToClientResults.Error("Invalid ID.");
 		}
 
-        var opt = await services.Mediator.Send(new SearchUserCommand(uid.Value));
+        var opt = await services.Mediator.Send(new SearchUserCommand(decryptedUID.Value));
 		if (!opt.HasValue)
         {
 			return ToClientResults.Error("Not found.");

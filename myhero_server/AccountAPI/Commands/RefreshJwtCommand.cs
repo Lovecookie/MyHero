@@ -29,7 +29,7 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOpti
     public async Task<TOptional<string>> Handle(RefreshJwtCommand request, CancellationToken cancellationToken)
     {
         var principal = request.Principal;
-        if (principal.IsRefreshType())
+        if (!principal.IsRefreshType())
         {
             return TOptional.Error<string>("Unauthorized");
         }
