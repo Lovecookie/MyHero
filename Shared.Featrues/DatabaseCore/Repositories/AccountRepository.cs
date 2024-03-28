@@ -1,7 +1,5 @@
 ﻿
 
-using Shared.Features.Crypt;
-
 namespace Shared.Features.DatabaseCore;
 
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
@@ -10,9 +8,11 @@ public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 	Task<TOptional<UserBasic>> Find(Int64 userUid);
 	Task<TOptional<UserBasic>> FindById(string id);
 	Task<TOptional<UserBasic>> FindByEmail(string email);
-	Task<TOptional<UserBasic>> Create(UserBasic entity, CancellationToken cancellationToken);
+	Task<TOptional<UserBasic>> Create(UserBasic entity);
 
 	Task<TOptional<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid);
+
+	Task<TOptional<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID);
 }
 
 public class UserBasicRepository : IUserBasicRepository
@@ -96,7 +96,7 @@ public class UserBasicRepository : IUserBasicRepository
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> Create(UserBasic entity, CancellationToken cancellationToken)
+	public async Task<TOptional<UserBasic>> Create(UserBasic entity)
 	{
 		entity.DateCreated = _timeProvider.GetUtcNow().UtcDateTime;
 		entity.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
@@ -108,8 +108,6 @@ public class UserBasicRepository : IUserBasicRepository
 			{
 				return TOptional.Unknown<UserBasic>();
 			}
-
-			newEntry.Entity.EncryptedUID = await AesEncryption.EncryptAsString(newEntry.Entity.UserUID.ToString());			
 
 			return TOptional.Success(newEntry.Entity);
 		}
@@ -153,4 +151,27 @@ public class UserBasicRepository : IUserBasicRepository
 			return TOptional.Error<(UserBasic, UserPatronage, UserRecognition)>(ex.Message);
 		}
 	}
+
+	public async Task<TOptional<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID)
+	{
+		try
+		{
+			var userBasic = await _context.UserBasics.FindAsync(userUid);
+			if (userBasic == null)
+			{
+				return TOptional.Error<bool>("User not found");
+			}
+
+			userBasic.EncryptedUID = encryptedUID;
+			//userBasic.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
+
+			return TOptional.Success(true);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex.Message);
+
+			return TOptional.Error<bool>(ex.Message);
+		}
+	}	
 }

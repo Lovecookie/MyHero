@@ -1,4 +1,5 @@
 ﻿using myhero_dotnet.Infrastructure;
+using Shared.Featrues.Algorithm;
 
 
 namespace myhero_dotnet.ContentsAPI;
@@ -16,11 +17,11 @@ public static class SearchApi
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapGet("/user/{uid:minlength(2)}", GetUser)
+        root.MapGet("/user/{uid:minlength(2)}", SearchUser)
             .WithSummary("Get User")
             .WithDescription("\n GET /user/{uid:minlength(2)}");
 
-        root.MapGet("/user/by/{name:minlength(2)}", SearchUser)            
+        root.MapGet("/user/by/{name:minlength(2)}", SearchUserByName)
             .WithSummary("Search User")
             .WithDescription("\n GET /user/by/{name:minlength(2)}");
 
@@ -29,11 +30,11 @@ public static class SearchApi
         return app;
     }
 
-    public static async Task<IResult> GetUser(
+    public static async Task<IResult> SearchUser(
         [AsParameters] ContentsServices services,
         string uid)
     {
-        var decryptedUID = await AesEncryption.DecryptAsInt64(uid);
+        var decryptedUID = await AesWrapper.DecryptAsInt64(uid);
         if(!decryptedUID.HasValue)
         {
 			return ToClientResults.Error("Invalid ID.");
@@ -48,7 +49,7 @@ public static class SearchApi
 		return ToClientResults.Ok(opt.Value!);
     }
 
-    public static async Task<IResult> SearchUser(
+    public static async Task<IResult> SearchUserByName(
         [AsParameters] ContentsServices services,
         string name
         )

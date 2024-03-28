@@ -1,4 +1,5 @@
 ﻿using myhero_dotnet.Infrastructure;
+using Shared.Featrues.Algorithm;
 
 namespace myhero_dotnet.AccountAPI;
 
@@ -41,8 +42,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, TOpti
             return TOptional.Error<TokenInfo>("Failed to save user.");
         }
 
-        var encryptUID = await AesEncryption.EncryptAsString(createOpt.Value!.UserUID.ToString());
-        if (encryptUID == null)
+        var encryptUID = await AesWrapper.EncryptAsString(createOpt.Value!.UserUID);
+		if (encryptUID == null)
         {
             return TOptional.Error<TokenInfo>("Failed to encrypt UID.");
 		}

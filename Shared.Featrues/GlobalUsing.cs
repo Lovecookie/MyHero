@@ -22,6 +22,7 @@ global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Http;
 
 global using Util.Infrastructure;
+global using Util.Infrastructure.Crypt;
 
 global using MediatR;
 

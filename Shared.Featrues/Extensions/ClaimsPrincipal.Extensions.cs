@@ -1,7 +1,7 @@
 ﻿
 
+using Shared.Featrues.Algorithm;
 using Shared.Features.Auth;
-using Shared.Features.Crypt;
 
 namespace Shared.Features.Extensions;
 public static class ClaimsPrincipalExtensions
@@ -30,7 +30,7 @@ public static class ClaimsPrincipalExtensions
 			return null;
 		}
 
-		var decryptedUID = await AesEncryption.DecryptAsInt64(claimUxt);
+		var decryptedUID = await AesWrapper.DecryptAsInt64(claimUxt);
 		if(decryptedUID == 0)
 		{
 			return null;

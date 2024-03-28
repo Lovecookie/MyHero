@@ -1,7 +1,5 @@
 ﻿
 
-using Shared.Features.Crypt;
-
 namespace Shared.Features.Auth;
 
 public static class TokenHelper
