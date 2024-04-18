@@ -20,7 +20,8 @@ public static class ContentsExtentions
         //});
 
         app.MapSearchAPI();
+        app.MapFeedAPI();
 
-        return app;
+		return app;
     }
 }

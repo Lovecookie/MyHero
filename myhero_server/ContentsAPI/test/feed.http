@@ -1,0 +1,15 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@myhero_dotnet_address = http://localhost:5000
+@version = api/v1
+@url = {{myhero_dotnet_address}}/{{version}}/feed
+
+# /user/by/
+
+### Feed GET {{url}}/uid?pageIndex=0&pageSize=5
+GET {{url}}/1MIq9KET4EWG21A+qrTxLg==?pageIndex=0&pageSize=5
+
+
+### Search GET {{url}}/user/by/name
+GET {{url}}/user/by/smbaek
+#Content-Type: application/json
+

@@ -5,7 +5,7 @@ using Shared.Featrues.Algorithm;
 namespace myhero_dotnet.ContentsAPI;
 
 
-public static class SearchApi
+public static class SearchAPI
 {
     public static WebApplication MapSearchAPI(this WebApplication app)
     {
