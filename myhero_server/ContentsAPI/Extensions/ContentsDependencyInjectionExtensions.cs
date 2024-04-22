@@ -20,6 +20,8 @@ public static class ContentsDependencyInjectionExtensions
   //      services.AddScoped<IUserBasicRepository, UserBasicRepository>();
   //      services.AddScoped<IUserAuthJwtRepository, UserAuthJwtRepository>();
 
+	  	services.AddScoped<IGroupRepository, GroupRepository>();
+
 		return builder;
     }
 

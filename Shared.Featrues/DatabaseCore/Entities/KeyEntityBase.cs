@@ -1,5 +1,5 @@
 ﻿namespace Shared.Features.DatabaseCore;
-internal abstract record KeyEntityBase
+public abstract class KeyEntityBase
 {
     public long UniqueKey { get; set; }
 
