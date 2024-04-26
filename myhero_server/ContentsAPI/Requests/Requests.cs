@@ -9,3 +9,18 @@ public record SearchUserRequest
 	[Required]
 	public EUserSearchType SearchType { get; init; } = EUserSearchType.None;
 }
+
+public record SearchGroupRequest
+{
+	[Required]
+	public string SearchWord { get; init; } = "";
+
+	[Required]
+	public EGroupSearchType SearchType { get; init; } = EGroupSearchType.None;
+}
+
+public record SendMessageRequest
+{
+	[Required]
+	public string Message { get; init; } = "";
+}

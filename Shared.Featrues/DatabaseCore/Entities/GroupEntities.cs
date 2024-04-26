@@ -6,7 +6,7 @@ namespace Shared.Features.DatabaseCore;
 
 
 /// <summary>
-///  UserBasic
+///  ChurchGroup
 /// </summary>
 public class ChurchGroup : KeyEntityBase, IAggregateRoot
 {

@@ -2,6 +2,7 @@
 
 namespace Shared.Features.DatabaseCore;
 
+
 public interface IGroupRepository : IDefaultRepository<ChurchGroup>
 { 
 

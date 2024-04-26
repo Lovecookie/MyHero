@@ -8,3 +8,6 @@ public record SearchUserResponse(string UserID, string PicURL)
 
 public record SearchGroupResponse(string GroupID, string PicURL)
 { }
+
+public record SendMessageResponse(Int32 SentUserCount)
+{ }
