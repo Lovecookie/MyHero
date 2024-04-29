@@ -21,6 +21,7 @@ public static class ContentsExtentions
 
         app.MapSearchAPI();
         app.MapFeedAPI();
+        app.MapMessageAPI();
 
 		return app;
     }

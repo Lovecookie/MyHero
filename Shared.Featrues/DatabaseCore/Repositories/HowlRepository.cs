@@ -7,7 +7,11 @@ public interface IHowlMessageRepository : IDefaultRepository<HowlMessage>
 
 	Task<TOptional<HowlMessage>> Find(Int64 userUid);
 
-	Task<TOptional<HowlMessage>> Create(HowlMessage entity);
+	Task<TOptional<HowlMessage>> RandomChoice();
+
+	Task<TOptional<List<HowlMessage>>> RandomChoices(Int32 count);
+
+	Task<TOptional<HowlMessage>> Create(HowlMessage entity);	
 
 	// Task<TOptional<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid);
 
@@ -16,14 +20,14 @@ public interface IHowlMessageRepository : IDefaultRepository<HowlMessage>
 
 public class HowlMessageRepository : IHowlMessageRepository
 {
-	private readonly AccountDBContext _context;
+	private readonly HowlDBContext _context;
 	private readonly ILogger _logger;
 	private readonly TimeProvider _timeProvider;
 
 	public IUnitOfWork UnitOfWork => _context;
 
 
-	public HowlMessageRepository(AccountDBContext context, ILogger<HowlMessageRepository> logger, TimeProvider timeProvider)
+	public HowlMessageRepository(HowlDBContext context, ILogger<HowlMessageRepository> logger, TimeProvider timeProvider)
 	{ 
 		_timeProvider = timeProvider;
 		_context = context;
@@ -48,6 +52,51 @@ public class HowlMessageRepository : IHowlMessageRepository
 			_logger.LogError(ex.Message);
 
 			return TOptional.Error<HowlMessage>("Not found");
+		}
+	}
+
+	public async Task<TOptional<HowlMessage>> RandomChoice()
+	{	
+		try
+		{
+			var query = await _context.HowlMessages
+				.OrderBy(e => Guid.NewGuid())
+				.FirstOrDefaultAsync();
+
+			if (query == null)
+			{
+				return TOptional.Empty<HowlMessage>();
+			}
+
+			return TOptional.Success(query);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex.Message);
+			return TOptional.Error<HowlMessage>(ex.Message);
+		}		
+	}	
+
+	public async Task<TOptional<List<HowlMessage>>> RandomChoices(Int32 count)
+	{
+		try
+		{
+			var query = await _context.HowlMessages
+				.OrderBy(e => Guid.NewGuid())
+				.Take(count)
+				.ToListAsync();
+
+			if(query.IsNullOrEmpty())
+			{
+				return TOptional.Empty<List<HowlMessage>>();
+			}
+
+			return TOptional.Success(query);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex.Message);
+			return TOptional.Error<List<HowlMessage>>(ex.Message);
 		}
 	}
 

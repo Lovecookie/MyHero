@@ -20,6 +20,7 @@ public static class ContentsDependencyInjectionExtensions
   //      services.AddScoped<IUserBasicRepository, UserBasicRepository>();
   //      services.AddScoped<IUserAuthJwtRepository, UserAuthJwtRepository>();
 
+	    services.AddScoped<IHowlMessageRepository, HowlMessageRepository>();
 	  	services.AddScoped<IGroupRepository, GroupRepository>();
 
 		return builder;
@@ -27,19 +28,12 @@ public static class ContentsDependencyInjectionExtensions
 
 	private static void AddNpgSqlDbContext(this IHostApplicationBuilder builder)
 	{
-		//builder.AddNpgsqlDbContext<AccountDBContext>(AccountDBContext.ConnectionName(),
-		//	settings => settings.DbContextPooling = false,
-		//	configureDbContextOptions: builder =>
-		//	{
-		//		builder.UseSnakeCaseNamingConvention();
-		//	});
-
-		//builder.AddNpgsqlDbContext<AuthDBContext>(AuthDBContext.ConnectionName(),
-		//	settings => settings.DbContextPooling = false,
-		//	configureDbContextOptions: builder =>
-		//	{
-		//		builder.UseSnakeCaseNamingConvention();
-		//	});
+		builder.AddNpgsqlDbContext<HowlDBContext>(HowlDBContext.ConnectionName(),
+			settings => settings.DbContextPooling = false,
+			configureDbContextOptions: builder =>
+			{
+				builder.UseSnakeCaseNamingConvention();
+			});
 	}
 
 	private static void AddContentsCommands(this IServiceCollection services)
