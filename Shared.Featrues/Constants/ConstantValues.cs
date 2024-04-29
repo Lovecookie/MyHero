@@ -12,4 +12,7 @@ public class ConstantLength
 	public const int PictureUrl = 200;
 
 	public const int JwtToken = 300;
+
+
+	public const int HowlMessage = 512;
 }

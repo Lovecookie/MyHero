@@ -17,9 +17,9 @@ public static class MessageAPI
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapPost("/rand", RandomSendMessage)
-            .WithSummary("Random Send Message")
-            .WithDescription("\n POST /rand");
+        root.MapPost("/howl", SendHowl)
+            .WithSummary("Howl Message")
+            .WithDescription("\n POST /howl");
 
         root.MapGet("/user/by/{name:minlength(2)}", SearchUserByName)
             .WithSummary("Search User")
@@ -30,7 +30,8 @@ public static class MessageAPI
         return app;
     }
 
-    public static async Task<IResult> RandomSendMessage(
+    public static async Task<IResult> SendHowl(
+        [FromBody] SendHowlRequest request,
         [AsParameters] ContentsServices services,
         string uid)
     {
@@ -40,7 +41,7 @@ public static class MessageAPI
 			return ToClientResults.Error("Invalid ID.");
 		}
 
-        var opt = await services.Mediator.Send(new SearchUserCommand(decryptedUID.Value));
+        var opt = await services.Mediator.Send(new SendHowlCommand(decryptedUID.Value));
 		if (!opt.HasValue)
         {
 			return ToClientResults.Error("Not found.");

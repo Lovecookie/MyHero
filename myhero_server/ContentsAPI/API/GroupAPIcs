@@ -5,11 +5,11 @@ using Shared.Featrues.Algorithm;
 namespace myhero_dotnet.ContentsAPI;
 
 
-public static class SearchAPI
+public static class GroupAPI
 {
-    public static WebApplication MapSearchAPI(this WebApplication app)
+    public static WebApplication MapGroupAPI(this WebApplication app)
     {
-        var apiName = "search";
+        var apiName = "group";
         var apiUri = ConstantVersion.URL(apiName);
 
         var root = app.MapGroup(apiUri)
@@ -17,11 +17,11 @@ public static class SearchAPI
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapGet("/user/{uid:minlength(2)}", SearchUser)
+        root.MapGet("/user/{uid:minlength(2)}", SearchGroup)
             .WithSummary("Get User")
             .WithDescription("\n GET /user/{uid:minlength(2)}");
 
-        root.MapGet("/user/by/{name:minlength(2)}", SearchUserByName)
+        root.MapGet("/user/by/{name:minlength(2)}", SearchGroupByName)
             .WithSummary("Search User")
             .WithDescription("\n GET /user/by/{name:minlength(2)}");
 
@@ -30,7 +30,7 @@ public static class SearchAPI
         return app;
     }
 
-    public static async Task<IResult> SearchUser(
+    public static async Task<IResult> SearchGroup(
         [AsParameters] ContentsServices services,
         string uid)
     {
@@ -40,7 +40,7 @@ public static class SearchAPI
 			return ToClientResults.Error("Invalid ID.");
 		}
 
-        var opt = await services.Mediator.Send(new SearchUserCommand(decryptedUID.Value));
+        var opt = await services.Mediator.Send(new SearchGroupCommand(decryptedUID.Value));
 		if (!opt.HasValue)
         {
 			return ToClientResults.Error("Not found.");
@@ -49,12 +49,12 @@ public static class SearchAPI
 		return ToClientResults.Ok(opt.Value!);
     }
 
-    public static async Task<IResult> SearchUserByName(
+    public static async Task<IResult> SearchGroupByName(
         [AsParameters] ContentsServices services,
         string name
         )
     {
-        var opt = await services.Mediator.Send(new SearchUserByStringCommand(name, EUserSearchType.Name));
+        var opt = await services.Mediator.Send(new SearchGroupByNameCommand(name, EUserSearchType.Name));
         if (!opt.HasValue)
         {
             return ToClientResults.Error("Not found.");

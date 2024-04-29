@@ -19,7 +19,7 @@ public record SearchGroupRequest
 	public EGroupSearchType SearchType { get; init; } = EGroupSearchType.None;
 }
 
-public record SendMessageRequest
+public record SendHowlRequest
 {
 	[Required]
 	public string Message { get; init; } = "";
