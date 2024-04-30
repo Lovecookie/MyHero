@@ -3,7 +3,7 @@ using Shared.Features.Constants;
 
 namespace Shared.Features.DatabaseCore;
 
-[DbSchema("contentsdb", "contents")]
+[DbSchema("contentsdb", "howl")]
 public class HowlDBContext : DBContextAbstract<HowlDBContext>
 {
 	public DbSet<HowlMessage> HowlMessages { get; set; }

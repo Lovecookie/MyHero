@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 변수 설정
-MIGRATION_NAME="InitCreate"
+MIGRATION_NAME="UpdateHowl"
 MIGRATION_CMD="./myhero_migration.sh"
 
 # 명령어 출력 및 실행
