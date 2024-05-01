@@ -8,16 +8,19 @@ public abstract class DBContextAbstract<TDBContext>
 	protected readonly IMediator? _mediator;
 	protected readonly ILogger _logger;
 	protected IDbContextTransaction? _transaction;
+	protected IConfiguration _configuration;
 
-	public DBContextAbstract(DbContextOptions options, ILogger<DBContextAbstract<TDBContext>> logger ) : base(options)
+	public DBContextAbstract(DbContextOptions options, ILogger<DBContextAbstract<TDBContext>> logger, IConfiguration configuration ) : base(options)
 	{
 		_logger = logger;
+		_configuration = configuration;
 	}
 
-	public DBContextAbstract(DbContextOptions options, ILogger<DBContextAbstract<TDBContext>> logger, IMediator? mediator) : base(options)
+	public DBContextAbstract(DbContextOptions options, ILogger<DBContextAbstract<TDBContext>> logger, IMediator? mediator, IConfiguration configuration ) : base(options)
 	{
 		_logger = logger;
 		_mediator = mediator;
+		_configuration = configuration;
 	}
 
 	public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
@@ -41,7 +44,7 @@ public abstract class DBContextAbstract<TDBContext>
 
 	public static string ConnectionName()
 	{	
-		var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
+		var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(SharedDbSchemaAttribute)) as SharedDbSchemaAttribute;
 		if (attribute != null)
 		{
 			return attribute.ConnectionName;
@@ -50,9 +53,20 @@ public abstract class DBContextAbstract<TDBContext>
 		throw new Exception("Is not supported db name!");
 	}
 
+	//public static string DatabaseName()
+	//{
+	//	var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(SharedDbSchemaAttribute)) as SharedDbSchemaAttribute;
+	//	if (attribute != null)
+	//	{
+	//		return attribute.DatabaseName;
+	//	}
+
+	//	throw new Exception("Is not supported database name!");
+	//}
+
 	public static string SchemaName()
 	{	
-		var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(DbSchemaAttribute)) as DbSchemaAttribute;
+		var attribute = Attribute.GetCustomAttribute(typeof(TDBContext), typeof(SharedDbSchemaAttribute)) as SharedDbSchemaAttribute;
 		if (attribute != null)
 		{
 			return attribute.Schema;
@@ -80,5 +94,22 @@ public abstract class DBContextAbstract<TDBContext>
 		_transaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
 		return _transaction;
+	}
+
+
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		base.OnConfiguring(optionsBuilder);
+
+		#region ms-sql
+		// ms-sql
+		// optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
+		#endregion
+
+		#region postgres
+		// postgres
+		optionsBuilder.UseNpgsql(
+						_configuration.GetConnectionString(ConnectionName()));
+		#endregion
 	}
 }

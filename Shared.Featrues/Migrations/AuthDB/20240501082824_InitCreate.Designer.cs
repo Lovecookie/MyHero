@@ -12,7 +12,7 @@ using Shared.Features.DatabaseCore;
 namespace Shared.Featrues.Migrations.AuthDB
 {
     [DbContext(typeof(AuthDBContext))]
-    [Migration("20240429144739_InitCreate")]
+    [Migration("20240501082824_InitCreate")]
     partial class InitCreate
     {
         /// <inheritdoc />

@@ -1,15 +1,16 @@
 ﻿
+using Microsoft.Extensions.Configuration;
 using Shared.Features.Constants;
 
 namespace Shared.Features.DatabaseCore;
 
-[DbSchemaAttribute("accountdb", "auth")]
+[SharedDbSchema("Account", "auth")]
 public class AuthDBContext : DBContextAbstract<AuthDBContext>
 {
 	public DbSet<UserAuthJwt> UserAuthJwts { get; set; }
 
-	public AuthDBContext(DbContextOptions<AuthDBContext> options, ILogger<DBContextAbstract<AuthDBContext>> logger, IMediator mediator)
-		: base(options, logger, mediator)
+	public AuthDBContext(DbContextOptions<AuthDBContext> options, ILogger<DBContextAbstract<AuthDBContext>> logger, IMediator mediator, IConfiguration configuration)
+		: base(options, logger, mediator, configuration)
 	{
 	}
 

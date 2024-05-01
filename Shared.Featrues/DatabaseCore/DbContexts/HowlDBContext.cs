@@ -3,13 +3,13 @@ using Shared.Features.Constants;
 
 namespace Shared.Features.DatabaseCore;
 
-[DbSchema("contentsdb", "howl")]
+[SharedDbSchema("Contents", "howl")]
 public class HowlDBContext : DBContextAbstract<HowlDBContext>
 {
 	public DbSet<HowlMessage> HowlMessages { get; set; }
 
-	public HowlDBContext(DbContextOptions<HowlDBContext> options, ILogger<DBContextAbstract<HowlDBContext>> logger, IMediator mediator)
-		: base(options, logger, mediator)
+	public HowlDBContext(DbContextOptions<HowlDBContext> options, ILogger<DBContextAbstract<HowlDBContext>> logger, IMediator mediator, IConfiguration configuration)
+		: base(options, logger, mediator, configuration)
 	{
 	}
 

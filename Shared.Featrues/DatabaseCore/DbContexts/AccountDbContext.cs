@@ -3,15 +3,15 @@ using Shared.Features.Constants;
 
 namespace Shared.Features.DatabaseCore;
 
-[DbSchema("accountdb", "account")]
+[SharedDbSchema("Account", "account")]
 public class AccountDBContext : DBContextAbstract<AccountDBContext>
 {
 	public DbSet<UserBasic> UserBasics { get; set; }
 	public DbSet<UserPatronage> UserPatronages { get; set; }
 	public DbSet<UserRecognition> UserRecognitions { get; set; }
 
-	public AccountDBContext(DbContextOptions<AccountDBContext> options, ILogger<DBContextAbstract<AccountDBContext>> logger, IMediator mediator)
-		: base(options, logger, mediator)
+	public AccountDBContext(DbContextOptions<AccountDBContext> options, ILogger<DBContextAbstract<AccountDBContext>> logger, IMediator mediator, IConfiguration configuration)
+		: base(options, logger, mediator, configuration)
 	{
 	}
 

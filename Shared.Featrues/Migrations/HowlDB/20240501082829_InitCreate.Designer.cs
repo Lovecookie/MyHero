@@ -12,8 +12,8 @@ using Shared.Features.DatabaseCore;
 namespace Shared.Featrues.Migrations.HowlDB
 {
     [DbContext(typeof(HowlDBContext))]
-    [Migration("20240501045855_UpdateHowl")]
-    partial class UpdateHowl
+    [Migration("20240501082829_InitCreate")]
+    partial class InitCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

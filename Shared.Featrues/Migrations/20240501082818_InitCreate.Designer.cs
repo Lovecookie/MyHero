@@ -12,7 +12,7 @@ using Shared.Features.DatabaseCore;
 namespace Shared.Featrues.Migrations
 {
     [DbContext(typeof(AccountDBContext))]
-    [Migration("20240429144736_InitCreate")]
+    [Migration("20240501082818_InitCreate")]
     partial class InitCreate
     {
         /// <inheritdoc />
