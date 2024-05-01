@@ -7,21 +7,20 @@ public static class ContentsDependencyInjectionExtensions
     {
 		var services = builder.Services;
 
-		//builder.AddNpgSqlDbContext();
+		builder.AddNpgSqlDbContext();
 
 		//services.AddAccountCommands();
-
 		//services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 		//services.AddHttpContextAccessor();
 
-  //      services.AddSingleton(TimeProvider.System);
+		//services.AddSingleton(TimeProvider.System);
 
-  //      services.AddScoped<IUserBasicRepository, UserBasicRepository>();
-  //      services.AddScoped<IUserAuthJwtRepository, UserAuthJwtRepository>();
+		//services.AddScoped<IUserBasicRepository, UserBasicRepository>();
+		//services.AddScoped<IUserAuthJwtRepository, UserAuthJwtRepository>();
 
 	    services.AddScoped<IHowlMessageRepository, HowlMessageRepository>();
-	  	services.AddScoped<IGroupRepository, GroupRepository>();
+	  	// services.AddScoped<IGroupRepository, GroupRepository>();
 
 		return builder;
     }

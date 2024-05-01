@@ -26,9 +26,7 @@ public static class AccountExtentions
 		app.MapAuthAPI();
 		app.MapAccountAPI();
         app.MapHeartbeatAPI();
-
-        app.MapSearchAPI();
-
+        
         return app;
     }
 }

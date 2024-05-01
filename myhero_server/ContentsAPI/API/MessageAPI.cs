@@ -21,10 +21,6 @@ public static class MessageAPI
             .WithSummary("Howl Message")
             .WithDescription("\n POST /howl");
 
-        root.MapGet("/user/by/{name:minlength(2)}", SearchUserByName)
-            .WithSummary("Search User")
-            .WithDescription("\n GET /user/by/{name:minlength(2)}");
-
         Log.Information("[Success MessageAPI mapped");
 
         return app;
@@ -48,19 +44,5 @@ public static class MessageAPI
 		}
 
 		return ToClientResults.Ok(opt.Value!);
-    }
-
-    public static async Task<IResult> SearchUserByName(
-        [AsParameters] ContentsServices services,
-        string name
-        )
-    {
-        var opt = await services.Mediator.Send(new SearchUserByStringCommand(name, EUserSearchType.Name));
-        if (!opt.HasValue)
-        {
-            return ToClientResults.Error("Not found.");
-        }
-
-        return ToClientResults.Ok(opt.Value!);
     }
 }

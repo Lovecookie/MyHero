@@ -19,11 +19,7 @@ public static class GroupAPI
 
         root.MapGet("/user/{uid:minlength(2)}", SearchGroup)
             .WithSummary("Get User")
-            .WithDescription("\n GET /user/{uid:minlength(2)}");
-
-        root.MapGet("/user/by/{name:minlength(2)}", SearchGroupByName)
-            .WithSummary("Search User")
-            .WithDescription("\n GET /user/by/{name:minlength(2)}");
+            .WithDescription("\n GET /user/{uid:minlength(2)}");        
 
         Log.Information("[Success] SearchAPI mapped");
 
@@ -47,19 +43,5 @@ public static class GroupAPI
 		}
 
 		return ToClientResults.Ok(opt.Value!);
-    }
-
-    public static async Task<IResult> SearchGroupByName(
-        [AsParameters] ContentsServices services,
-        string name
-        )
-    {
-        var opt = await services.Mediator.Send(new SearchGroupByNameCommand(name, EUserSearchType.Name));
-        if (!opt.HasValue)
-        {
-            return ToClientResults.Error("Not found.");
-        }
-
-        return ToClientResults.Ok(opt.Value!);
-    }
+    }   
 }

@@ -22,10 +22,6 @@ public static class FeedAPI
             .WithSummary("Get Feed")
             .WithDescription("\n GET /{uid:minlength(2)}");
 
-        //root.MapGet("/user/by/{name:minlength(2)}", SearchUserByName)
-        //    .WithSummary("Search User")
-        //    .WithDescription("\n GET /user/by/{name:minlength(2)}");
-
         Log.Information("[Success] FeedAPI mapped");
 
         return app;
