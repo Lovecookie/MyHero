@@ -2,20 +2,16 @@
 
 namespace Shared.Features.DatabaseCore;
 
-public interface IHowlMessageRepository : IDefaultRepository<HowlMessage>
+public interface IHowlMessageRepository : IDefaultRepository<UserHowl>
 { 
 
-	Task<TOptional<HowlMessage>> Find(Int64 userUid);
+	Task<TOptional<UserHowl>> Find(Int64 userUID);
 
-	Task<TOptional<HowlMessage>> RandomChoice();
+	Task<TOptional<UserHowl>> GetRandom(Int64 userUID);
 
-	Task<TOptional<List<HowlMessage>>> RandomChoices(Int32 count);
+	Task<TOptional<List<UserHowl>>> GetRandoms(Int64 userUID, Int32 count);
 
-	Task<TOptional<HowlMessage>> Create(HowlMessage entity);	
-
-	// Task<TOptional<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid);
-
-	// Task<TOptional<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID);
+	Task<TOptional<UserHowl>> Create(UserHowl entity);
 }
 
 public class HowlMessageRepository : IHowlMessageRepository
@@ -34,14 +30,14 @@ public class HowlMessageRepository : IHowlMessageRepository
 		_logger = logger;
 	}
 
-	public async Task<TOptional<HowlMessage>> Find(Int64 userUid)
+	public async Task<TOptional<UserHowl>> Find(Int64 userUid)
 	{
 		try
 		{
-			var entity = await _context.FindAsync<HowlMessage>(userUid);
+			var entity = await _context.FindAsync<UserHowl>(userUid);
 			if(entity == null)
 			{
-				return TOptional.Empty<HowlMessage>();
+				return TOptional.Empty<UserHowl>();
 			}
 
 			return TOptional.Success(entity);
@@ -51,21 +47,22 @@ public class HowlMessageRepository : IHowlMessageRepository
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<HowlMessage>("Not found");
+			return TOptional.Error<UserHowl>("Not found");
 		}
 	}
 
-	public async Task<TOptional<HowlMessage>> RandomChoice()
+	public async Task<TOptional<UserHowl>> GetRandom(Int64 userUID)
 	{	
 		try
 		{
-			var query = await _context.HowlMessages
+			var query = await _context.UserHowls
+				.Where(e => e.UserUID == userUID)
 				.OrderBy(e => Guid.NewGuid())
 				.FirstOrDefaultAsync();
 
 			if (query == null)
 			{
-				return TOptional.Empty<HowlMessage>();
+				return TOptional.Empty<UserHowl>();
 			}
 
 			return TOptional.Success(query);
@@ -73,22 +70,23 @@ public class HowlMessageRepository : IHowlMessageRepository
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
-			return TOptional.Error<HowlMessage>(ex.Message);
+			return TOptional.Error<UserHowl>(ex.Message);
 		}		
 	}	
 
-	public async Task<TOptional<List<HowlMessage>>> RandomChoices(Int32 count)
+	public async Task<TOptional<List<UserHowl>>> GetRandoms(Int64 userUID, Int32 count)
 	{
 		try
 		{
-			var query = await _context.HowlMessages
+			var query = await _context.UserHowls
+				.Where(e => e.UserUID == userUID)
 				.OrderBy(e => Guid.NewGuid())
 				.Take(count)
 				.ToListAsync();
 
 			if(query.IsNullOrEmpty())
 			{
-				return TOptional.Empty<List<HowlMessage>>();
+				return TOptional.Empty<List<UserHowl>>();
 			}
 
 			return TOptional.Success(query);
@@ -96,18 +94,18 @@ public class HowlMessageRepository : IHowlMessageRepository
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
-			return TOptional.Error<List<HowlMessage>>(ex.Message);
+			return TOptional.Error<List<UserHowl>>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<HowlMessage>> Create(HowlMessage entity)
+	public async Task<TOptional<UserHowl>> Create(UserHowl entity)
 	{
 		try
 		{
 			var newEntry = await _context.AddAsync(entity);
 			if( newEntry == null)
 			{
-				return TOptional.Unknown<HowlMessage>();
+				return TOptional.Unknown<UserHowl>();
 			}
 
 			return TOptional.Success(newEntry.Entity);
@@ -116,63 +114,7 @@ public class HowlMessageRepository : IHowlMessageRepository
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<HowlMessage>(ex.Message);
+			return TOptional.Error<UserHowl>(ex.Message);
 		}
 	}
-
-	// public async Task<TOptional<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid)
-	// {
-	// 	try
-	// 	{
-	// 		var query = await (from userBasic in _context.Set<UserBasic>()
-	// 					join userPatronage in _context.Set<UserPatronage>()
-	// 						on userBasic.UserUID equals userPatronage.UserUID into patronageGroup
-	// 					from userPatronageDefault in patronageGroup.DefaultIfEmpty()
-	// 					join userRecognition in _context.Set<UserRecognition>()
-	// 						on userBasic.UserUID equals userRecognition.UserUID into recognitionGroup
-	// 					from userRecognitionDefault in recognitionGroup.DefaultIfEmpty()
-	// 					where userBasic.UserUID == userUid
-	// 					select new { 
-	// 						userBasic,
-	// 						userPatronage = userPatronageDefault ?? new UserPatronage(),
-	// 						userRecognition = userRecognitionDefault ?? new UserRecognition()
-	// 					}).FirstOrDefaultAsync();
-
-	// 		if (query == null)
-	// 		{
-	// 			return TOptional.Empty<(UserBasic, UserPatronage, UserRecognition)>();
-	// 		}
-
-	// 		return TOptional.Success((query.userBasic, query.userPatronage, query.userRecognition));
-	// 	}
-	// 	catch(Exception ex)
-	// 	{
-	// 		_logger.LogError(ex.Message);
-
-	// 		return TOptional.Error<(UserBasic, UserPatronage, UserRecognition)>(ex.Message);
-	// 	}
-	// }
-
-	// public async Task<TOptional<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID)
-	// {
-	// 	try
-	// 	{
-	// 		var userBasic = await _context.UserBasics.FindAsync(userUid);
-	// 		if (userBasic == null)
-	// 		{
-	// 			return TOptional.Error<bool>("User not found");
-	// 		}
-
-	// 		userBasic.EncryptedUID = encryptedUID;
-	// 		//userBasic.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
-
-	// 		return TOptional.Success(true);
-	// 	}
-	// 	catch (Exception ex)
-	// 	{
-	// 		_logger.LogError(ex.Message);
-
-	// 		return TOptional.Error<bool>(ex.Message);
-	// 	}
-	// }	
 }

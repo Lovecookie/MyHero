@@ -34,7 +34,7 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOpti
             return TOptional.Error<string>("Unauthorized");
         }
 
-        var uidOpt = await principal.DecryptUID();
+        var uidOpt = await principal.TryDecryptUID();
         if (!uidOpt.HasValue)
         {
             return TOptional.Error<string>("Unauthorized");

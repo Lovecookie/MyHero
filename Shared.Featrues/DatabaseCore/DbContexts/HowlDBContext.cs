@@ -6,7 +6,7 @@ namespace Shared.Features.DatabaseCore;
 [SharedDbSchema("Contents", "howl")]
 public class HowlDBContext : DBContextAbstract<HowlDBContext>
 {
-	public DbSet<HowlMessage> HowlMessages { get; set; }
+	public DbSet<UserHowl> UserHowls { get; set; }
 
 	public HowlDBContext(DbContextOptions<HowlDBContext> options, ILogger<DBContextAbstract<HowlDBContext>> logger, IMediator mediator, IConfiguration configuration)
 		: base(options, logger, mediator, configuration)
@@ -24,7 +24,7 @@ public class HowlDBContext : DBContextAbstract<HowlDBContext>
 
 	private void _InitHowlMessage(ModelBuilder modelBuilder)
 	{
-		modelBuilder.Entity<HowlMessage>(entity =>
+		modelBuilder.Entity<UserHowl>(entity =>
 		{
 			entity.HasKey(e => new { e.UniqueKey, e.UserUID });
 

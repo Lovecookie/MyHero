@@ -26,19 +26,13 @@ public class MyProfileCommandHandler : IRequestHandler<MyProfileCommand, TOption
 
     public async Task<TOptional<MyProfileResponse>> Handle(MyProfileCommand request, CancellationToken cancellationToken)
     {
-        var principal = request.Principal;
-        if (!principal.IsAuthenticated())
+        var uidOpt = await request.Principal.TryDecryptUID();
+        if (!uidOpt.HasValue)
         {
             return TOptional.Error<MyProfileResponse>("Unauthorized");
         }
 
-        var decryptedUID = await request.Principal.DecryptUID();
-        if (!decryptedUID.HasValue)
-        {
-            return TOptional.Error<MyProfileResponse>("Unauthorized");
-        }
-
-        var queryOpt = await _userBasicRepository.SelectUserBasic(decryptedUID.Value);
+        var queryOpt = await _userBasicRepository.SelectUserBasic(uidOpt.Value);
         if (!queryOpt.HasValue)
         {
             return TOptional.Error<MyProfileResponse>(queryOpt.Message);

@@ -6,9 +6,14 @@ using Shared.Features.Auth;
 namespace Shared.Features.Extensions;
 public static class ClaimsPrincipalExtensions
 {
-	public static bool IsAuthenticated(this ClaimsPrincipal principal)
+	public static bool IsValidClaims(this ClaimsPrincipal principal)
 	{
-		return principal.Identity?.IsAuthenticated == true;
+		if( !principal.IsAuthenticated() )
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	public static string? GetEncryptedUID(this ClaimsPrincipal principal)
@@ -22,21 +27,21 @@ public static class ClaimsPrincipalExtensions
 		return claimUxt;
 	}
 
-	public static async Task<Int64?> DecryptUID(this ClaimsPrincipal principal)
+	public static async Task<TOptional<Int64>> TryDecryptUID(this ClaimsPrincipal principal)
 	{
 		var claimUxt = principal.FindFirstValue(CustomClaimType.Uxt);
 		if(claimUxt == null)
 		{
-			return null;
+			return TOptional.Error<Int64>("Not authenticated.");
 		}
 
 		var decryptedUID = await AesWrapper.DecryptAsInt64(claimUxt);
-		if(decryptedUID == 0)
+		if(!decryptedUID.HasValue)
 		{
-			return null;
+			return TOptional.Error<Int64>("Invalid ID.");
 		}
 
-		return decryptedUID;
+		return TOptional.Success(decryptedUID.Value);
 	}
 
 
@@ -60,5 +65,10 @@ public static class ClaimsPrincipalExtensions
 		}
 
 		return claimAccessType == CustomTokenType.Refresh;
+	}
+
+	private static bool IsAuthenticated(this ClaimsPrincipal principal)
+	{
+		return principal.Identity?.IsAuthenticated == true;
 	}
 }

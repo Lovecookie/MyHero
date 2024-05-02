@@ -4,7 +4,7 @@
 /// <summary>
 /// 
 /// </summary>
-public record SendHowlCommand(Int64 UserUID) : IRequest<TOptional<SendHowlResponse>>
+public record SendHowlCommand(ClaimsPrincipal Principal, string HowlMessage) : IRequest<TOptional<SendHowlResponse>>
 {
 }
 
@@ -14,23 +14,30 @@ public record SendHowlCommand(Int64 UserUID) : IRequest<TOptional<SendHowlRespon
 /// </summary>
 public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOptional<SendHowlResponse>>
 {
-    private readonly IUserBasicRepository _userBasicRepository;    
+    private readonly IHowlMessageRepository _howlMessageRepository;
 
-    public SendHowlCommandHandler(IUserBasicRepository userBasicRepository)
+    public SendHowlCommandHandler(IHowlMessageRepository howlMessageRepository)
     {
-        _userBasicRepository = userBasicRepository;        
+        _howlMessageRepository = howlMessageRepository;
     }
 
     public async Task<TOptional<SendHowlResponse>> Handle(SendHowlCommand request, CancellationToken cancellationToken)
     {
-        var opt = await _userBasicRepository.Find(request.UserUID);
-        if (!opt.HasValue)
+        var uidOpt = await request.Principal.TryDecryptUID();
+        if (!uidOpt.HasValue)
         {
-            return TOptional.Error<SendHowlResponse>("Not found user.");
+            return TOptional.Error<SendHowlResponse>(uidOpt.Message);
         }
 
-        var response = new SendHowlResponse(0);
+        var howlMessage = new UserHowl
+        {
+            UserUID = uidOpt.Value,
+            Message = request.HowlMessage,
+        };
 
-        return TOptional.Success(response);
+        var bResult = await _howlMessageRepository.Create(howlMessage);
+
+
+        return TOptional.Success(new SendHowlResponse());
     }
 }

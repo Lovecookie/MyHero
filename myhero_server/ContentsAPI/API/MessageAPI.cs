@@ -17,9 +17,15 @@ public static class MessageAPI
             .WithTags(apiName)
             .WithOpenApi();
 
-        root.MapPost("/howl", SendHowl)
-            .WithSummary("Howl Message")
-            .WithDescription("\n POST /howl");
+        root.MapPost("/sendHowl", SendHowl)
+            .WithSummary("Send howl message")
+            .WithDescription("\n POST /sendHowl")
+            .RequireAuthorization();
+
+        root.MapGet("/getRandomHowl", GetRandomHowl)
+            .WithSummary("Get random howl message")
+            .WithDescription("\n GET /getRandomHowl")
+            .RequireAuthorization();
 
         Log.Information("[Success MessageAPI mapped");
 
@@ -27,17 +33,11 @@ public static class MessageAPI
     }
 
     public static async Task<IResult> SendHowl(
+        ClaimsPrincipal principal,
         [FromBody] SendHowlRequest request,
-        [AsParameters] ContentsServices services,
-        string uid)
+        [AsParameters] ContentsServices services)
     {
-        var decryptedUID = await AesWrapper.DecryptAsInt64(uid);
-        if(!decryptedUID.HasValue)
-        {
-			return ToClientResults.Error("Invalid ID.");
-		}
-
-        var opt = await services.Mediator.Send(new SendHowlCommand(decryptedUID.Value));
+        var opt = await services.Mediator.Send(new SendHowlCommand(principal, request.Message));
 		if (!opt.HasValue)
         {
 			return ToClientResults.Error("Not found.");
@@ -45,4 +45,17 @@ public static class MessageAPI
 
 		return ToClientResults.Ok(opt.Value!);
     }
+
+    public static async Task<IResult> GetRandomHowl(
+        ClaimsPrincipal principal,
+        [AsParameters] ContentsServices services )
+        {
+            var opt = await services.Mediator.Send(new GetRandomHowlCommand(principal));
+            if (!opt.HasValue)
+            {
+                return ToClientResults.Error("Not found.");
+            }
+
+            return ToClientResults.Ok(opt.Value!);
+        }
 }

@@ -21,13 +21,7 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, TOpti
 
     public async Task<TOptional<bool>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
     {
-        var principal = request.Principal;
-        if (!principal.IsAuthenticated())
-        {
-            return TOptional.Error<bool>("User is not authenticated.");
-        }
-
-        var uid = await principal.DecryptUID();
+        var uid = await request.Principal.TryDecryptUID();
         if (!uid.HasValue)
         {
             return TOptional.Error<bool>("User is not authenticated.");

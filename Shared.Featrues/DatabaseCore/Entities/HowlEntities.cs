@@ -6,7 +6,7 @@ namespace Shared.Features.DatabaseCore;
 /// <summary>
 ///  UserBasic
 /// </summary>
-public class HowlMessage : UniqueKeyEntityBase, IAggregateRoot
+public class UserHowl : UniqueKeyEntityBase, IAggregateRoot
 {   
     public Int64 UserUID { get; set; } = 0;
     

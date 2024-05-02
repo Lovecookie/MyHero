@@ -15,13 +15,13 @@ public static class AccountApi
             .WithGroupName(ConstantVersion.GlobalVersionByLower)
             .WithTags(apiName)
             .WithOpenApi();
-        
+
         root.MapGet("/profile", Profile)
 			.WithSummary("My Profile")
 			.WithDescription("\n GET /profile")
 			.RequireAuthorization();
 
-        Serilog.Log.Information("[Success] MapAccountAPI mapped");        
+        Serilog.Log.Information("[Success] MapAccountAPI mapped");
 
         return app;
     }
