@@ -3,7 +3,7 @@
 namespace myhero_dotnet.AccountAPI;
 
 
-public static class HeartbeatApi
+public static class HeartbeatAPI
 {
 	public static WebApplication MapHeartbeatAPI(this WebApplication app)
 	{

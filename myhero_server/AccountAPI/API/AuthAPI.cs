@@ -3,7 +3,7 @@ using myhero_dotnet.Infrastructure;
 
 namespace myhero_dotnet.AccountAPI;
 
-public static class AuthApi
+public static class AuthAPI
 {
 	public static WebApplication MapAuthAPI(this WebApplication app)
 	{

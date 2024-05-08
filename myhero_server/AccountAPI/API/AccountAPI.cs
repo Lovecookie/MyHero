@@ -4,7 +4,7 @@
 namespace myhero_dotnet.AccountAPI;
 
 
-public static class AccountApi
+public static class AccountAPI
 {
     public static WebApplication MapAccountAPI(this WebApplication app)
     {
