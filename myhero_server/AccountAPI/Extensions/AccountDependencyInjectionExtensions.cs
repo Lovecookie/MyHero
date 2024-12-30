@@ -25,19 +25,17 @@ public static class AccountDependencyInjectionExtensions
 
 	private static void AddNpgSqlDbContext(this IHostApplicationBuilder builder)
 	{
-		builder.AddNpgsqlDbContext<AccountDBContext>(AccountDBContext.ConnectionName(),
-			settings => settings.DbContextPooling = false,
-			configureDbContextOptions: builder =>
-			{
-				builder.UseSnakeCaseNamingConvention();
-			});
+		builder.Services.AddDbContextPool<AccountDBContext>(opt =>
+			opt
+				.UseNpgsql(builder.Configuration.GetConnectionString(AccountDBContext.ConnectionName()))
+				.UseSnakeCaseNamingConvention()
+		);
 
-		builder.AddNpgsqlDbContext<AuthDBContext>(AuthDBContext.ConnectionName(),
-			settings => settings.DbContextPooling = false,
-			configureDbContextOptions: builder =>
-			{
-				builder.UseSnakeCaseNamingConvention();
-			});
+		builder.Services.AddDbContextPool<AuthDBContext>(opt =>
+			opt
+				.UseNpgsql(builder.Configuration.GetConnectionString(AuthDBContext.ConnectionName()))
+				.UseSnakeCaseNamingConvention()
+		);
 	}
 
 	private static void AddAccountCommands(this IServiceCollection services)

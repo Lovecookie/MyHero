@@ -83,8 +83,8 @@ public class HowlMessageRepository : IHowlMessageRepository
 				.OrderBy(e => Guid.NewGuid())
 				.Take(count)
 				.ToListAsync();
-
-			if(query.IsNullOrEmpty())
+			
+			if(query == null)
 			{
 				return TOptional.Empty<List<UserHowl>>();
 			}

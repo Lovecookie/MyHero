@@ -8,17 +8,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "myhero_dotnet", "myhero_dot
 		{01D4EB6D-3105-407E-97E2-C07185C70CFF} = {01D4EB6D-3105-407E-97E2-C07185C70CFF}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Infrastructure", "..\Util.Infrastructure\Util.Infrastructure.csproj", "{8B3E32CA-4BAC-4575-9518-BA8679B73459}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Featrues", "..\Shared.Featrues\Shared.Featrues.csproj", "{01D4EB6D-3105-407E-97E2-C07185C70CFF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8B3E32CA-4BAC-4575-9518-BA8679B73459} = {8B3E32CA-4BAC-4575-9518-BA8679B73459}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{4A2447F5-88DD-4687-A121-9C5E6180F11F}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Infrastructure", "..\..\util.infrastructure\Util.Infrastructure.csproj", "{E37548A8-40C0-48C2-AF05-8A176A61ABB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,14 +27,14 @@ Global
 		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{450A4549-B0F2-4EF6-ABF8-BD4E32BC5F11}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B3E32CA-4BAC-4575-9518-BA8679B73459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B3E32CA-4BAC-4575-9518-BA8679B73459}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B3E32CA-4BAC-4575-9518-BA8679B73459}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B3E32CA-4BAC-4575-9518-BA8679B73459}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01D4EB6D-3105-407E-97E2-C07185C70CFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01D4EB6D-3105-407E-97E2-C07185C70CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01D4EB6D-3105-407E-97E2-C07185C70CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01D4EB6D-3105-407E-97E2-C07185C70CFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E37548A8-40C0-48C2-AF05-8A176A61ABB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37548A8-40C0-48C2-AF05-8A176A61ABB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37548A8-40C0-48C2-AF05-8A176A61ABB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37548A8-40C0-48C2-AF05-8A176A61ABB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

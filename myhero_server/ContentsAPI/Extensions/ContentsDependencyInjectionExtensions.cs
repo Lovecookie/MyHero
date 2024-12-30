@@ -27,12 +27,11 @@ public static class ContentsDependencyInjectionExtensions
 
 	private static void AddNpgSqlDbContext(this IHostApplicationBuilder builder)
 	{
-		builder.AddNpgsqlDbContext<HowlDBContext>(HowlDBContext.ConnectionName(),
-			settings => settings.DbContextPooling = false,
-			configureDbContextOptions: builder =>
-			{
-				builder.UseSnakeCaseNamingConvention();
-			});
+        builder.Services.AddDbContextPool<HowlDBContext>(opt =>
+            opt
+                .UseNpgsql(builder.Configuration.GetConnectionString(HowlDBContext.ConnectionName()))
+                .UseSnakeCaseNamingConvention()
+        );
 	}
 
 	private static void AddContentsCommands(this IServiceCollection services)
