@@ -4,7 +4,7 @@ namespace Shared.Features.DatabaseCore;
 
 public interface IUserAuthJwtRepository : IDefaultRepository<UserAuthJwt>
 {
-	Task<TOptional<UserBasic>> FindAsync(Int64 userUid);
+	Task<TOutcome<UserBasic>> FindAsync(Int64 userUid);
 	Task<bool> Add(UserAuthJwt userAuthJwt);
 	Task<bool> UpdateAccessToken(Int64 userUid, string accessToken);
 	Task<bool> UpdateRefreshToken(Int64 userUid, string accessToken, string refreshToken);
@@ -26,24 +26,24 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 		_logger = logger;
 	}
 
-	public async Task<TOptional<UserBasic>> FindAsync(Int64 userUid)
+	public async Task<TOutcome<UserBasic>> FindAsync(Int64 userUid)
 	{
 		try
 		{
 			var entity = await _context.FindAsync<UserBasic>(new { UserUid = userUid });
 			if(entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>("Not found");
+			return TOutcome.Error<UserBasic>("Not found");
 		}
 	}
 

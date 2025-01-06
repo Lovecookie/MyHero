@@ -5,14 +5,14 @@ namespace Shared.Features.DatabaseCore;
 public interface IUserBasicRepository : IDefaultRepository<UserBasic>
 { 
 
-	Task<TOptional<UserBasic>> Find(Int64 userUid);
-	Task<TOptional<UserBasic>> FindById(string id);
-	Task<TOptional<UserBasic>> FindByEmail(string email);
-	Task<TOptional<UserBasic>> Create(UserBasic entity);
+	Task<TOutcome<UserBasic>> Find(Int64 userUid);
+	Task<TOutcome<UserBasic>> FindById(string id);
+	Task<TOutcome<UserBasic>> FindByEmail(string email);
+	Task<TOutcome<UserBasic>> Create(UserBasic entity);
 
-	Task<TOptional<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid);
+	Task<TOutcome<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid);
 
-	Task<TOptional<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID);
+	Task<TOutcome<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID);
 }
 
 public class UserBasicRepository : IUserBasicRepository
@@ -31,28 +31,28 @@ public class UserBasicRepository : IUserBasicRepository
 		_logger = logger;
 	}
 
-	public async Task<TOptional<UserBasic>> Find(Int64 userUid)
+	public async Task<TOutcome<UserBasic>> Find(Int64 userUid)
 	{
 		try
 		{
 			var entity = await _context.FindAsync<UserBasic>(userUid);
 			if(entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>("Not found");
+			return TOutcome.Error<UserBasic>("Not found");
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> FindById(string id)
+	public async Task<TOutcome<UserBasic>> FindById(string id)
 	{
 		try
 		{
@@ -61,20 +61,20 @@ public class UserBasicRepository : IUserBasicRepository
 				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>(ex.Message);
+			return TOutcome.Error<UserBasic>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> FindByEmail(string email)
+	public async Task<TOutcome<UserBasic>> FindByEmail(string email)
 	{
 		try
 		{
@@ -83,20 +83,20 @@ public class UserBasicRepository : IUserBasicRepository
 				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>(ex.Message);
+			return TOutcome.Error<UserBasic>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> Create(UserBasic entity)
+	public async Task<TOutcome<UserBasic>> Create(UserBasic entity)
 	{
 		entity.DateCreated = _timeProvider.GetUtcNow().UtcDateTime;
 		entity.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
@@ -106,20 +106,20 @@ public class UserBasicRepository : IUserBasicRepository
 			var newEntry = await _context.AddAsync(entity);
 			if( newEntry == null)
 			{
-				return TOptional.Unknown<UserBasic>();
+				return TOutcome.Unknown<UserBasic>();
 			}
 
-			return TOptional.Success(newEntry.Entity);
+			return TOutcome.Success(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>(ex.Message);
+			return TOutcome.Error<UserBasic>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid)
+	public async Task<TOutcome<(UserBasic, UserPatronage, UserRecognition)>> SelectUserBasic(Int64 userUid)
 	{
 		try
 		{
@@ -139,39 +139,39 @@ public class UserBasicRepository : IUserBasicRepository
 
 			if (query == null)
 			{
-				return TOptional.Empty<(UserBasic, UserPatronage, UserRecognition)>();
+				return TOutcome.Empty<(UserBasic, UserPatronage, UserRecognition)>();
 			}
 
-			return TOptional.Success((query.userBasic, query.userPatronage, query.userRecognition));
+			return TOutcome.Success((query.userBasic, query.userPatronage, query.userRecognition));
 		}
 		catch(Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<(UserBasic, UserPatronage, UserRecognition)>(ex.Message);
+			return TOutcome.Error<(UserBasic, UserPatronage, UserRecognition)>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID)
+	public async Task<TOutcome<bool>> UpdateEncryptedUID(Int64 userUid, string encryptedUID)
 	{
 		try
 		{
 			var userBasic = await _context.UserBasics.FindAsync(userUid);
 			if (userBasic == null)
 			{
-				return TOptional.Error<bool>("User not found");
+				return TOutcome.Error<bool>("User not found");
 			}
 
 			userBasic.EncryptedUID = encryptedUID;
 			//userBasic.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
 
-			return TOptional.Success(true);
+			return TOutcome.Success(true);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<bool>(ex.Message);
+			return TOutcome.Error<bool>(ex.Message);
 		}
 	}	
 }

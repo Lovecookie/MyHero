@@ -3,14 +3,14 @@
 /// <summary>
 /// 
 /// </summary>
-public record LogoutUserCommand(ClaimsPrincipal Principal) : IRequest<TOptional<bool>>
+public record LogoutUserCommand(ClaimsPrincipal Principal) : IRequest<TOutcome<bool>>
 {
 }
 
 /// <summary>
 /// 
 /// </summary>
-public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, TOptional<bool>>
+public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, TOutcome<bool>>
 {
     private readonly IUserAuthJwtRepository _userAuthJwtRepository;
 
@@ -19,27 +19,27 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, TOpti
         _userAuthJwtRepository = userAuthJwtRepository;
     }
 
-    public async Task<TOptional<bool>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<bool>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
     {
         var uid = await request.Principal.TryDecryptUID();
         if (!uid.HasValue)
         {
-            return TOptional.Error<bool>("User is not authenticated.");
+            return TOutcome.Error<bool>("User is not authenticated.");
         }
 
         var removeJWT = "";
         var bResult = await _userAuthJwtRepository.UpdateRefreshToken(uid.Value, removeJWT, removeJWT);
         if (!bResult)
         {
-            return TOptional.Error<bool>("Failed to remove refresh token.");
+            return TOutcome.Error<bool>("Failed to remove refresh token.");
         }
 
         bResult = await _userAuthJwtRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         if (!bResult)
         {
-            return TOptional.Error<bool>("Failed to save user.");
+            return TOutcome.Error<bool>("Failed to save user.");
         }
 
-        return TOptional.Success(true);
+        return TOutcome.Success(true);
     }
 }

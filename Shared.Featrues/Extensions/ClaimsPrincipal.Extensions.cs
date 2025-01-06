@@ -27,21 +27,21 @@ public static class ClaimsPrincipalExtensions
 		return claimUxt;
 	}
 
-	public static async Task<TOptional<Int64>> TryDecryptUID(this ClaimsPrincipal principal)
+	public static async Task<TOutcome<Int64>> TryDecryptUID(this ClaimsPrincipal principal)
 	{
 		var claimUxt = principal.FindFirstValue(CustomClaimType.Uxt);
 		if(claimUxt == null)
 		{
-			return TOptional.Error<Int64>("Not authenticated.");
+			return TOutcome.Error<Int64>("Not authenticated.");
 		}
 
 		var decryptedUID = await AesWrapper.DecryptAsInt64(claimUxt);
 		if(!decryptedUID.HasValue)
 		{
-			return TOptional.Error<Int64>("Invalid ID.");
+			return TOutcome.Error<Int64>("Invalid ID.");
 		}
 
-		return TOptional.Success(decryptedUID.Value);
+		return TOutcome.Success(decryptedUID.Value);
 	}
 
 

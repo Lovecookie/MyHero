@@ -4,7 +4,7 @@
 /// <summary>
 /// 
 /// </summary>
-public record SearchUserByStringCommand(string SearchWord, EUserSearchType SearchType) : IRequest<TOptional<SearchUserResponse>>
+public record SearchUserByStringCommand(string SearchWord, EUserSearchType SearchType) : IRequest<TOutcome<SearchUserResponse>>
 {
 }
 
@@ -12,7 +12,7 @@ public record SearchUserByStringCommand(string SearchWord, EUserSearchType Searc
 /// <summary>
 /// 
 /// </summary>
-public class SearchUserByStringCommandHandler : IRequestHandler<SearchUserByStringCommand, TOptional<SearchUserResponse>>
+public class SearchUserByStringCommandHandler : IRequestHandler<SearchUserByStringCommand, TOutcome<SearchUserResponse>>
 {
     private readonly IUserBasicRepository _userBasicRepository;    
 
@@ -21,16 +21,16 @@ public class SearchUserByStringCommandHandler : IRequestHandler<SearchUserByStri
         _userBasicRepository = userBasicRepository;        
     }
 
-    public async Task<TOptional<SearchUserResponse>> Handle(SearchUserByStringCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<SearchUserResponse>> Handle(SearchUserByStringCommand request, CancellationToken cancellationToken)
     {
         var opt = await _userBasicRepository.FindById(request.SearchWord);
         if (!opt.HasValue)
         {
-            return TOptional.Error<SearchUserResponse>("Not found user.");
+            return TOutcome.Error<SearchUserResponse>("Not found user.");
         }
 
         var response = new SearchUserResponse(opt.Value!.UserID, opt.Value!.PictureUrl);
 
-        return TOptional.Success(response);
+        return TOutcome.Success(response);
     }
 }

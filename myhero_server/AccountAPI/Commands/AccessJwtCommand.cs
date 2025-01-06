@@ -5,7 +5,7 @@ namespace myhero_dotnet.AccountAPI;
 /// 
 /// </summary>
 /// <param name="Request"></param>
-public class AccessJwtCommand(long userUID, string email) : IRequest<TOptional<TokenInfo>>
+public class AccessJwtCommand(long userUID, string email) : IRequest<TOutcome<TokenInfo>>
 {
     public long UserUID { get; init; } = userUID;
 
@@ -15,18 +15,18 @@ public class AccessJwtCommand(long userUID, string email) : IRequest<TOptional<T
 /// <summary>
 /// 
 /// </summary>
-public class AccessJwtCommandHandler : IRequestHandler<AccessJwtCommand, TOptional<TokenInfo>>
+public class AccessJwtCommandHandler : IRequestHandler<AccessJwtCommand, TOutcome<TokenInfo>>
 {
     private readonly IUserAuthJwtRepository _userAuthJwtRepository;
     private readonly JwtFields _jwtFields;
-
+    
     public AccessJwtCommandHandler(IUserAuthJwtRepository userAuthJwtRepository, IOptions<JwtFields> jwtFields)
     {
         _userAuthJwtRepository = userAuthJwtRepository;
         _jwtFields = jwtFields.Value;
     }
 
-    public async Task<TOptional<TokenInfo>> Handle(AccessJwtCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<TokenInfo>> Handle(AccessJwtCommand request, CancellationToken cancellationToken)
     {
         var accessToken = await TokenHelper.GenerateAccessJwt(request.UserUID, _jwtFields);
         var refreshToken = await TokenHelper.GenerateRefreshJwt(request.UserUID, _jwtFields);
@@ -41,15 +41,15 @@ public class AccessJwtCommandHandler : IRequestHandler<AccessJwtCommand, TOption
         var bResult = await _userAuthJwtRepository.Add(userAuthJwt);
         if (!bResult)
         {
-            return TOptional.Error<TokenInfo>("Error updating refresh token");
+            return TOutcome.Error<TokenInfo>("Error updating refresh token");
         }
 
         bResult = await _userAuthJwtRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         if (!bResult)
         {
-            return TOptional.Error<TokenInfo>("Error updating refresh token");
+            return TOutcome.Error<TokenInfo>("Error updating refresh token");
         }
 
-        return TOptional.Success(new TokenInfo(accessToken, refreshToken));
+        return TOutcome.Success(new TokenInfo(accessToken, refreshToken));
     }
 }

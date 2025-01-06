@@ -3,14 +3,14 @@
 /// <summary>
 /// 
 /// </summary>
-public record MyProfileCommand(ClaimsPrincipal Principal) : IRequest<TOptional<MyProfileResponse>>
+public record MyProfileCommand(ClaimsPrincipal Principal) : IRequest<TOutcome<MyProfileResponse>>
 {
 }
 
 /// <summary>
 /// 
 /// </summary>
-public class MyProfileCommandHandler : IRequestHandler<MyProfileCommand, TOptional<MyProfileResponse>>
+public class MyProfileCommandHandler : IRequestHandler<MyProfileCommand, TOutcome<MyProfileResponse>>
 {
     //private readonly AccountDBContext _context;
     private readonly IUserBasicRepository _userBasicRepository;
@@ -24,22 +24,22 @@ public class MyProfileCommandHandler : IRequestHandler<MyProfileCommand, TOption
         _mapper = mapper;
     }
 
-    public async Task<TOptional<MyProfileResponse>> Handle(MyProfileCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<MyProfileResponse>> Handle(MyProfileCommand request, CancellationToken cancellationToken)
     {
         var uidOpt = await request.Principal.TryDecryptUID();
         if (!uidOpt.HasValue)
         {
-            return TOptional.Error<MyProfileResponse>("Unauthorized");
+            return TOutcome.Error<MyProfileResponse>("Unauthorized");
         }
 
         var queryOpt = await _userBasicRepository.SelectUserBasic(uidOpt.Value);
         if (!queryOpt.HasValue)
         {
-            return TOptional.Error<MyProfileResponse>(queryOpt.Message);
+            return TOutcome.Error<MyProfileResponse>(queryOpt.Message);
         }
 
         var userBasicTuple = queryOpt.Value;
-        return TOptional.Success(
+        return TOutcome.Success(
             new MyProfileResponse(
                 PicURL: userBasicTuple.Item1.PictureUrl,
                 FollowersCount: userBasicTuple.Item2.FollowerCount,

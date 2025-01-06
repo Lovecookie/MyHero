@@ -13,6 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{4A2447F5-88DD-4687-A121-9C5E6180F11F}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.env = .env
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Infrastructure", "..\..\util.infrastructure\Util.Infrastructure.csproj", "{E37548A8-40C0-48C2-AF05-8A176A61ABB3}"

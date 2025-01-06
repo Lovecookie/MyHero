@@ -6,10 +6,10 @@ namespace Shared.Features.DatabaseCore;
 public interface IGroupRepository : IDefaultRepository<ChurchGroup>
 { 
 
-	Task<TOptional<UserBasic>> Find(Int64 userUid);
-	Task<TOptional<UserBasic>> FindById(string id);
-	Task<TOptional<UserBasic>> FindByEmail(string email);
-	Task<TOptional<UserBasic>> Create(UserBasic entity);
+	Task<TOutcome<UserBasic>> Find(Int64 userUid);
+	Task<TOutcome<UserBasic>> FindById(string id);
+	Task<TOutcome<UserBasic>> FindByEmail(string email);
+	Task<TOutcome<UserBasic>> Create(UserBasic entity);
 
 }
 
@@ -29,28 +29,28 @@ public class GroupRepository : IGroupRepository
 		_logger = logger;
 	}
 
-	public async Task<TOptional<UserBasic>> Find(Int64 userUid)
+	public async Task<TOutcome<UserBasic>> Find(Int64 userUid)
 	{
 		try
 		{
 			var entity = await _context.FindAsync<UserBasic>(userUid);
 			if(entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>("Not found");
+			return TOutcome.Error<UserBasic>("Not found");
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> FindById(string id)
+	public async Task<TOutcome<UserBasic>> FindById(string id)
 	{
 		try
 		{
@@ -59,20 +59,20 @@ public class GroupRepository : IGroupRepository
 				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>(ex.Message);
+			return TOutcome.Error<UserBasic>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> FindByEmail(string email)
+	public async Task<TOutcome<UserBasic>> FindByEmail(string email)
 	{
 		try
 		{
@@ -81,20 +81,20 @@ public class GroupRepository : IGroupRepository
 				.FirstOrDefaultAsync();
 			if (entity == null)
 			{
-				return TOptional.Empty<UserBasic>();
+				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>(ex.Message);
+			return TOutcome.Error<UserBasic>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<UserBasic>> Create(UserBasic entity)
+	public async Task<TOutcome<UserBasic>> Create(UserBasic entity)
 	{
 		entity.DateCreated = _timeProvider.GetUtcNow().UtcDateTime;
 		entity.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
@@ -104,16 +104,16 @@ public class GroupRepository : IGroupRepository
 			var newEntry = await _context.AddAsync(entity);
 			if( newEntry == null)
 			{
-				return TOptional.Unknown<UserBasic>();
+				return TOutcome.Unknown<UserBasic>();
 			}
 
-			return TOptional.Success(newEntry.Entity);
+			return TOutcome.Success(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserBasic>(ex.Message);
+			return TOutcome.Error<UserBasic>(ex.Message);
 		}
 	}
 

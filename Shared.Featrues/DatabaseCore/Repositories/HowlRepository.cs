@@ -5,13 +5,13 @@ namespace Shared.Features.DatabaseCore;
 public interface IHowlMessageRepository : IDefaultRepository<UserHowl>
 { 
 
-	Task<TOptional<UserHowl>> Find(Int64 userUID);
+	Task<TOutcome<UserHowl>> Find(Int64 userUID);
 
-	Task<TOptional<UserHowl>> GetRandom(Int64 userUID);
+	Task<TOutcome<UserHowl>> GetRandom(Int64 userUID);
 
-	Task<TOptional<List<UserHowl>>> GetRandoms(Int64 userUID, Int32 count);
+	Task<TOutcome<List<UserHowl>>> GetRandoms(Int64 userUID, Int32 count);
 
-	Task<TOptional<UserHowl>> Create(UserHowl entity);
+	Task<TOutcome<UserHowl>> Create(UserHowl entity);
 }
 
 public class HowlMessageRepository : IHowlMessageRepository
@@ -30,28 +30,28 @@ public class HowlMessageRepository : IHowlMessageRepository
 		_logger = logger;
 	}
 
-	public async Task<TOptional<UserHowl>> Find(Int64 userUid)
+	public async Task<TOutcome<UserHowl>> Find(Int64 userUid)
 	{
 		try
 		{
 			var entity = await _context.FindAsync<UserHowl>(userUid);
 			if(entity == null)
 			{
-				return TOptional.Empty<UserHowl>();
+				return TOutcome.Empty<UserHowl>();
 			}
 
-			return TOptional.Success(entity);
+			return TOutcome.Success(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserHowl>("Not found");
+			return TOutcome.Error<UserHowl>("Not found");
 		}
 	}
 
-	public async Task<TOptional<UserHowl>> GetRandom(Int64 userUID)
+	public async Task<TOutcome<UserHowl>> GetRandom(Int64 userUID)
 	{	
 		try
 		{
@@ -62,19 +62,19 @@ public class HowlMessageRepository : IHowlMessageRepository
 
 			if (query == null)
 			{
-				return TOptional.Empty<UserHowl>();
+				return TOutcome.Empty<UserHowl>();
 			}
 
-			return TOptional.Success(query);
+			return TOutcome.Success(query);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
-			return TOptional.Error<UserHowl>(ex.Message);
+			return TOutcome.Error<UserHowl>(ex.Message);
 		}		
 	}	
 
-	public async Task<TOptional<List<UserHowl>>> GetRandoms(Int64 userUID, Int32 count)
+	public async Task<TOutcome<List<UserHowl>>> GetRandoms(Int64 userUID, Int32 count)
 	{
 		try
 		{
@@ -86,35 +86,35 @@ public class HowlMessageRepository : IHowlMessageRepository
 			
 			if(query == null)
 			{
-				return TOptional.Empty<List<UserHowl>>();
+				return TOutcome.Empty<List<UserHowl>>();
 			}
 
-			return TOptional.Success(query);
+			return TOutcome.Success(query);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
-			return TOptional.Error<List<UserHowl>>(ex.Message);
+			return TOutcome.Error<List<UserHowl>>(ex.Message);
 		}
 	}
 
-	public async Task<TOptional<UserHowl>> Create(UserHowl entity)
+	public async Task<TOutcome<UserHowl>> Create(UserHowl entity)
 	{
 		try
 		{
 			var newEntry = await _context.AddAsync(entity);
 			if( newEntry == null)
 			{
-				return TOptional.Unknown<UserHowl>();
+				return TOutcome.Unknown<UserHowl>();
 			}
 
-			return TOptional.Success(newEntry.Entity);
+			return TOutcome.Success(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOptional.Error<UserHowl>(ex.Message);
+			return TOutcome.Error<UserHowl>(ex.Message);
 		}
 	}
 }

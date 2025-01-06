@@ -5,7 +5,7 @@ namespace myhero_dotnet.AccountAPI;
 /// 
 /// </summary>
 /// <param name="Request"></param>
-public class RefreshJwtCommand(ClaimsPrincipal principal) : IRequest<TOptional<string>>
+public class RefreshJwtCommand(ClaimsPrincipal principal) : IRequest<TOutcome<string>>
 {
     public ClaimsPrincipal Principal { get; init; } = principal;
 }
@@ -13,7 +13,7 @@ public class RefreshJwtCommand(ClaimsPrincipal principal) : IRequest<TOptional<s
 /// <summary>
 /// 
 /// </summary>
-public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOptional<string>>
+public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOutcome<string>>
 {
     private readonly IUserBasicRepository _userBasicRepository;
     private readonly IUserAuthJwtRepository _userAuthJwtRepository;
@@ -26,30 +26,30 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOpti
         _jwtFields = jwtFields.Value;
     }
 
-    public async Task<TOptional<string>> Handle(RefreshJwtCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<string>> Handle(RefreshJwtCommand request, CancellationToken cancellationToken)
     {
         var principal = request.Principal;
         if (!principal.IsRefreshType())
         {
-            return TOptional.Error<string>("Unauthorized");
+            return TOutcome.Error<string>("Unauthorized");
         }
 
         var uidOpt = await principal.TryDecryptUID();
         if (!uidOpt.HasValue)
         {
-            return TOptional.Error<string>("Unauthorized");
+            return TOutcome.Error<string>("Unauthorized");
         }
 
         var userUID = uidOpt.Value;
         if (userUID == 0)
         {
-            return TOptional.Error<string>("Unauthorized");
+            return TOutcome.Error<string>("Unauthorized");
         }
 
         var userBasicOpt = await _userBasicRepository.Find(userUID);
         if (!userBasicOpt.HasValue)
         {
-            return TOptional.Error<string>("User not found");
+            return TOutcome.Error<string>("User not found");
         }
 
         var userBasic = userBasicOpt.Value!;
@@ -59,11 +59,11 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOpti
         var bResult = await _userAuthJwtRepository.UpdateAccessToken(userBasic.UserUID, accessToken);
         if (!bResult)
         {
-            return TOptional.Error<string>("Error updating refresh token");
+            return TOutcome.Error<string>("Error updating refresh token");
         }
 
         await _userAuthJwtRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-        return TOptional.Success(accessToken);
+        return TOutcome.Success(accessToken);
     }
 }

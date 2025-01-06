@@ -4,7 +4,7 @@
 /// <summary>
 /// 
 /// </summary>
-public record SearchUserCommand(Int64 UserUID) : IRequest<TOptional<SearchUserResponse>>
+public record SearchUserCommand(Int64 UserUID) : IRequest<TOutcome<SearchUserResponse>>
 {
 }
 
@@ -12,7 +12,7 @@ public record SearchUserCommand(Int64 UserUID) : IRequest<TOptional<SearchUserRe
 /// <summary>
 /// 
 /// </summary>
-public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOptional<SearchUserResponse>>
+public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOutcome<SearchUserResponse>>
 {
     private readonly IUserBasicRepository _userBasicRepository;    
 
@@ -21,16 +21,16 @@ public class SearchUserCommandHandler : IRequestHandler<SearchUserCommand, TOpti
         _userBasicRepository = userBasicRepository;        
     }
 
-    public async Task<TOptional<SearchUserResponse>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<SearchUserResponse>> Handle(SearchUserCommand request, CancellationToken cancellationToken)
     {
         var opt = await _userBasicRepository.Find(request.UserUID);
         if (!opt.HasValue)
         {
-            return TOptional.Error<SearchUserResponse>("Not found user.");
+            return TOutcome.Error<SearchUserResponse>("Not found user.");
         }
 
         var response = new SearchUserResponse(opt.Value!.UserID, opt.Value!.PictureUrl);
 
-        return TOptional.Success(response);
+        return TOutcome.Success(response);
     }
 }

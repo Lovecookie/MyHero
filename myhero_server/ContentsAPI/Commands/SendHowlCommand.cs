@@ -4,7 +4,7 @@
 /// <summary>
 /// 
 /// </summary>
-public record SendHowlCommand(ClaimsPrincipal Principal, string HowlMessage) : IRequest<TOptional<SendHowlResponse>>
+public record SendHowlCommand(ClaimsPrincipal Principal, string HowlMessage) : IRequest<TOutcome<SendHowlResponse>>
 {
 }
 
@@ -12,7 +12,7 @@ public record SendHowlCommand(ClaimsPrincipal Principal, string HowlMessage) : I
 /// <summary>
 /// 
 /// </summary>
-public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOptional<SendHowlResponse>>
+public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOutcome<SendHowlResponse>>
 {
     private readonly IHowlMessageRepository _howlMessageRepository;
 
@@ -21,12 +21,12 @@ public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOptional
         _howlMessageRepository = howlMessageRepository;
     }
 
-    public async Task<TOptional<SendHowlResponse>> Handle(SendHowlCommand request, CancellationToken cancellationToken)
+    public async Task<TOutcome<SendHowlResponse>> Handle(SendHowlCommand request, CancellationToken cancellationToken)
     {
         var uidOpt = await request.Principal.TryDecryptUID();
         if (!uidOpt.HasValue)
         {
-            return TOptional.Error<SendHowlResponse>(uidOpt.Message);
+            return TOutcome.Error<SendHowlResponse>(uidOpt.Message);
         }
 
         var howlMessage = new UserHowl
@@ -38,6 +38,6 @@ public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOptional
         var bResult = await _howlMessageRepository.Create(howlMessage);
 
 
-        return TOptional.Success(new SendHowlResponse());
+        return TOutcome.Success(new SendHowlResponse());
     }
 }
