@@ -38,7 +38,7 @@ public static class MessageAPI
         [AsParameters] ContentsServices services)
     {
         var opt = await services.Mediator.Send(new SendHowlCommand(principal, request.Message));
-		if (!opt.HasValue)
+		if (!opt.Success)
         {
 			return ToClientResults.Error("Not found.");
 		}
@@ -51,7 +51,7 @@ public static class MessageAPI
         [AsParameters] ContentsServices services )
         {
             var opt = await services.Mediator.Send(new GetRandomHowlCommand(principal));
-            if (!opt.HasValue)
+            if (!opt.Success)
             {
                 return ToClientResults.Error("Not found.");
             }

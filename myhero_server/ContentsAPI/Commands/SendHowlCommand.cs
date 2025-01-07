@@ -24,9 +24,9 @@ public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOutcome<
     public async Task<TOutcome<SendHowlResponse>> Handle(SendHowlCommand request, CancellationToken cancellationToken)
     {
         var uidOpt = await request.Principal.TryDecryptUID();
-        if (!uidOpt.HasValue)
+        if (!uidOpt.Success)
         {
-            return TOutcome.Error<SendHowlResponse>(uidOpt.Message);
+            return TOutcome.Err<SendHowlResponse>(uidOpt.Message);
         }
 
         var howlMessage = new UserHowl
@@ -38,6 +38,6 @@ public class SendHowlCommandHandler : IRequestHandler<SendHowlCommand, TOutcome<
         var bResult = await _howlMessageRepository.Create(howlMessage);
 
 
-        return TOutcome.Success(new SendHowlResponse());
+        return TOutcome.Ok(new SendHowlResponse());
     }
 }

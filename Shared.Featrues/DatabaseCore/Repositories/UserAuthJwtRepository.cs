@@ -36,14 +36,14 @@ public class UserAuthJwtRepository : IUserAuthJwtRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>("Not found");
+			return TOutcome.Err<UserBasic>("Not found");
 		}
 	}
 

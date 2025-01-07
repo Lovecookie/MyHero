@@ -24,13 +24,13 @@ public class SearchGroupCommandHandler : IRequestHandler<SearchGroupCommand, TOu
     public async Task<TOutcome<SearchGroupResponse>> Handle(SearchGroupCommand request, CancellationToken cancellationToken)
     {
         var opt = await _userBasicRepository.Find(request.UserUID);
-        if (!opt.HasValue)
+        if (!opt.Success)
         {
-            return TOutcome.Error<SearchGroupResponse>("Not found user.");
+            return TOutcome.Err<SearchGroupResponse>("Not found user.");
         }
 
         var response = new SearchGroupResponse(opt.Value!.UserID, opt.Value!.PictureUrl);
 
-        return TOutcome.Success(response);
+        return TOutcome.Ok(response);
     }
 }

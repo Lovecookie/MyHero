@@ -24,13 +24,13 @@ public class SearchUserByStringCommandHandler : IRequestHandler<SearchUserByStri
     public async Task<TOutcome<SearchUserResponse>> Handle(SearchUserByStringCommand request, CancellationToken cancellationToken)
     {
         var opt = await _userBasicRepository.FindById(request.SearchWord);
-        if (!opt.HasValue)
+        if (!opt.Success)
         {
-            return TOutcome.Error<SearchUserResponse>("Not found user.");
+            return TOutcome.Err<SearchUserResponse>("Not found user.");
         }
 
         var response = new SearchUserResponse(opt.Value!.UserID, opt.Value!.PictureUrl);
 
-        return TOutcome.Success(response);
+        return TOutcome.Ok(response);
     }
 }

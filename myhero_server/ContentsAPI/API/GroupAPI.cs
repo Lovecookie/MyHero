@@ -37,7 +37,7 @@ public static class GroupAPI
 		}
 
         var opt = await services.Mediator.Send(new SearchGroupCommand(decryptedUID.Value));
-		if (!opt.HasValue)
+		if (!opt.Success)
         {
 			return ToClientResults.Error("Not found.");
 		}

@@ -5,11 +5,11 @@ using Shared.Featrues.Algorithm;
 namespace myhero_dotnet.ContentsAPI;
 
 
-public static class SearchAPI
+public static class AzureAgentAPI
 {
-    public static WebApplication MapSearchAPI(this WebApplication app)
+    public static WebApplication MapAzureAgentAPI(this WebApplication app)
     {
-        var apiName = "search";
+        var apiName = "azure-agent";
         var apiUri = ConstantVersion.URL(apiName);
 
         var root = app.MapGroup(apiUri)

@@ -24,16 +24,16 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, T
     public async Task<TOutcome<UserBasic>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var opt = await _userBasicRepository.FindByEmail(request.Email);
-        if (!opt.HasValue)
+        if (!opt.Success)
         {
-            return TOutcome.Error<UserBasic>("User not found");
+            return TOutcome.Err<UserBasic>("User not found");
         }
 
         if (request.Password != opt.Value!.Password)
         {
-            return TOutcome.Error<UserBasic>("Invalid password");
+            return TOutcome.Err<UserBasic>("Invalid password");
         }
 
-        return TOutcome.Success(opt.Value!);
+        return TOutcome.Ok(opt.Value!);
     }
 }

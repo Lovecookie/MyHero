@@ -40,14 +40,14 @@ public class HowlMessageRepository : IHowlMessageRepository
 				return TOutcome.Empty<UserHowl>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserHowl>("Not found");
+			return TOutcome.Err<UserHowl>("Not found");
 		}
 	}
 
@@ -65,12 +65,12 @@ public class HowlMessageRepository : IHowlMessageRepository
 				return TOutcome.Empty<UserHowl>();
 			}
 
-			return TOutcome.Success(query);
+			return TOutcome.Ok(query);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
-			return TOutcome.Error<UserHowl>(ex.Message);
+			return TOutcome.Err<UserHowl>(ex.Message);
 		}		
 	}	
 
@@ -89,12 +89,12 @@ public class HowlMessageRepository : IHowlMessageRepository
 				return TOutcome.Empty<List<UserHowl>>();
 			}
 
-			return TOutcome.Success(query);
+			return TOutcome.Ok(query);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
-			return TOutcome.Error<List<UserHowl>>(ex.Message);
+			return TOutcome.Err<List<UserHowl>>(ex.Message);
 		}
 	}
 
@@ -108,13 +108,13 @@ public class HowlMessageRepository : IHowlMessageRepository
 				return TOutcome.Unknown<UserHowl>();
 			}
 
-			return TOutcome.Success(newEntry.Entity);
+			return TOutcome.Ok(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserHowl>(ex.Message);
+			return TOutcome.Err<UserHowl>(ex.Message);
 		}
 	}
 }

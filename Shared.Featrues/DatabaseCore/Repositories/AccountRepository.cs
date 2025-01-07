@@ -41,14 +41,14 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>("Not found");
+			return TOutcome.Err<UserBasic>("Not found");
 		}
 	}
 
@@ -64,13 +64,13 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>(ex.Message);
+			return TOutcome.Err<UserBasic>(ex.Message);
 		}
 	}
 
@@ -86,13 +86,13 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>(ex.Message);
+			return TOutcome.Err<UserBasic>(ex.Message);
 		}
 	}
 
@@ -109,13 +109,13 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOutcome.Unknown<UserBasic>();
 			}
 
-			return TOutcome.Success(newEntry.Entity);
+			return TOutcome.Ok(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>(ex.Message);
+			return TOutcome.Err<UserBasic>(ex.Message);
 		}
 	}
 
@@ -142,13 +142,13 @@ public class UserBasicRepository : IUserBasicRepository
 				return TOutcome.Empty<(UserBasic, UserPatronage, UserRecognition)>();
 			}
 
-			return TOutcome.Success((query.userBasic, query.userPatronage, query.userRecognition));
+			return TOutcome.Ok((query.userBasic, query.userPatronage, query.userRecognition));
 		}
 		catch(Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<(UserBasic, UserPatronage, UserRecognition)>(ex.Message);
+			return TOutcome.Err<(UserBasic, UserPatronage, UserRecognition)>(ex.Message);
 		}
 	}
 
@@ -159,19 +159,19 @@ public class UserBasicRepository : IUserBasicRepository
 			var userBasic = await _context.UserBasics.FindAsync(userUid);
 			if (userBasic == null)
 			{
-				return TOutcome.Error<bool>("User not found");
+				return TOutcome.Err<bool>("User not found");
 			}
 
 			userBasic.EncryptedUID = encryptedUID;
 			//userBasic.DateModified = _timeProvider.GetUtcNow().UtcDateTime;
 
-			return TOutcome.Success(true);
+			return TOutcome.Ok(true);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<bool>(ex.Message);
+			return TOutcome.Err<bool>(ex.Message);
 		}
 	}	
 }

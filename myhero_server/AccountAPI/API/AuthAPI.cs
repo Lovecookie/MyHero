@@ -46,7 +46,7 @@ public static class AuthAPI
 			createUserRequest.Email!,
 			createUserRequest.Pw!,
 			""));
-		if (!createUserOpt.HasValue)
+		if (!createUserOpt.Success)
 		{
 			return ToClientResults.Error(createUserOpt.Message);
 		}
@@ -59,7 +59,7 @@ public static class AuthAPI
 		[AsParameters] AuthServices services)
 	{
 		var commandOpt = await services.Mediator.Send(new SignInCommand(loginUserRequest.Email!, loginUserRequest.Pw!));
-		if(!commandOpt.HasValue)
+		if(!commandOpt.Success)
 		{
 			return ToClientResults.Error(commandOpt.Message);
 		}
@@ -72,7 +72,7 @@ public static class AuthAPI
 		[AsParameters] AuthServices services)
 	{
 		var refreshJwtOpt = await services.Mediator.Send(new RefreshJwtCommand(principal));
-		if(!refreshJwtOpt.HasValue)
+		if(!refreshJwtOpt.Success)
 		{
 			return ToClientResults.Error(refreshJwtOpt.Message);
 		}
@@ -84,7 +84,7 @@ public static class AuthAPI
 		[AsParameters] AuthServices services)
 	{
 		var logoutOpt = await services.Mediator.Send(new LogoutUserCommand(user));
-		if(!logoutOpt.HasValue)
+		if(!logoutOpt.Success)
 		{
 			return ToClientResults.Error(logoutOpt.Message);
 		}

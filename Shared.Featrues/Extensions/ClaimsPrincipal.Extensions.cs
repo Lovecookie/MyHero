@@ -32,16 +32,16 @@ public static class ClaimsPrincipalExtensions
 		var claimUxt = principal.FindFirstValue(CustomClaimType.Uxt);
 		if(claimUxt == null)
 		{
-			return TOutcome.Error<Int64>("Not authenticated.");
+			return TOutcome.Err<Int64>("Not authenticated.");
 		}
 
 		var decryptedUID = await AesWrapper.DecryptAsInt64(claimUxt);
 		if(!decryptedUID.HasValue)
 		{
-			return TOutcome.Error<Int64>("Invalid ID.");
+			return TOutcome.Err<Int64>("Invalid ID.");
 		}
 
-		return TOutcome.Success(decryptedUID.Value);
+		return TOutcome.Ok(decryptedUID.Value);
 	}
 
 

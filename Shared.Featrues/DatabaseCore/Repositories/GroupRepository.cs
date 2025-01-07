@@ -39,14 +39,14 @@ public class GroupRepository : IGroupRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>("Not found");
+			return TOutcome.Err<UserBasic>("Not found");
 		}
 	}
 
@@ -62,13 +62,13 @@ public class GroupRepository : IGroupRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>(ex.Message);
+			return TOutcome.Err<UserBasic>(ex.Message);
 		}
 	}
 
@@ -84,13 +84,13 @@ public class GroupRepository : IGroupRepository
 				return TOutcome.Empty<UserBasic>();
 			}
 
-			return TOutcome.Success(entity);
+			return TOutcome.Ok(entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>(ex.Message);
+			return TOutcome.Err<UserBasic>(ex.Message);
 		}
 	}
 
@@ -107,13 +107,13 @@ public class GroupRepository : IGroupRepository
 				return TOutcome.Unknown<UserBasic>();
 			}
 
-			return TOutcome.Success(newEntry.Entity);
+			return TOutcome.Ok(newEntry.Entity);
 		}
 		catch (Exception ex)
 		{
 			_logger.LogError(ex.Message);
 
-			return TOutcome.Error<UserBasic>(ex.Message);
+			return TOutcome.Err<UserBasic>(ex.Message);
 		}
 	}
 

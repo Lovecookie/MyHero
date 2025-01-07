@@ -26,22 +26,22 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, TOutcome<Sign
     public async Task<TOutcome<SignInResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
         var userBasicOpt = await _userBasicRepository.FindByEmail(request.Email);
-        if (!userBasicOpt.HasValue)
+        if (!userBasicOpt.Success)
         {
-            return TOutcome.Error<SignInResponse>("User not found");
+            return TOutcome.Err<SignInResponse>("User not found");
         }
 
         if (request.Password != userBasicOpt.Value!.Password)
         {
-            return TOutcome.Error<SignInResponse>("Invalid password");
+            return TOutcome.Err<SignInResponse>("Invalid password");
         }
 
         var accessJwtOpt = await _mediator.Send(new AccessJwtCommand(userBasicOpt.Value.UserUID, userBasicOpt.Value.Email));
-        if (!accessJwtOpt.HasValue)
+        if (!accessJwtOpt.Success)
         {
-            return TOutcome.Error<SignInResponse>(accessJwtOpt.Message);
+            return TOutcome.Err<SignInResponse>(accessJwtOpt.Message);
         }
 
-        return TOutcome.Success(new SignInResponse(userBasicOpt.Value.UserID, userBasicOpt.Value.Email, accessJwtOpt.Value!));
+        return TOutcome.Ok(new SignInResponse(userBasicOpt.Value.UserID, userBasicOpt.Value.Email, accessJwtOpt.Value!));
     }
 }

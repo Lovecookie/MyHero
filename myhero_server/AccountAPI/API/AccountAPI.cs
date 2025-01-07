@@ -32,7 +32,7 @@ public static class AccountAPI
 		)
 	{
 		var responseOpt = await services.Mediator.Send(new MyProfileCommand(principal));
-		if (!responseOpt.HasValue)
+		if (!responseOpt.Success)
 		{
 			return ToClientResults.Error(responseOpt.Message);
 		}

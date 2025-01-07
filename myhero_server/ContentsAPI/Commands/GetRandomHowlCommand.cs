@@ -26,23 +26,23 @@ public class GetRandomHowlCommandHandler : IRequestHandler<GetRandomHowlCommand,
     public async Task<TOutcome<GetHowlResponse>> Handle(GetRandomHowlCommand request, CancellationToken cancellationToken)
     {
         var uidOpt = await request.Principal.TryDecryptUID();
-        if (!uidOpt.HasValue)
+        if (!uidOpt.Success)
         {
-            return TOutcome.Error<GetHowlResponse>(uidOpt.Message);
+            return TOutcome.Err<GetHowlResponse>(uidOpt.Message);
         }
 
         var howlOpt = await _howlMessageRepository.GetRandom(uidOpt.Value);
-        if(!howlOpt.HasValue)
+        if(!howlOpt.Success)
         {
-            return TOutcome.Error<GetHowlResponse>(howlOpt.Message);
+            return TOutcome.Err<GetHowlResponse>(howlOpt.Message);
         }
 
         var userOpt = await _userBasicRepository.Find(howlOpt.Value!.UserUID);
-        if(!userOpt.HasValue)
+        if(!userOpt.Success)
         {
-            return TOutcome.Error<GetHowlResponse>(userOpt.Message);
+            return TOutcome.Err<GetHowlResponse>(userOpt.Message);
         }        
 
-        return TOutcome.Success(new GetHowlResponse(userOpt.Value!.EncryptedUID, userOpt.Value!.UserID, howlOpt.Value!.Message));
+        return TOutcome.Ok(new GetHowlResponse(userOpt.Value!.EncryptedUID, userOpt.Value!.UserID, howlOpt.Value!.Message));
     }
 }

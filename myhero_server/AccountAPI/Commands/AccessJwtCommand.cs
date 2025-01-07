@@ -41,15 +41,15 @@ public class AccessJwtCommandHandler : IRequestHandler<AccessJwtCommand, TOutcom
         var bResult = await _userAuthJwtRepository.Add(userAuthJwt);
         if (!bResult)
         {
-            return TOutcome.Error<TokenInfo>("Error updating refresh token");
+            return TOutcome.Err<TokenInfo>("Error updating refresh token");
         }
 
         bResult = await _userAuthJwtRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         if (!bResult)
         {
-            return TOutcome.Error<TokenInfo>("Error updating refresh token");
+            return TOutcome.Err<TokenInfo>("Error updating refresh token");
         }
 
-        return TOutcome.Success(new TokenInfo(accessToken, refreshToken));
+        return TOutcome.Ok(new TokenInfo(accessToken, refreshToken));
     }
 }

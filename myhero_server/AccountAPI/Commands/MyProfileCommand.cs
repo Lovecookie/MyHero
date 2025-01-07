@@ -27,19 +27,19 @@ public class MyProfileCommandHandler : IRequestHandler<MyProfileCommand, TOutcom
     public async Task<TOutcome<MyProfileResponse>> Handle(MyProfileCommand request, CancellationToken cancellationToken)
     {
         var uidOpt = await request.Principal.TryDecryptUID();
-        if (!uidOpt.HasValue)
+        if (!uidOpt.Success)
         {
-            return TOutcome.Error<MyProfileResponse>("Unauthorized");
+            return TOutcome.Err<MyProfileResponse>("Unauthorized");
         }
 
         var queryOpt = await _userBasicRepository.SelectUserBasic(uidOpt.Value);
-        if (!queryOpt.HasValue)
+        if (!queryOpt.Success)
         {
-            return TOutcome.Error<MyProfileResponse>(queryOpt.Message);
+            return TOutcome.Err<MyProfileResponse>(queryOpt.Message);
         }
 
         var userBasicTuple = queryOpt.Value;
-        return TOutcome.Success(
+        return TOutcome.Ok(
             new MyProfileResponse(
                 PicURL: userBasicTuple.Item1.PictureUrl,
                 FollowersCount: userBasicTuple.Item2.FollowerCount,

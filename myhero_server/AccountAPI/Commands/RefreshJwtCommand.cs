@@ -31,25 +31,25 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOutc
         var principal = request.Principal;
         if (!principal.IsRefreshType())
         {
-            return TOutcome.Error<string>("Unauthorized");
+            return TOutcome.Err<string>("Unauthorized");
         }
 
         var uidOpt = await principal.TryDecryptUID();
-        if (!uidOpt.HasValue)
+        if (!uidOpt.Success)
         {
-            return TOutcome.Error<string>("Unauthorized");
+            return TOutcome.Err<string>("Unauthorized");
         }
 
         var userUID = uidOpt.Value;
         if (userUID == 0)
         {
-            return TOutcome.Error<string>("Unauthorized");
+            return TOutcome.Err<string>("Unauthorized");
         }
 
         var userBasicOpt = await _userBasicRepository.Find(userUID);
-        if (!userBasicOpt.HasValue)
+        if (!userBasicOpt.Success)
         {
-            return TOutcome.Error<string>("User not found");
+            return TOutcome.Err<string>("User not found");
         }
 
         var userBasic = userBasicOpt.Value!;
@@ -59,11 +59,11 @@ public class RefreshJwtCommandHandler : IRequestHandler<RefreshJwtCommand, TOutc
         var bResult = await _userAuthJwtRepository.UpdateAccessToken(userBasic.UserUID, accessToken);
         if (!bResult)
         {
-            return TOutcome.Error<string>("Error updating refresh token");
+            return TOutcome.Err<string>("Error updating refresh token");
         }
 
         await _userAuthJwtRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-        return TOutcome.Success(accessToken);
+        return TOutcome.Ok(accessToken);
     }
 }

@@ -22,24 +22,24 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, TOutc
     public async Task<TOutcome<bool>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
     {
         var uid = await request.Principal.TryDecryptUID();
-        if (!uid.HasValue)
+        if (!uid.Success)
         {
-            return TOutcome.Error<bool>("User is not authenticated.");
+            return TOutcome.Err<bool>("User is not authenticated.");
         }
 
         var removeJWT = "";
         var bResult = await _userAuthJwtRepository.UpdateRefreshToken(uid.Value, removeJWT, removeJWT);
         if (!bResult)
         {
-            return TOutcome.Error<bool>("Failed to remove refresh token.");
+            return TOutcome.Err<bool>("Failed to remove refresh token.");
         }
 
         bResult = await _userAuthJwtRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         if (!bResult)
         {
-            return TOutcome.Error<bool>("Failed to save user.");
+            return TOutcome.Err<bool>("Failed to save user.");
         }
 
-        return TOutcome.Success(true);
+        return TOutcome.Ok(true);
     }
 }

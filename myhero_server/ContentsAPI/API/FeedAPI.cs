@@ -42,7 +42,7 @@ public static class FeedAPI
 		}
 
         var opt = await services.Mediator.Send(new SearchUserCommand(decryptedUID.Value));
-		if (!opt.HasValue)
+		if (!opt.Success)
         {
 			return ToClientResults.Error("Not found.");
 		}

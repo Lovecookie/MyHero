@@ -31,41 +31,41 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, TOutc
         var userEntity = _mapper.Map<UserBasic>(request);
 
         var createOpt = await _userBasicRepository.Create(userEntity);
-        if (!createOpt.HasValue)
+        if (!createOpt.Success)
         {
-            return TOutcome.Error<TokenInfo>(createOpt.Message);
+            return TOutcome.Err<TokenInfo>(createOpt.Message);
         }
 
         var bResult = await _userBasicRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         if (!bResult)
         {
-            return TOutcome.Error<TokenInfo>("Failed to save user.");
+            return TOutcome.Err<TokenInfo>("Failed to save user.");
         }
 
         var encryptUID = await AesWrapper.EncryptAsString(createOpt.Value!.UserUID);
 		if (encryptUID == null)
         {
-            return TOutcome.Error<TokenInfo>("Failed to encrypt UID.");
+            return TOutcome.Err<TokenInfo>("Failed to encrypt UID.");
 		}
 
         var updateOpt = await _userBasicRepository.UpdateEncryptedUID(createOpt.Value!.UserUID, encryptUID);
-        if (!updateOpt.HasValue)
+        if (!updateOpt.Success)
         {
-			return TOutcome.Error<TokenInfo>(updateOpt.Message);
+			return TOutcome.Err<TokenInfo>(updateOpt.Message);
 		}
 
         bResult = await _userBasicRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         if (!bResult)
         {
-			return TOutcome.Error<TokenInfo>("Failed to save user.");
+			return TOutcome.Err<TokenInfo>("Failed to save user.");
 		}
 
         var accessJwtOpt = await _mediator.Send(new AccessJwtCommand(createOpt.Value!.UserUID, createOpt.Value!.Email));
-        if (!accessJwtOpt.HasValue)
+        if (!accessJwtOpt.Success)
         {
-            return TOutcome.Error<TokenInfo>(accessJwtOpt.Message);
+            return TOutcome.Err<TokenInfo>(accessJwtOpt.Message);
         }
 
-        return TOutcome.Success(accessJwtOpt.Value!);
+        return TOutcome.Ok(accessJwtOpt.Value!);
     }
 }
